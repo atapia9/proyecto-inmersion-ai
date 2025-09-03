@@ -5,7 +5,7 @@ Este repositorio contiene el material didáctico y la estructura web para el cur
 ## Estructura del Proyecto
 
 - **index.html**: Página principal de bienvenida y acceso al temario.
-- **temario.html**: Syllabus interactivo con enlaces a cada tema del curso.
+- **index.html**: Syllabus interactivo con enlaces a cada tema del curso.
 - **content/**: Carpeta con los archivos HTML de cada tema, organizados por módulos y subtemas.
     - Ejemplo: `1.1.html`, `2.2.html`, `3.4.html`, etc.
 - **assets/**: Recursos estáticos como hojas de estilo (`styles.css`) y scripts (`app.js`).
