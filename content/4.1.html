@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instrucciones de Bit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Tierra y Mar (neutros cálidos con acentos de azul) -->
+    <!-- Application Structure Plan: Se ha diseñado una SPA que explica las instrucciones de bit (XIC, XIO, OTE, OTL, OTU) a través de un sistema de navegación por pestañas o "cards" seleccionables. La interfaz se divide en dos secciones principales: una barra lateral de navegación para elegir la instrucción y un panel de contenido dinámico para mostrar la información detallada. Este diseño permite al usuario explorar de forma no lineal y enfocada, ideal para comparar conceptos técnicos de manera eficiente. -->
+    <!-- Visualization & Content Choices: 1. Tarjetas de Instrucción: Se utilizan contenedores HTML estilizados para cada instrucción. Objetivo: Organizar visualmente la información y servir como puntos de interacción. Interacción: Al hacer clic en una tarjeta, se activa un estado visual (color, sombra) y se actualiza el panel de contenido. Justificación: Un sistema de tarjetas es intuitivo y estéticamente agradable. 2. Panel de Contenido Dinámico: Un único contenedor que cambia su contenido en función de la selección del usuario. Objetivo: Proporcionar información detallada y estructurada sin sobrecargar la interfaz. Interacción: El contenido textual y las imágenes cambian dinámicamente con JavaScript. Justificación: Mantiene el diseño limpio, presentando solo la información relevante en un momento dado. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4;
+        }
+        .instruction-card {
+            transition: all 0.3s ease-in-out;
+            border-width: 2px;
+            border-color: #e7e5e4;
+        }
+        .instruction-card.active {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .content-panel {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .content-panel.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-stone-900">Instrucciones de Bit</h1>
+            <p class="mt-2 text-lg text-stone-600 max-w-3xl mx-auto">Explora las instrucciones de bit más comunes en el lenguaje de programación Ladder de Rockwell Automation.</p>
+        </header>
+
+        <main class="lg:flex lg:space-x-8">
+            <!-- Navigation Sidebar -->
+            <nav class="bg-white p-6 rounded-lg shadow-md border border-stone-200 mb-8 lg:mb-0 lg:w-1/3 h-fit">
+                <h2 class="font-bold text-xl text-stone-900 mb-4">Instrucciones</h2>
+                <div class="space-y-4">
+                    <div class="instruction-card bg-white p-6 rounded-lg shadow-sm cursor-pointer text-center" data-target="xic">
+                        <h3 class="font-bold text-3xl text-stone-800">XIC</h3>
+                        <p class="text-sm text-stone-600 mt-1">Examinar si está Cerrado</p>
+                    </div>
+                    <div class="instruction-card bg-white p-6 rounded-lg shadow-sm cursor-pointer text-center" data-target="xio">
+                        <h3 class="font-bold text-3xl text-stone-800">XIO</h3>
+                        <p class="text-sm text-stone-600 mt-1">Examinar si está Abierto</p>
+                    </div>
+                    <div class="instruction-card bg-white p-6 rounded-lg shadow-sm cursor-pointer text-center" data-target="ote">
+                        <h3 class="font-bold text-3xl text-stone-800">OTE</h3>
+                        <p class="text-sm text-stone-600 mt-1">Bobina de Salida Energizada</p>
+                    </div>
+                    <div class="instruction-card bg-white p-6 rounded-lg shadow-sm cursor-pointer text-center" data-target="otl">
+                        <h3 class="font-bold text-3xl text-stone-800">OTL</h3>
+                        <p class="text-sm text-stone-600 mt-1">Bobina de Salida Latch</p>
+                    </div>
+                    <div class="instruction-card bg-white p-6 rounded-lg shadow-sm cursor-pointer text-center" data-target="otu">
+                        <h3 class="font-bold text-3xl text-stone-800">OTU</h3>
+                        <p class="text-sm text-stone-600 mt-1">Bobina de Salida Unlatch</p>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Content Panel -->
+            <section class="flex-1 bg-white p-8 rounded-lg shadow-md border border-stone-200">
+                <div id="initial-panel" class="content-panel active text-center text-stone-500 min-h-[400px] flex items-center justify-center">
+                    <p class="text-lg">Selecciona una instrucción para ver los detalles y un ejemplo.</p>
+                </div>
+
+                <div id="xic-panel" class="content-panel">
+                    <h2 class="font-bold text-2xl text-blue-600 mb-2">Examinar si está Cerrado (XIC)</h2>
+                    <p class="text-stone-600 mb-4">La instrucción **XIC (eXamine If Closed)** es un contacto que se hace lógicamente verdadero cuando el estado de un bit asociado es **1 (ON)**. Es el equivalente a un contacto normalmente abierto (NO) en un diagrama eléctrico. El flujo de lógica (poder) pasa a través de él cuando el bit está encendido.</p>
+                    <h3 class="font-semibold text-lg text-stone-800 mt-4 mb-2">Ejemplo en Ladder:</h3>
+                    <div class="bg-stone-100 p-4 rounded-lg">
+                        <pre class="font-mono text-sm text-stone-800">|--[XIC]------(OTE)--|</pre>
+                        <p class="text-xs text-stone-500 mt-2">`XIC` se hará verdadero si su tag es 1. `OTE` se hará verdadero si `XIC` es verdadero.</p>
+                    </div>
+                </div>
+
+                <div id="xio-panel" class="content-panel">
+                    <h2 class="font-bold text-2xl text-blue-600 mb-2">Examinar si está Abierto (XIO)</h2>
+                    <p class="text-stone-600 mb-4">La instrucción **XIO (eXamine If Open)** es un contacto que se hace lógicamente verdadero cuando el estado de un bit asociado es **0 (OFF)**. Es el equivalente a un contacto normalmente cerrado (NC) en un diagrama eléctrico. El flujo de lógica (poder) pasa a través de él cuando el bit está apagado.</p>
+                    <h3 class="font-semibold text-lg text-stone-800 mt-4 mb-2">Ejemplo en Ladder:</h3>
+                    <div class="bg-stone-100 p-4 rounded-lg">
+                        <pre class="font-mono text-sm text-stone-800">|--[XIO]------(OTE)--|</pre>
+                        <p class="text-xs text-stone-500 mt-2">`XIO` se hará verdadero si su tag es 0. `OTE` se hará verdadero si `XIO` es verdadero.</p>
+                    </div>
+                </div>
+
+                <div id="ote-panel" class="content-panel">
+                    <h2 class="font-bold text-2xl text-blue-600 mb-2">Bobina de Salida Energizada (OTE)</h2>
+                    <p class="text-stone-600 mb-4">La instrucción **OTE (Output Energize)** es una bobina de salida. Cuando el peldaño que la precede es lógicamente verdadero (el poder fluye hasta ella), la bobina se energiza, lo que significa que el bit asociado se establece en **1 (ON)**. Si el peldaño se vuelve falso, el bit se restablece a **0 (OFF)**.</p>
+                    <h3 class="font-semibold text-lg text-stone-800 mt-4 mb-2">Ejemplo en Ladder:</h3>
+                    <div class="bg-stone-100 p-4 rounded-lg">
+                        <pre class="font-mono text-sm text-stone-800">|--[XIC Start]--[XIO Stop]--(--OTE Motor--)--|</pre>
+                        <p class="text-xs text-stone-500 mt-2">El `Motor` se energiza si `Start` es verdadero y `Stop` es falso.</p>
+                    </div>
+                </div>
+
+                <div id="otl-panel" class="content-panel">
+                    <h2 class="font-bold text-2xl text-blue-600 mb-2">Bobina de Salida Latch (OTL)</h2>
+                    <p class="text-stone-600 mb-4">La instrucción **OTL (Output Latch)** es una bobina que se utiliza para "enganchar" o "latchear" un bit en un estado **1 (ON)**. Una vez que el peldaño se hace verdadero y la bobina se energiza, el bit permanece en 1 incluso si el peldaño se vuelve falso. Para apagar el bit, se debe usar una instrucción OTU con el mismo tag.</p>
+                    <h3 class="font-semibold text-lg text-stone-800 mt-4 mb-2">Ejemplo en Ladder:</h3>
+                    <div class="bg-stone-100 p-4 rounded-lg">
+                        <pre class="font-mono text-sm text-stone-800">|--[XIC Set_Bit]--(--OTL Bit--)--|</pre>
+                        <pre class="font-mono text-sm text-stone-800 mt-2">|--[XIC Reset_Bit]--(--OTU Bit--)--|</pre>
+                        <p class="text-xs text-stone-500 mt-2">`OTL` enciende `Bit` y lo mantiene encendido. `OTU` debe usarse para apagarlo.</p>
+                    </div>
+                </div>
+
+                <div id="otu-panel" class="content-panel">
+                    <h2 class="font-bold text-2xl text-blue-600 mb-2">Bobina de Salida Unlatch (OTU)</h2>
+                    <p class="text-stone-600 mb-4">La instrucción **OTU (Output Unlatch)** es una bobina que se utiliza para "desenganchar" o "deslachear" un bit, es decir, forzarlo a un estado **0 (OFF)**. Se usa en combinación con la instrucción OTL para crear una lógica de "set-reset". OTU solo tiene efecto cuando su peldaño es verdadero; de lo contrario, no hace nada.</p>
+                    <h3 class="font-semibold text-lg text-stone-800 mt-4 mb-2">Ejemplo en Ladder:</h3>
+                    <div class="bg-stone-100 p-4 rounded-lg">
+                        <pre class="font-mono text-sm text-stone-800">|--[XIC Set_Bit]--(--OTL Bit--)--|</pre>
+                        <pre class="font-mono text-sm text-stone-800 mt-2">|--[XIC Reset_Bit]--(--OTU Bit--)--|</pre>
+                        <p class="text-xs text-stone-500 mt-2">`OTU` apaga `Bit` y lo mantiene apagado. `OTL` debe usarse para encenderlo de nuevo.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="mt-12 flex flex-col md:flex-row gap-4 justify-between items-center">
+            <a href="4.2.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 font-semibold transition">Continuar con el siguiente tema</a>
+            <a href="/temario.html" class="bg-stone-100 text-blue-600 px-6 py-3 rounded-lg shadow hover:bg-blue-200 font-semibold transition">Regresar a la página principal</a>
+        </footer>
+
+        <div class="w-full text-center mt-6 text-stone-500 text-sm font-medium">Generado con apoyo de Google Gemini por Jesus Armando Tapia Gallegos MTDE</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const instructionCards = document.querySelectorAll('.instruction-card');
+            const contentPanels = document.querySelectorAll('.content-panel');
+            const initialPanel = document.getElementById('initial-panel');
+
+            function updateDisplay(targetId) {
+                contentPanels.forEach(panel => panel.classList.remove('active'));
+                const targetPanel = document.getElementById(targetId);
+                if (targetPanel) {
+                    targetPanel.classList.add('active');
+                } else {
+                    initialPanel.classList.add('active');
+                }
+            }
+
+            instructionCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    instructionCards.forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                    const targetId = card.dataset.target + '-panel';
+                    updateDisplay(targetId);
+                });
+            });
+
+            // Set a default state to the initial panel on page load
+            updateDisplay('initial-panel');
+        });
+    </script>
+
+</body>
+</html>

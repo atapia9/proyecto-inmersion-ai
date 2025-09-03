@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunicación y Protocolos Industriales</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Tierra y Mar (neutros cálidos con acentos de azul) -->
+    <!-- Application Structure Plan: Se ha creado una SPA (Single Page Application) que presenta los protocolos de comunicación industrial a través de un sistema de pestañas o "cards" seleccionables. La interfaz se divide en dos secciones principales: una barra lateral de navegación para elegir el protocolo y un panel de contenido dinámico para mostrar la información detallada. Este diseño permite al usuario explorar de forma no lineal y enfocada, ideal para comparar conceptos técnicos de manera eficiente. -->
+    <!-- Visualization & Content Choices: 1. Tarjetas de Protocolo: Se utilizan contenedores HTML estilizados para cada protocolo. Objetivo: Organizar visualmente la información y servir como puntos de interacción. Interacción: Al hacer clic en una tarjeta, se activa un estado visual (color, sombra) y se actualiza el panel de contenido. Justificación: Un sistema de tarjetas es intuitivo y estéticamente agradable. 2. Panel de Contenido Dinámico: Un único contenedor que cambia su contenido en función de la selección del usuario. Objetivo: Proporcionar información detallada y estructurada sin sobrecargar la interfaz. Interacción: El contenido textual cambia dinámicamente con JavaScript. Justificación: Mantiene el diseño limpio, presentando solo la información relevante en un momento dado. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4;
+        }
+        .protocol-card {
+            transition: all 0.3s ease-in-out;
+            border-width: 2px;
+            border-color: #e7e5e4;
+        }
+        .protocol-card.active {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .content-panel {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .content-panel.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-stone-900">Comunicación y Protocolos Industriales</h1>
+            <p class="mt-2 text-lg text-stone-600 max-w-3xl mx-auto">Explora cómo los PLC se conectan entre sí y con otros dispositivos, creando redes de control para la automatización de plantas completas.</p>
+        </header>
+
+        <main class="lg:flex lg:space-x-8">
+            <!-- Navigation Sidebar -->
+            <nav class="bg-white p-6 rounded-lg shadow-md border border-stone-200 mb-8 lg:mb-0 lg:w-1/3 h-fit">
+                <h2 class="font-bold text-xl text-stone-900 mb-4">Protocolos Comunes</h2>
+                <div class="space-y-4">
+                    <div class="protocol-card bg-white p-6 rounded-lg shadow-sm cursor-pointer text-center" data-target="ethernetip">
+                        <div class="text-4xl mb-3">🔗</div>
+                        <h3 class="font-bold text-lg text-stone-800">EtherNet/IP</h3>
+                        <p class="text-sm text-stone-600 mt-1">El estándar moderno de Rockwell Automation.</p>
+                    </div>
+                    <div class="protocol-card bg-white p-6 rounded-lg shadow-sm cursor-pointer text-center" data-target="modbus">
+                        <div class="text-4xl mb-3">📟</div>
+                        <h3 class="font-bold text-lg text-stone-800">Modbus</h3>
+                        <p class="text-sm text-stone-600 mt-1">El clásico de la comunicación serial y Ethernet.</p>
+                    </div>
+                    <div class="protocol-card bg-white p-6 rounded-lg shadow-sm cursor-pointer text-center" data-target="profinet">
+                        <div class="text-4xl mb-3">📡</div>
+                        <h3 class="font-bold text-lg text-stone-800">PROFINET</h3>
+                        <p class="text-sm text-stone-600 mt-1">Un estándar robusto, de alta velocidad.</p>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Content Panel -->
+            <section class="flex-1 bg-white p-8 rounded-lg shadow-md border border-stone-200">
+                <div id="initial-panel" class="content-panel active text-center text-stone-500 min-h-[400px] flex items-center justify-center">
+                    <p class="text-lg">Selecciona un protocolo para ver los detalles de su funcionamiento.</p>
+                </div>
+
+                <div id="ethernetip-panel" class="content-panel">
+                    <h2 class="font-bold text-2xl text-blue-600 mb-2">EtherNet/IP</h2>
+                    <p class="text-stone-600 mb-4">EtherNet/IP (Industrial Protocol) es un protocolo de comunicación industrial de capa de aplicación que se basa en el **Ethernet estándar**. Utiliza el CIP (Common Industrial Protocol) para la comunicación entre dispositivos de automatización. Es el protocolo nativo para los controladores de Allen-Bradley (Rockwell Automation) y es conocido por su **alta velocidad** y flexibilidad para integrar control, configuración y recolección de datos en una sola red. Su principal ventaja es que utiliza tecnología de red IT estándar, lo que facilita su implementación y mantenimiento.</p>
+                    <h3 class="font-semibold text-lg text-stone-800 mt-4 mb-2">Características Clave:</h3>
+                    <ul class="list-disc list-inside text-stone-600 space-y-1">
+                        <li>**Alta velocidad y ancho de banda:** Adecuado para aplicaciones de control de movimiento y robótica.</li>
+                        <li>**Red unificada:** Permite que los datos de control, seguridad y recolección viajen por la misma red.</li>
+                        <li>**Tecnología estándar:** Se basa en Ethernet y TCP/IP, lo que facilita la integración con redes de oficina y el uso de switches y cables estándar.</li>
+                        <li>**Arquitectura CIP:** Proporciona un conjunto común de mensajes y servicios para la gestión de dispositivos.</li>
+                    </ul>
+                </div>
+
+                <div id="modbus-panel" class="content-panel">
+                    <h2 class="font-bold text-2xl text-blue-600 mb-2">Modbus</h2>
+                    <p class="text-stone-600 mb-4">Modbus es uno de los protocolos de comunicación industrial **más antiguos y extendidos**. Es un protocolo maestro/esclavo (o cliente/servidor) conocido por su simplicidad y fiabilidad. Aunque se originó como un protocolo de comunicación serial (Modbus RTU y ASCII), se ha adaptado al mundo de Ethernet con Modbus TCP/IP. Su principal ventaja es su naturaleza abierta y la facilidad con la que puede ser implementado, lo que lo convierte en un estándar de facto para la comunicación entre dispositivos de diferentes fabricantes.</p>
+                    <h3 class="font-semibold text-lg text-stone-800 mt-4 mb-2">Características Clave:</h3>
+                    <ul class="list-disc list-inside text-stone-600 space-y-1">
+                        <li>**Simplicidad:** Protocolo de mensaje muy simple, lo que facilita su uso y depuración.</li>
+                        <li>**Universalidad:** Es un protocolo abierto que no depende de ningún fabricante, lo que asegura la compatibilidad.</li>
+                        <li>**Dos variantes principales:**
+                            <ul class="list-circle list-inside ml-4">
+                                <li>**Modbus RTU:** Comunicación serial a través de cables RS-232/485.</li>
+                                <li>**Modbus TCP/IP:** Utiliza Ethernet estándar, permitiendo mayores distancias y más nodos.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="profinet-panel" class="content-panel">
+                    <h2 class="font-bold text-2xl text-blue-600 mb-2">PROFINET</h2>
+                    <p class="text-stone-600 mb-4">PROFINET es un protocolo de comunicación industrial que utiliza Ethernet como su medio de transporte. Desarrollado por Siemens y el consorcio PROFIBUS & PROFINET International (PI), es un protocolo líder en la automatización de fábricas, especialmente en Europa. PROFINET ofrece una **comunicación de alta velocidad y en tiempo real** para aplicaciones de control de movimiento y seguridad, proporcionando una solución robusta y escalable para redes de automatización complejas.</p>
+                    <h3 class="font-semibold text-lg text-stone-800 mt-4 mb-2">Características Clave:</h3>
+                    <ul class="list-disc list-inside text-stone-600 space-y-1">
+                        <li>**Rendimiento en tiempo real:** Capaz de manejar aplicaciones isócronas con una precisión de microsegundos.</li>
+                        <li>**Topología flexible:** Soporta topologías de red en estrella, línea, anillo y bus.</li>
+                        <li>**Integración de seguridad:** PROFINET Safety permite la comunicación de datos de seguridad a través de la misma red.</li>
+                        <li>**Orientado a objetos:** El protocolo está estructurado de manera que los dispositivos son objetos con propiedades y métodos.</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+
+        <footer class="mt-12 flex flex-col md:flex-row gap-4 justify-between items-center">
+            <a href="2.4.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 font-semibold transition">Continuar con el siguiente tema</a>
+            <a href="/temario.html" class="bg-stone-100 text-blue-600 px-6 py-3 rounded-lg shadow hover:bg-blue-200 font-semibold transition">Regresar a la página principal</a>
+        </footer>
+
+        <div class="w-full text-center mt-6 text-stone-500 text-sm font-medium">Generado con apoyo de Google Gemini por Jesus Armando Tapia Gallegos MTDE</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const protocolCards = document.querySelectorAll('.protocol-card');
+            const contentPanels = document.querySelectorAll('.content-panel');
+            const initialPanel = document.getElementById('initial-panel');
+
+            function updateDisplay(targetId) {
+                contentPanels.forEach(panel => panel.classList.remove('active'));
+                const targetPanel = document.getElementById(targetId);
+                if (targetPanel) {
+                    targetPanel.classList.add('active');
+                } else {
+                    initialPanel.classList.add('active');
+                }
+            }
+
+            protocolCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    protocolCards.forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                    const targetId = card.dataset.target + '-panel';
+                    updateDisplay(targetId);
+                });
+            });
+
+            // Set a default state to the initial panel on page load
+            updateDisplay('initial-panel');
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración de Estación de Trabajo PLC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Tierra y Mar (neutros cálidos con acentos de azul) -->
+    <!-- Application Structure Plan: Se ha diseñado una aplicación de un solo panel que guía al usuario a través de un proceso paso a paso para configurar una estación de trabajo de PLC. El diseño se basa en un sistema de navegación por pestañas (tabs) que permite al usuario avanzar y retroceder a través de los pasos. Cada "tab" contiene una sección de contenido detallada que explica el proceso, los componentes necesarios y los puntos clave a considerar. Este diseño es ideal para tutoriales o guías de procedimiento, ya que estructura la información de manera lógica y evita que el usuario se sienta abrumado por un largo documento de texto. -->
+    <!-- Visualization & Content Choices: 1. Navegación por Pasos: Se utiliza un conjunto de botones o "tabs" para controlar la visualización de los paneles de contenido. Objetivo: Proporcionar una guía secuencial fácil de seguir. Interacción: Clic en el botón para activar un panel de contenido específico. Justificación: Un enfoque paso a paso es la forma más clara de presentar un procedimiento técnico. 2. Paneles de Contenido: Contenedores HTML que se muestran u ocultan dinámicamente. Objetivo: Describir cada fase del proceso de configuración. Interacción: El contenido textual cambia en respuesta a la selección del usuario. Justificación: Mantiene la interfaz limpia y enfocada, presentando solo la información relevante para el paso actual. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4;
+        }
+        .step-tab {
+            @apply p-4 flex-1 text-center font-semibold text-stone-600 border-b-2 border-transparent transition-all duration-300 cursor-pointer;
+        }
+        .step-tab.active {
+            @apply text-blue-600 border-blue-600;
+        }
+        .step-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .step-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-stone-900">Configuración de una Estación de Trabajo PLC</h1>
+            <p class="mt-2 text-lg text-stone-600 max-w-3xl mx-auto">Sigue estos pasos para preparar tu hardware y software y empezar a programar con un PLC Allen-Bradley.</p>
+        </header>
+
+        <main class="bg-white p-8 rounded-lg shadow-md border border-stone-200">
+            <!-- Step Tabs Navigation -->
+            <div class="flex border-b border-stone-200 mb-6 space-x-2 overflow-x-auto">
+                <div class="step-tab active" data-step="1">Paso 1: Hardware 💻</div>
+                <div class="step-tab" data-step="2">Paso 2: Software 💾</div>
+                <div class="step-tab" data-step="3">Paso 3: Conexión 🔌</div>
+                <div class="step-tab" data-step="4">Paso 4: Configuración Inicial ⚙️</div>
+            </div>
+
+            <!-- Step Content Panels -->
+            <div id="step-1" class="step-content active">
+                <h2 class="font-bold text-2xl text-blue-600 mb-2">Paso 1: Preparación del Hardware</h2>
+                <p class="text-stone-600 mb-4">Antes de empezar con el software, asegúrate de que tu hardware esté listo. Una estación de trabajo de PLC modular típicamente consiste en los siguientes componentes:</p>
+                <ul class="list-disc list-inside text-stone-600 space-y-2 mt-4">
+                    <li>**Chasis o Rack:** Es la estructura donde se montan todos los módulos. Asegúrate de que tenga el tamaño adecuado para tus módulos.</li>
+                    <li>**Fuente de Alimentación:** Proporciona la energía necesaria a todos los módulos. Conéctala a una fuente de energía confiable y verifica que los indicadores LED estén encendidos.</li>
+                    <li>**Módulo de CPU:** El cerebro del sistema. Insértalo en el slot designado (generalmente el primero a la izquierda).</li>
+                    <li>**Módulos de E/S:** Inserta los módulos de entrada y salida que vayas a utilizar. Conecta los sensores y actuadores a las terminales correctas.</li>
+                </ul>
+                <p class="text-stone-600 mt-4">Es crucial asegurarse de que todos los módulos estén bien encajados en el chasis y que el cableado de alimentación esté correcto para evitar daños en el equipo.</p>
+            </div>
+            
+            <div id="step-2" class="step-content">
+                <h2 class="font-bold text-2xl text-blue-600 mb-2">Paso 2: Instalación del Software</h2>
+                <p class="text-stone-600 mb-4">Para programar un PLC Allen-Bradley, necesitas el software de desarrollo adecuado. Para los modelos modernos como ControlLogix o CompactLogix, el software principal es **Studio 5000 Logix Designer**.</p>
+                <ul class="list-disc list-inside text-stone-600 space-y-2 mt-4">
+                    <li>**Verifica los requisitos del sistema:** Asegúrate de que tu computadora cumpla con los requisitos mínimos de hardware y software para la versión de Studio 5000 que vas a instalar.</li>
+                    <li>**Instala el software:** Sigue las instrucciones del instalador. Ten en cuenta que este software puede requerir una licencia y que su instalación puede tomar un tiempo considerable.</li>
+                    <li>**Instala el software de comunicaciones (FactoryTalk Linx):** Este es un componente crucial que permite a Studio 5000 comunicarse con el PLC a través de la red (Ethernet/IP, USB, etc.). A menudo se instala junto con Studio 5000.</li>
+                </ul>
+                <p class="text-stone-600 mt-4">Una vez instalado, abre el software para asegurarte de que se ejecuta correctamente antes de proceder a la conexión.</p>
+            </div>
+
+            <div id="step-3" class="step-content">
+                <h2 class="font-bold text-2xl text-blue-600 mb-2">Paso 3: Conexión Física y de Red</h2>
+                <p class="text-stone-600 mb-4">Ahora es el momento de conectar tu computadora al PLC. La conexión más común para los PLC modernos es a través de Ethernet.</p>
+                <ul class="list-disc list-inside text-stone-600 space-y-2 mt-4">
+                    <li>**Conexión directa:** Conecta un cable Ethernet directamente desde tu PC al puerto Ethernet de la CPU del PLC. Para esto, a veces se requiere un cable de cruce (crossover cable), aunque la mayoría de las tarjetas de red modernas lo detectan automáticamente.</li>
+                    <li>**Conexión a través de un switch:** En un entorno industrial, es más común conectar el PLC a un switch industrial y tu PC al mismo switch.</li>
+                    <li>**Conexión USB:** Algunos modelos de PLC Allen-Bradley también tienen un puerto USB. Puedes usar un cable USB estándar para una conexión temporal directa.</li>
+                </ul>
+                <p class="text-stone-600 mt-4">Asegúrate de que los indicadores LED de la tarjeta de red en el PLC muestren actividad para confirmar la conexión física.</p>
+            </div>
+
+            <div id="step-4" class="step-content">
+                <h2 class="font-bold text-2xl text-blue-600 mb-2">Paso 4: Configuración Inicial en el Software</h2>
+                <p class="text-stone-600 mb-4">Finalmente, configura la comunicación entre tu software y el PLC.</p>
+                <ul class="list-disc list-inside text-stone-600 space-y-2 mt-4">
+                    <li>**Configura el driver de comunicación:** En FactoryTalk Linx (o RSLinx Classic), crea un nuevo driver para el tipo de conexión que estés usando (por ejemplo, "Ethernet/IP" o "USB").</li>
+                    <li>**Navega hasta el PLC:** Una vez que el driver esté activo, debería escanear la red y mostrar tu PLC en el árbol de navegación.</li>
+                    <li>**Crea un proyecto en Studio 5000:** Inicia un nuevo proyecto y selecciona el modelo de CPU de tu PLC.</li>
+                    <li>**Configura el árbol de E/S:** Dentro del proyecto, añade los módulos de E/S que tienes físicamente instalados en tu chasis.</li>
+                </ul>
+                <p class="text-stone-600 mt-4">Con estos pasos, tu estación de trabajo estará lista para comenzar con la programación del PLC.</p>
+            </div>
+
+            <footer class="mt-12 flex flex-col md:flex-row gap-4 justify-between items-center">
+                <a href="3.1.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 font-semibold transition">Continuar con el siguiente tema</a>
+                <a href="/temario.html" class="bg-stone-100 text-blue-600 px-6 py-3 rounded-lg shadow hover:bg-blue-200 font-semibold transition">Regresar a la página principal</a>
+            </footer>
+
+            <div class="w-full text-center mt-6 text-stone-500 text-sm font-medium">Generado con apoyo de Google Gemini por Jesus Armando Tapia Gallegos MTDE</div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const stepTabs = document.querySelectorAll('.step-tab');
+            const stepContents = document.querySelectorAll('.step-content');
+
+            function updateDisplay(stepNumber) {
+                stepTabs.forEach(tab => tab.classList.remove('active'));
+                document.querySelector(`.step-tab[data-step="${stepNumber}"]`).classList.add('active');
+                
+                stepContents.forEach(content => content.classList.remove('active'));
+                document.getElementById(`step-${stepNumber}`).classList.add('active');
+            }
+
+            stepTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const step = tab.dataset.step;
+                    updateDisplay(step);
+                });
+            });
+
+            // Set a default state on page load
+            updateDisplay(1);
+        });
+    </script>
+
+</body>
+</html>

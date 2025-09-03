@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoreo y Adquisición de Datos - PLC Módulo 1</title>
+    <!-- Incluye el CDN de Tailwind CSS para un diseño moderno -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto bg-white p-6 md:p-10 rounded-xl shadow-lg border border-gray-200">
+
+        <!-- Encabezado del tema -->
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Tema 6.3: Monitoreo y Adquisición de Datos</h1>
+            <p class="text-xl text-gray-600">Curso: PLC Módulo 1</p>
+        </header>
+
+        <!-- Sección de introducción -->
+        <section class="mb-8">
+            <p class="text-gray-700 text-lg leading-relaxed">
+                En el ámbito de la automatización industrial, el control efectivo de procesos no solo depende de la ejecución de comandos, sino también de la capacidad para observar y comprender lo que sucede en tiempo real. El monitoreo y la adquisición de datos (SCADA/HMI) son fundamentales para lograr esta visibilidad, permitiendo a los operadores tomar decisiones informadas, optimizar el rendimiento y garantizar la seguridad de las operaciones.
+            </p>
+            <div class="mt-6 flex justify-center">
+                
+            </div>
+        </section>
+
+        <!-- Sección principal: ¿Qué es el Monitoreo y Adquisición de Datos? -->
+        <section class="mb-8">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4">¿Qué es el Monitoreo y Adquisición de Datos?</h3>
+            <p class="text-gray-700 leading-relaxed mb-4">
+                La adquisición de datos (DA o DAS) es el proceso de muestrear señales del mundo físico (como temperatura, presión, voltaje, o estado de un sensor) y convertirlas en valores digitales que pueden ser manipulados por una computadora o un PLC. Por su parte, el monitoreo implica la visualización y análisis de estos datos para obtener información útil sobre el estado del proceso.
+            </p>
+            <p class="text-gray-700 leading-relaxed">
+                En un sistema de PLC, este proceso se realiza de la siguiente manera:
+            </p>
+            <ul class="list-disc list-inside space-y-2 text-gray-700 pl-4 mt-4">
+                <li>
+                    <span class="font-medium text-gray-800">Sensores y Dispositivos:</span> Los sensores y transductores recogen datos analógicos o digitales del proceso.
+                </li>
+                <li>
+                    <span class="font-medium text-gray-800">PLC:</span> El PLC, a través de sus módulos de entrada/salida (E/S), adquiere estas señales. Las entradas analógicas se convierten a valores digitales que el programa puede procesar.
+                </li>
+                <li>
+                    <span class="font-medium text-gray-800">Software:</span> Los datos procesados se transfieren a un software de monitoreo (como SCADA o una interfaz HMI) para su visualización y registro.
+                </li>
+            </ul>
+        </section>
+        
+        <!-- Sección de importancia -->
+        <section class="mb-8">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4">Importancia en la Automatización Industrial</h3>
+            <p class="text-gray-700 leading-relaxed">
+                La capacidad de monitorear datos en tiempo real es crucial para la eficiencia y seguridad. Algunas de sus ventajas clave son:
+            </p>
+            <ul class="list-disc list-inside space-y-2 text-gray-700 pl-4 mt-4">
+                <li><span class="font-medium text-gray-800">Detección de Fallas:</span> Permite identificar anomalías y fallas en el equipo antes de que se conviertan en problemas mayores.</li>
+                <li><span class="font-medium text-gray-800">Optimización de Procesos:</span> Con el análisis de datos históricos, se pueden ajustar parámetros para mejorar la calidad del producto y reducir costos.</li>
+                <li><span class="font-medium text-gray-800">Mantenimiento Predictivo:</span> Al monitorear el rendimiento de las máquinas, es posible predecir cuándo necesitarán mantenimiento, evitando paradas de producción no planificadas.</li>
+                <li><span class="font-medium text-gray-800">Informes y Cumplimiento:</span> Los datos registrados se pueden utilizar para generar informes de producción y asegurar el cumplimiento de las normativas de calidad y seguridad.</li>
+            </ul>
+        </section>
+
+        <!-- Sección de componentes del sistema -->
+        <section class="mb-8">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4">Componentes Clave del Sistema</h3>
+            <ul class="list-disc list-inside space-y-2 text-gray-700 pl-4 mt-4">
+                <li>
+                    <span class="font-medium text-gray-800">Sensores y Actuadores:</span> Dispositivos físicos que miden y controlan variables del proceso.
+                </li>
+                <li>
+                    <span class="font-medium text-gray-800">PLC:</span> El "cerebro" del sistema, que procesa las señales y ejecuta el programa de control.
+                </li>
+                <li>
+                    <span class="font-medium text-gray-800">Redes de Comunicación Industrial:</span> Protocolos como Ethernet/IP, PROFINET, o Modbus TCP que permiten la transferencia de datos entre el PLC y otros dispositivos, incluyendo computadoras de monitoreo.
+                </li>
+                <li>
+                    <span class="font-medium text-gray-800">Software SCADA/HMI:</span> La interfaz gráfica donde los operadores pueden ver el estado del proceso, los datos en tiempo real y, en muchos casos, controlar el sistema.
+                </li>
+            </ul>
+        </section>
+        
+        <!-- Pie de página -->
+        <footer class="mt-12 flex flex-col md:flex-row gap-4 justify-between items-center">
+            <a href="6.4.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 font-semibold transition">Continuar con el siguiente tema</a>
+            <a href="/temario.html" class="bg-stone-100 text-blue-600 px-6 py-3 rounded-lg shadow hover:bg-blue-200 font-semibold transition">Regresar a la página principal</a>
+        </footer>
+        <footer class="text-center text-gray-500 text-sm mt-12 pt-6 border-t border-gray-200">
+            <p>&copy; Curso de PLC Módulo 1. Todos los derechos reservados.</p>
+        </footer>
+        <div class="w-full text-center mt-6 text-stone-500 text-sm font-medium">Generado con apoyo de Google Gemini por Jesus Armando Tapia Gallegos MTDE</div>
+
+    </div>
+</body>
+</html>

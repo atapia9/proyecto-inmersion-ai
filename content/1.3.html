@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Familia de PLC Allen-Bradley</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Tierra y Mar (neutros cálidos con acentos de azul) -->
+    <!-- Application Structure Plan: Se ha diseñado una SPA de página única con un panel de exploración que permite al usuario seleccionar entre diferentes familias de PLC de Allen-Bradley. La estructura presenta una fila de tarjetas clicables para cada familia. Al seleccionar una tarjeta, un panel de información central se actualiza dinámicamente para mostrar los detalles, características y aplicaciones ideales del modelo elegido. Este diseño se eligió para facilitar la comparación y el entendimiento de la gama de productos, transformando una lista estática en una experiencia interactiva y fácil de navegar. -->
+    <!-- Visualization & Content Choices: 1. Tarjetas de Producto: Se usan tarjetas HTML/CSS/Tailwind para representar cada familia de PLC. Objetivo: Organizar la información de manera visual y seleccionable. Interacción: Clic para activar y cambiar el contenido de un panel. Justificación: Proporciona una interfaz intuitiva para la exploración y evita la sobrecarga de información. 2. Panel de Detalles: Un único contenedor dinámicamente actualizado para mostrar la información del PLC seleccionado. Objetivo: Informar con profundidad. Interacción: El contenido textual cambia en respuesta a la selección del usuario. Justificación: Mantiene la interfaz limpia y enfocada, presentando solo la información relevante en un momento dado. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4;
+        }
+        .plc-card {
+            transition: all 0.3s ease-in-out;
+            border-width: 2px;
+            border-color: #e7e5e4;
+        }
+        .plc-card.active {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .info-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .info-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-stone-900">Familia de PLC Allen-Bradley</h1>
+            <p class="mt-2 text-lg text-stone-600 max-w-3xl mx-auto">Explora la gama de Controladores Lógicos Programables de Allen-Bradley y sus características clave para la automatización industrial.</p>
+        </header>
+
+        <section id="plc-selection" class="mb-12">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div class="plc-card bg-white p-6 rounded-lg shadow-md cursor-pointer text-center" data-target="micrologix">
+                    <div class="text-4xl mb-3">📦</div>
+                    <h3 class="font-bold text-lg text-stone-800">MicroLogix</h3>
+                    <p class="text-sm text-stone-600 mt-1">Solución compacta y rentable.</p>
+                </div>
+                <div class="plc-card bg-white p-6 rounded-lg shadow-md cursor-pointer text-center" data-target="compactlogix">
+                    <div class="text-4xl mb-3">🎛️</div>
+                    <h3 class="font-bold text-lg text-stone-800">CompactLogix</h3>
+                    <p class="text-sm text-stone-600 mt-1">Potencia en un diseño modular.</p>
+                </div>
+                <div class="plc-card bg-white p-6 rounded-lg shadow-md cursor-pointer text-center" data-target="controllogix">
+                    <div class="text-4xl mb-3">⚙️</div>
+                    <h3 class="font-bold text-lg text-stone-800">ControlLogix</h3>
+                    <p class="text-sm text-stone-600 mt-1">Rendimiento y capacidad a gran escala.</p>
+                </div>
+                <div class="plc-card bg-white p-6 rounded-lg shadow-md cursor-pointer text-center" data-target="plc5">
+                    <div class="text-4xl mb-3">🏛️</div>
+                    <h3 class="font-bold text-lg text-stone-800">PLC-5 (Heredado)</h3>
+                    <p class="text-sm text-stone-600 mt-1">PLC clásico de gran escala.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="plc-details" class="bg-white p-8 rounded-lg shadow-md border border-stone-200 min-h-[400px]">
+            <div id="micrologix-info" class="info-content">
+                <h2 class="font-bold text-2xl text-blue-600 mb-2">MicroLogix</h2>
+                <p class="text-stone-600 mb-4">Los controladores MicroLogix son una familia de PLC compactos y rentables, ideales para aplicaciones de máquinas pequeñas a medianas. Su diseño todo en uno y su facilidad de uso los hacen perfectos para tareas de control discretas y sencillas, con la capacidad de manejar E/S y comunicación de manera eficiente. Aunque son compactos, ofrecen funcionalidades potentes para su segmento.</p>
+                <h3 class="font-semibold text-lg text-stone-800 mt-4 mb-2">Características Clave:</h3>
+                <ul class="list-disc list-inside text-stone-600 space-y-1">
+                    <li>Diseño compacto y "todo en uno" (fuente de alimentación, CPU y E/S integradas).</li>
+                    <li>Excelente relación costo-beneficio.</li>
+                    <li>Soporte para lenguajes de programación Ladder Diagram.</li>
+                    <li>Módulos de expansión limitados para E/S.</li>
+                </ul>
+                <h3 class="font-semibold text-lg text-stone-800 mt-4 mb-2">Aplicaciones Ideales:</h3>
+                <ul class="list-disc list-inside text-stone-600 space-y-1">
+                    <li>Control de máquinas sencillas y cintas transportadoras.</li>
+                    <li>Sistemas de empaquetado y llenado.</li>
+                    <li>Aplicaciones de control de edificios y climatización.</li>
+                </ul>
+            </div>
+            
+            <div id="compactlogix-info" class="info-content">
+                <h2 class="font-bold text-2xl text-blue-600 mb-2">CompactLogix</h2>
+                <p class="text-stone-600 mb-4">La familia CompactLogix es la solución de control de gama media de Allen-Bradley, combinando la potencia de la arquitectura Logix con un formato compacto y modular. Son altamente escalables y versátiles, lo que los hace adecuados para aplicaciones de máquinas medianas a grandes y sistemas de control distribuido. Son conocidos por su capacidad para manejar aplicaciones de control de movimiento integradas.</p>
+                <h3 class="font-semibold text-lg text-stone-800 mt-4 mb-2">Características Clave:</h3>
+                <ul class="list-disc list-inside text-stone-600 space-y-1">
+                    <li>Diseño modular y escalable.</li>
+                    <li>Capacidad para control de movimiento integrado.</li>
+                    <li>Conectividad nativa EtherNet/IP.</li>
+                    <li>Soporte para múltiples lenguajes de programación IEC.</li>
+                </ul>
+                <h3 class="font-semibold text-lg text-stone-800 mt-4 mb-2">Aplicaciones Ideales:</h3>
+                <ul class="list-disc list-inside text-stone-600 space-y-1">
+                    <li>Control de máquinas complejas.</li>
+                    <li>Robótica y sistemas de fabricación flexibles.</li>
+                    <li>Sistemas de control distribuido y SCADA de tamaño mediano.</li>
+                </ul>
+            </div>
+            
+            <div id="controllogix-info" class="info-content">
+                <h2 class="font-bold text-2xl text-blue-600 mb-2">ControlLogix</h2>
+                <p class="text-stone-600 mb-4">Los controladores ControlLogix representan la cúspide del rendimiento y la capacidad en la familia Logix. Son sistemas de control modular de alto rendimiento diseñados para aplicaciones a gran escala, de misión crítica y que requieren un control de alta velocidad. Su arquitectura permite que múltiples controladores compartan un mismo chasis y se comuniquen a través de una red de backplane de alta velocidad.</p>
+                <h3 class="font-semibold text-lg text-stone-800 mt-4 mb-2">Características Clave:</h3>
+                <ul class="list-disc list-inside text-stone-600 space-y-1">
+                    <li>Arquitectura modular con múltiples procesadores en un solo chasis.</li>
+                    <li>Altas velocidades de procesamiento y gran capacidad de memoria.</li>
+                    <li>Redundancia de controlador y de red para máxima disponibilidad.</li>
+                    <li>Control unificado de procesos, discretos y de movimiento.</li>
+                </ul>
+                <h3 class="font-semibold text-lg text-stone-800 mt-4 mb-2">Aplicaciones Ideales:</h3>
+                <ul class="list-disc list-inside text-stone-600 space-y-1">
+                    <li>Control de procesos continuos (petróleo, gas, química).</li>
+                    <li>Grandes sistemas de automatización de fábricas.</li>
+                    <li>Infraestructura crítica y sistemas de energía.</li>
+                </ul>
+            </div>
+            
+            <div id="plc5-info" class="info-content">
+                <h2 class="font-bold text-2xl text-blue-600 mb-2">PLC-5 (Heredado)</h2>
+                <p class="text-stone-600 mb-4">El PLC-5 fue una de las familias de controladores más exitosas y duraderas de Allen-Bradley, predominante en las grandes aplicaciones de los años 80 y 90. Aunque hoy en día es considerado un producto heredado (obsoleto), aún se encuentra operativo en muchas plantas industriales alrededor del mundo. Su arquitectura robusta y su fiabilidad lo convirtieron en el estándar de la industria durante décadas.</p>
+                <h3 class="font-semibold text-lg text-stone-800 mt-4 mb-2">Características Clave:</h3>
+                <ul class="list-disc list-inside text-stone-600 space-y-1">
+                    <li>Sistema de chasis modular.</li>
+                    <li>Programación en Ladder Diagram.</li>
+                    <li>Arquitectura robusta y muy fiable.</li>
+                    <li>Dependencia de redes de comunicación más antiguas (Data Highway Plus).</li>
+                </ul>
+                <h3 class="font-semibold text-lg text-stone-800 mt-4 mb-2">Aplicaciones Ideales:</h3>
+                <ul class="list-disc list-inside text-stone-600 space-y-1">
+                    <li>Instalaciones industriales heredadas que aún no han sido modernizadas.</li>
+                    <li>Procesos de fabricación de gran escala de las décadas pasadas.</li>
+                </ul>
+            </div>
+            
+            <div id="initial-info" class="info-content active text-center text-stone-500">
+                <p class="text-lg">Selecciona una de las familias de PLC arriba para conocer sus características y aplicaciones ideales.</p>
+            </div>
+        </section>
+
+        <footer class="mt-12 flex flex-col md:flex-row gap-4 justify-between items-center">
+            <a href="1.4.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 font-semibold transition">Continuar con el siguiente tema</a>
+            <a href="/temario.html" class="bg-stone-100 text-blue-600 px-6 py-3 rounded-lg shadow hover:bg-blue-200 font-semibold transition">Regresar a la página principal</a>
+        </footer>
+
+        <div class="w-full text-center mt-6 text-stone-500 text-sm font-medium">Generado con apoyo de Google Gemini por Jesus Armando Tapia Gallegos MTDE</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const plcCards = document.querySelectorAll('.plc-card');
+            const infoContents = document.querySelectorAll('.info-content');
+            const initialInfo = document.getElementById('initial-info');
+
+            function updateDisplay(targetId) {
+                infoContents.forEach(info => info.classList.remove('active'));
+                const targetInfo = document.getElementById(targetId);
+                if (targetInfo) {
+                    targetInfo.classList.add('active');
+                } else {
+                    initialInfo.classList.add('active');
+                }
+            }
+
+            plcCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    plcCards.forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                    const targetId = card.dataset.target + '-info';
+                    updateDisplay(targetId);
+                });
+            });
+
+            if (plcCards.length > 0) {
+                // Optional: set a default active card on page load
+                // plcCards[0].click(); 
+            }
+        });
+    </script>
+
+</body>
+</html>

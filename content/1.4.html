@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicaciones Industriales del PLC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Tierra y Mar (neutros cálidos con acentos de azul) -->
+    <!-- Application Structure Plan: Se ha creado una SPA de página única organizada por industrias clave. La estructura consta de un menú de navegación lateral (para escritorio) o superior (para móvil) que permite al usuario seleccionar una industria específica. Al hacer clic, el contenido principal se actualiza dinámicamente para mostrar un panel de información detallado sobre la aplicación del PLC en ese sector. Este diseño se eligió para facilitar la exploración de un amplio conjunto de aplicaciones, proporcionando un contexto claro y una navegación intuitiva que no requiere desplazamiento excesivo. -->
+    <!-- Visualization & Content Choices: 1. Navegación por Industria: Se utiliza una lista de enlaces con flexbox y JavaScript para el control de la visibilidad de los paneles. Objetivo: Organizar la información por categoría y permitir una navegación rápida. Interacción: Clic en el nombre de la industria para cambiar el panel de contenido principal. Justificación: Este patrón de navegación es ideal para contenidos que se dividen en categorías distintas. 2. Paneles de Contenido: Contenedores HTML que se muestran u ocultan dinámicamente. Objetivo: Proporcionar ejemplos detallados de la aplicación de los PLC en cada sector. Interacción: El contenido se actualiza en función de la selección del usuario en el menú. Justificación: Mantiene la interfaz limpia y enfocada, evitando la sobrecarga de información. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4;
+        }
+        .nav-item {
+            transition: all 0.2s ease-in-out;
+        }
+        .nav-item.active {
+            @apply bg-blue-600 text-white rounded-md;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .content-panel {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .content-panel.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-stone-900">Aplicaciones en la Industria</h1>
+            <p class="mt-2 text-lg text-stone-600 max-w-3xl mx-auto">Los PLC son la columna vertebral de la automatización en una variedad de industrias. Haz clic en un sector para explorar cómo se aplican.</p>
+        </header>
+
+        <main class="md:flex md:space-x-8">
+            <!-- Sidebar Navigation -->
+            <nav class="bg-white p-6 rounded-lg shadow-md border border-stone-200 mb-8 md:mb-0 md:w-1/4">
+                <h2 class="font-bold text-xl text-stone-900 mb-4">Sectores</h2>
+                <ul class="space-y-2">
+                    <li><a href="#" class="nav-item block p-3 cursor-pointer hover:bg-stone-100 rounded-md" data-target="automotriz">Industria Automotriz 🚗</a></li>
+                    <li><a href="#" class="nav-item block p-3 cursor-pointer hover:bg-stone-100 rounded-md" data-target="alimentos">Alimentos y Bebidas 🍔</a></li>
+                    <li><a href="#" class="nav-item block p-3 cursor-pointer hover:bg-stone-100 rounded-md" data-target="farmaceutica">Industria Farmacéutica 💊</a></li>
+                    <li><a href="#" class="nav-item block p-3 cursor-pointer hover:bg-stone-100 rounded-md" data-target="energia">Energía y Petróleo ⛽</a></li>
+                    <li><a href="#" class="nav-item block p-3 cursor-pointer hover:bg-stone-100 rounded-md" data-target="textil">Industria Textil 👕</a></li>
+                </ul>
+            </nav>
+
+            <!-- Main Content Panels -->
+            <section class="flex-1 bg-white p-8 rounded-lg shadow-md border border-stone-200">
+                <div id="initial-panel" class="content-panel active text-center text-stone-500 min-h-[400px] flex items-center justify-center">
+                    <p class="text-lg">Selecciona un sector de la lista para ver ejemplos de aplicación del PLC.</p>
+                </div>
+
+                <div id="automotriz-panel" class="content-panel">
+                    <h2 class="font-bold text-2xl text-blue-600 mb-2">Industria Automotriz</h2>
+                    <p class="text-stone-600 mb-4">La industria automotriz fue la fuerza impulsora detrás de la invención del PLC. Hoy en día, son esenciales en cada etapa de la fabricación de vehículos, desde el estampado de metal hasta el ensamblaje final y las pruebas de calidad. Los PLC coordinan la robótica, los sistemas de soldadura y el movimiento de las cintas transportadoras con una precisión milimétrica para garantizar la eficiencia y la seguridad.</p>
+                    <h3 class="font-semibold text-lg text-stone-800 mt-4 mb-2">Ejemplos de Aplicación:</h3>
+                    <ul class="list-disc list-inside text-stone-600 space-y-2">
+                        <li>**Control de Robótica:** Los PLC controlan los brazos robóticos que realizan soldaduras, pintura y ensamblaje de componentes en la línea de producción.</li>
+                        <li>**Líneas de Ensamblaje:** Sincronizan el movimiento de las piezas en las cintas transportadoras y activan estaciones de trabajo en el momento preciso.</li>
+                        <li>**Sistemas de Prueba:** Supervisan y controlan los sistemas que prueban la calidad de los vehículos, como las pruebas de frenos o de emisiones.</li>
+                    </ul>
+                </div>
+
+                <div id="alimentos-panel" class="content-panel">
+                    <h2 class="font-bold text-2xl text-blue-600 mb-2">Alimentos y Bebidas</h2>
+                    <p class="text-stone-600 mb-4">En esta industria, los PLC son fundamentales para garantizar la seguridad alimentaria, la consistencia del producto y la alta eficiencia. Se utilizan para controlar procesos como la mezcla, el llenado, el empaquetado y la esterilización. La capacidad de los PLC para trabajar en entornos húmedos y con temperaturas extremas los hace ideales para las plantas de procesamiento.</p>
+                    <h3 class="font-semibold text-lg text-stone-800 mt-4 mb-2">Ejemplos de Aplicación:</h3>
+                    <ul class="list-disc list-inside text-stone-600 space-y-2">
+                        <li>**Control de Lotes y Recetas:** Los PLC gestionan las cantidades exactas de ingredientes para asegurar la consistencia del sabor y la calidad.</li>
+                        <li>**Sistemas de Empaquetado:** Sincronizan las máquinas para llenar botellas o cajas y sellarlas a alta velocidad.</li>
+                        <li>**Esterilización y Pasteurización:** Controlan la temperatura y el tiempo de los procesos para cumplir con los estándares de seguridad alimentaria.</li>
+                    </ul>
+                </div>
+
+                <div id="farmaceutica-panel" class="content-panel">
+                    <h2 class="font-bold text-2xl text-blue-600 mb-2">Industria Farmacéutica</h2>
+                    <p class="text-stone-600 mb-4">La precisión y la validación son cruciales en la industria farmacéutica. Los PLC se utilizan para controlar con exactitud los procesos de dosificación, mezcla, compresión de tabletas y envasado. Su capacidad para registrar datos y garantizar la repetibilidad es vital para cumplir con las estrictas regulaciones y normativas de la industria.</p>
+                    <h3 class="font-semibold text-lg text-stone-800 mt-4 mb-2">Ejemplos de Aplicación:</h3>
+                    <ul class="list-disc list-inside text-stone-600 space-y-2">
+                        <li>**Dosificación de Ingredientes:** Controlan la cantidad de ingredientes activos para garantizar la potencia y seguridad del medicamento.</li>
+                        <li>**Control de Entorno:** Regulan la temperatura y humedad en las "salas limpias" para evitar la contaminación.</li>
+                        <li>**Sistemas de Seguimiento:** Llevan un registro de cada lote de producción para la trazabilidad y la validación.</li>
+                    </ul>
+                </div>
+
+                <div id="energia-panel" class="content-panel">
+                    <h2 class="font-bold text-2xl text-blue-600 mb-2">Energía y Petróleo</h2>
+                    <p class="text-stone-600 mb-4">En el sector energético, los PLC controlan operaciones críticas en entornos remotos y peligrosos. Se utilizan para el control de pozos, la gestión de oleoductos, el control de turbinas y la supervisión de subestaciones eléctricas. Su robustez y fiabilidad son clave para garantizar el suministro continuo y la seguridad de la infraestructura.</p>
+                    <h3 class="font-semibold text-lg text-stone-800 mt-4 mb-2">Ejemplos de Aplicación:</h3>
+                    <ul class="list-disc list-inside text-stone-600 space-y-2">
+                        <li>**Control de Generación de Energía:** Regulan la velocidad de las turbinas y los generadores en centrales eléctricas.</li>
+                        <li>**Gestión de Oleoductos:** Monitorean el flujo, la presión y la temperatura para detectar fugas o anomalías.</li>
+                        <li>**Subestaciones Eléctricas:** Controlan los interruptores, disyuntores y transformadores para gestionar la distribución de energía.</li>
+                    </ul>
+                </div>
+
+                <div id="textil-panel" class="content-panel">
+                    <h2 class="font-bold text-2xl text-blue-600 mb-2">Industria Textil</h2>
+                    <p class="text-stone-600 mb-4">En esta industria, los PLC controlan los procesos de fabricación en cada etapa. Son vitales para la automatización de telares, máquinas de teñido, sistemas de corte y robots de costura. Permiten una producción a gran escala con alta precisión, reduciendo los desperdicios y garantizando la calidad del producto final.</p>
+                    <h3 class="font-semibold text-lg text-stone-800 mt-4 mb-2">Ejemplos de Aplicación:</h3>
+                    <ul class="list-disc list-inside text-stone-600 space-y-2">
+                        <li>**Tejido y Confección:** Sincronizan los telares y las máquinas de costura para producir telas y prendas de manera eficiente.</li>
+                        <li>**Control de Color:** Regulan con precisión la dosificación de tintes y químicos para asegurar la uniformidad del color en los tejidos.</li>
+                        <li>**Corte Automatizado:** Controlan máquinas de corte láser o cuchillas para cortar patrones con alta precisión y optimizar el uso de material.</li>
+                    </ul>
+                </div>
+
+            </section>
+        </main>
+
+        <footer class="mt-12 flex flex-col md:flex-row gap-4 justify-between items-center">
+            <a href="2.2.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 font-semibold transition">Continuar con el siguiente tema</a>
+            <a href="/temario.html" class="bg-stone-100 text-blue-600 px-6 py-3 rounded-lg shadow hover:bg-blue-200 font-semibold transition">Regresar a la página principal</a>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navItems = document.querySelectorAll('.nav-item');
+            const contentPanels = document.querySelectorAll('.content-panel');
+            const initialPanel = document.getElementById('initial-panel');
+
+            function updateDisplay(targetId) {
+                contentPanels.forEach(panel => panel.classList.remove('active'));
+                const targetPanel = document.getElementById(targetId);
+                if (targetPanel) {
+                    targetPanel.classList.add('active');
+                } else {
+                    initialPanel.classList.add('active');
+                }
+            }
+
+            navItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    navItems.forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                    const targetId = item.dataset.target + '-panel';
+                    updateDisplay(targetId);
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

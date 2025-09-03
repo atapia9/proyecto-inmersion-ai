@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico y Solución de Problemas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Tierra y Mar (neutros cálidos con acentos de azul y rojo para las alarmas) -->
+    <!-- Application Structure Plan: Se ha diseñado una SPA para explicar los conceptos de diagnóstico y solución de problemas en PLC a través de un sistema de navegación por pestañas o "cards" seleccionables. La interfaz se divide en dos secciones principales: una barra lateral de navegación para elegir el tema y un panel de contenido dinámico para mostrar la información detallada. Este diseño permite al usuario explorar de forma no lineal y enfocada, ideal para comparar conceptos técnicos de manera eficiente. -->
+    <!-- Visualization & Content Choices: 1. Tarjetas de Tema: Se utilizan contenedores HTML estilizados para cada tema. Objetivo: Organizar visualmente la información y servir como puntos de interacción. Interacción: Al hacer clic en una tarjeta, se activa un estado visual (color, sombra) y se actualiza el panel de contenido. Justificación: Un sistema de tarjetas es intuitivo y estéticamente agradable. 2. Panel de Contenido Dinámico: Un único contenedor que cambia su contenido en función de la selección del usuario. Objetivo: Proporcionar información detallada y estructurada sin sobrecargar la interfaz. Interacción: El contenido textual cambia dinámicamente con JavaScript. Justificación: Mantiene el diseño limpio, presentando solo la información relevante en un momento dado. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4;
+        }
+        .topic-card {
+            transition: all 0.3s ease-in-out;
+            border-width: 2px;
+            border-color: #e7e5e4;
+        }
+        .topic-card.active {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .content-panel {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .content-panel.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .text-red-500 {
+            color: #ef4444;
+        }
+        .bg-red-100 {
+            background-color: #fee2e2;
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-stone-900">Diagnóstico y Solución de Problemas en PLC</h1>
+            <p class="mt-2 text-lg text-stone-600 max-w-3xl mx-auto">Aprende a identificar y corregir fallas en el hardware y el software de un controlador lógico programable.</p>
+        </header>
+
+        <main class="lg:flex lg:space-x-8">
+            <!-- Navigation Sidebar -->
+            <nav class="bg-white p-6 rounded-lg shadow-md border border-stone-200 mb-8 lg:mb-0 lg:w-1/3 h-fit">
+                <h2 class="font-bold text-xl text-stone-900 mb-4">Temas</h2>
+                <div class="space-y-4">
+                    <div class="topic-card bg-white p-6 rounded-lg shadow-sm cursor-pointer text-center" data-target="status-indicators">
+                        <h3 class="font-bold text-3xl text-stone-800">Indicadores de Estado</h3>
+                        <p class="text-sm text-stone-600 mt-1">Luces LED del controlador</p>
+                    </div>
+                    <div class="topic-card bg-white p-6 rounded-lg shadow-sm cursor-pointer text-center" data-target="troubleshooting-flow">
+                        <h3 class="font-bold text-3xl text-stone-800">Proceso Lógico</h3>
+                        <p class="text-sm text-stone-600 mt-1">Cómo abordar una falla</p>
+                    </div>
+                    <div class="topic-card bg-white p-6 rounded-lg shadow-sm cursor-pointer text-center" data-target="common-problems">
+                        <h3 class="font-bold text-3xl text-stone-800">Problemas Comunes</h3>
+                        <p class="text-sm text-stone-600 mt-1">Fallas de E/S y del programa</p>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Content Panel -->
+            <section class="flex-1 bg-white p-8 rounded-lg shadow-md border border-stone-200">
+                <div id="initial-panel" class="content-panel active text-center text-stone-500 min-h-[400px] flex items-center justify-center">
+                    <p class="text-lg">Selecciona un tema para ver los detalles.</p>
+                </div>
+
+                <div id="status-indicators-panel" class="content-panel">
+                    <h2 class="font-bold text-2xl text-blue-600 mb-2">Indicadores de Estado (LEDs)</h2>
+                    <p class="text-stone-600 mb-4">Los controladores Allen-Bradley tienen LEDs que proporcionan información vital sobre su estado de funcionamiento y posibles fallas. Entender estos indicadores es el primer paso para el diagnóstico.</p>
+                    <div class="bg-stone-100 p-6 rounded-lg border border-stone-200 text-stone-700">
+                        <p class="mb-2"><span class="font-bold">OK LED (Verde):</span> Muestra el estado operativo del controlador. Si está fijo, el controlador está en modo RUN y todo está bien. Si parpadea, puede estar en modo de programación o en un estado de espera. Si está en rojo, indica una falla mayor.</p>
+                        <p class="mb-2"><span class="font-bold">I/O LED (Amarillo):</span> Parpadea para indicar que el controlador está en comunicación con los módulos de entrada y salida.</p>
+                        <p class="mb-2"><span class="font-bold text-red-500">FAULT LED (Rojo):</span> Un LED rojo fijo o parpadeante indica una falla. Esto puede ser una falla de hardware (por ejemplo, un módulo defectuoso) o una falla de software (por ejemplo, un error en el programa).</p>
+                    </div>
+                </div>
+
+                <div id="troubleshooting-flow-panel" class="content-panel">
+                    <h2 class="font-bold text-2xl text-blue-600 mb-2">Proceso Lógico para la Solución de Problemas</h2>
+                    <p class="text-stone-600 mb-4">Un enfoque estructurado es crucial para diagnosticar y resolver fallas de manera eficiente. Sigue estos pasos:</p>
+                    <div class="bg-stone-100 p-6 rounded-lg border border-stone-200 text-stone-700">
+                        <p class="mb-2"><span class="font-bold">1. Observar y Analizar:</span> Comienza por verificar los LEDs del PLC y los módulos, y revisa la pantalla de fallas en Studio 5000. Los códigos de falla te darán una pista sobre la causa del problema.</p>
+                        <p class="mb-2"><span class="font-bold">2. Localizar el Problema:</span> Utiliza las herramientas de Studio 5000 como el modo en línea (Online Mode) para monitorear el programa en tiempo real. Observa el estado de los tags de entrada y salida y el flujo de la lógica para identificar dónde se detiene el proceso.</p>
+                        <p class="mb-2"><span class="font-bold">3. Hipótesis y Pruebas:</span> Formula una hipótesis sobre la causa (por ejemplo, "el sensor no está funcionando", "hay un error de lógica") y prueba tu teoría. Puedes forzar bits, inspeccionar valores de tags y usar el modo de un solo paso para verificar la lógica.</p>
+                        <p class="mb-2"><span class="font-bold">4. Implementar una Solución:</span> Una vez que hayas identificado la causa raíz, implementa la solución. Esto puede ser reemplazar un componente, corregir un error de cableado o modificar el código del programa.</p>
+                    </div>
+                </div>
+
+                <div id="common-problems-panel" class="content-panel">
+                    <h2 class="font-bold text-2xl text-blue-600 mb-2">Problemas Comunes</h2>
+                    <p class="text-stone-600 mb-4">Algunos de los problemas más frecuentes en los sistemas de PLC y cómo abordarlos:</p>
+                    <div class="bg-red-100 p-6 rounded-lg border border-red-300 text-stone-700">
+                        <h3 class="font-bold text-lg text-red-500 mb-2">Fallas de E/S:</h3>
+                        <p class="mb-2">Asegúrate de que el módulo esté bien asentado, que el cableado sea correcto y que el dispositivo de campo (sensor, botón) esté funcionando. Monitorea el estado del bit de entrada en línea para ver si cambia de estado cuando se activa el dispositivo físico.</p>
+                        <h3 class="font-bold text-lg text-red-500 mt-4 mb-2">Fallas de Lógica de Programa:</h3>
+                        <p class="mb-2">Usa el modo en línea para monitorear el flujo de la lógica. Si una bobina de salida (OTE) no se energiza, revisa los contactos (XIC, XIO) que la preceden para ver cuál no está cumpliendo su condición. Revisa si hay tags no inicializados, bucles infinitos o valores que excedan los límites de datos.</p>
+                    </div>
+                </div>
+
+                <footer class="mt-12 flex flex-col md:flex-row gap-4 justify-between items-center">
+                    <a href="5.3.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 font-semibold transition">Continuar con el siguiente tema</a>
+                    <a href="/temario.html" class="bg-stone-100 text-blue-600 px-6 py-3 rounded-lg shadow hover:bg-blue-200 font-semibold transition">Regresar a la página principal</a>
+                </footer>
+
+                <div class="w-full text-center mt-6 text-stone-500 text-sm font-medium">Generado con apoyo de Google Gemini por Jesus Armando Tapia Gallegos MTDE</div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const topicCards = document.querySelectorAll('.topic-card');
+            const contentPanels = document.querySelectorAll('.content-panel');
+            const initialPanel = document.getElementById('initial-panel');
+
+            function updateDisplay(targetId) {
+                contentPanels.forEach(panel => panel.classList.remove('active'));
+                const targetPanel = document.getElementById(targetId);
+                if (targetPanel) {
+                    targetPanel.classList.add('active');
+                } else {
+                    initialPanel.classList.add('active');
+                }
+            }
+
+            topicCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    topicCards.forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                    const targetId = card.dataset.target + '-panel';
+                    updateDisplay(targetId);
+                });
+            });
+
+            // Set a default state to the initial panel on page load
+            updateDisplay('initial-panel');
+        });
+    </script>
+
+</body>
+</html>

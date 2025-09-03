@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tipos de Módulos de E/S del PLC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Tierra y Mar (neutros cálidos con acentos de azul y verde) -->
+    <!-- Application Structure Plan: Se ha diseñado una SPA de página única con un panel de exploración que permite al usuario seleccionar entre diferentes tipos de módulos de E/S. La estructura presenta una fila de tarjetas clicables para cada tipo (Digital, Analógico, Especial). Al seleccionar una tarjeta, un panel de información central se actualiza dinámicamente para mostrar los detalles, las características y los ejemplos de aplicación del módulo elegido. Este diseño se eligió para facilitar la comparación y el entendimiento de la diversidad de E/S de un PLC, transformando una lista estática en una experiencia interactiva. -->
+    <!-- Visualization & Content Choices: 1. Tarjetas de Módulo: Se usan tarjetas HTML/CSS/Tailwind para representar cada tipo de módulo de E/S. Objetivo: Organizar la información de manera visual y seleccionable. Interacción: Clic para activar y cambiar el contenido de un panel. Justificación: Proporciona una interfaz intuitiva para la exploración y evita la sobrecarga de información. 2. Panel de Detalles: Un único contenedor dinámicamente actualizado para mostrar la información del módulo seleccionado. Objetivo: Informar con profundidad. Interacción: El contenido textual cambia en respuesta a la selección del usuario. Justificación: Mantiene la interfaz limpia y enfocada, presentando solo la información relevante en un momento dado. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4;
+        }
+        .module-card {
+            transition: all 0.3s ease-in-out;
+            border-width: 2px;
+            border-color: #e7e5e4;
+        }
+        .module-card.active {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .info-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .info-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-stone-900">Tipos de Módulos de Entrada y Salida (E/S)</h1>
+            <p class="mt-2 text-lg text-stone-600 max-w-3xl mx-auto">Explora cómo los PLC se conectan al mundo físico a través de sus módulos de E/S, esenciales para leer datos de sensores y controlar actuadores.</p>
+        </header>
+
+        <section id="module-selection" class="mb-12">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <div class="module-card bg-white p-6 rounded-lg shadow-md cursor-pointer text-center" data-target="digital">
+                    <div class="text-4xl mb-3">✅</div>
+                    <h3 class="font-bold text-lg text-stone-800">Módulos Digitales</h3>
+                    <p class="text-sm text-stone-600 mt-1">Señales binarias (ON/OFF).</p>
+                </div>
+                <div class="module-card bg-white p-6 rounded-lg shadow-md cursor-pointer text-center" data-target="analog">
+                    <div class="text-4xl mb-3">🎚️</div>
+                    <h3 class="font-bold text-lg text-stone-800">Módulos Analógicos</h3>
+                    <p class="text-sm text-stone-600 mt-1">Señales continuas (valores).</p>
+                </div>
+                <div class="module-card bg-white p-6 rounded-lg shadow-md cursor-pointer text-center" data-target="specialty">
+                    <div class="text-4xl mb-3">⚡</div>
+                    <h3 class="font-bold text-lg text-stone-800">Módulos Especiales</h3>
+                    <p class="text-sm text-stone-600 mt-1">Funciones avanzadas.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="module-details" class="bg-white p-8 rounded-lg shadow-md border border-stone-200 min-h-[400px]">
+            <div id="initial-info" class="info-content active text-center text-stone-500">
+                <p class="text-lg">Selecciona un tipo de módulo arriba para ver sus características y ejemplos.</p>
+            </div>
+
+            <div id="digital-info" class="info-content">
+                <h2 class="font-bold text-2xl text-blue-600 mb-2">Módulos de E/S Digitales</h2>
+                <p class="text-stone-600 mb-4">Los módulos de E/S digitales son la forma más básica de interfaz entre el PLC y el mundo físico. Trabajan con señales binarias, es decir, solo pueden estar en dos estados: ON (encendido) u OFF (apagado). Son ideales para el control de dispositivos y la lectura de sensores con estados discretos.</p>
+                
+                <h3 class="font-semibold text-xl text-stone-800 mt-6 mb-2">Entradas Digitales:</h3>
+                <p class="text-stone-600 mb-2">Reciben señales de dispositivos de campo que indican un estado de "encendido" o "apagado".</p>
+                <ul class="list-disc list-inside text-stone-600 space-y-1">
+                    <li>**Ejemplos de sensores:** Botones pulsadores, interruptores de límite, sensores de proximidad inductivos y capacitivos, selectores, relés.</li>
+                </ul>
+
+                <h3 class="font-semibold text-xl text-stone-800 mt-6 mb-2">Salidas Digitales:</h3>
+                <p class="text-stone-600 mb-2">Envían una señal de "encendido" o "apagado" para controlar dispositivos.</p>
+                <ul class="list-disc list-inside text-stone-600 space-y-1">
+                    <li>**Ejemplos de actuadores:** Luces indicadoras, contactores de motor, solenoides de válvulas neumáticas o hidráulicas, pequeños motores, alarmas.</li>
+                </ul>
+            </div>
+            
+            <div id="analog-info" class="info-content">
+                <h2 class="font-bold text-2xl text-blue-600 mb-2">Módulos de E/S Analógicos</h2>
+                <p class="text-stone-600 mb-4">Los módulos de E/S analógicos manejan señales continuas que representan una magnitud física. Estas señales no son simplemente ON/OFF, sino que varían en un rango, como de 0 a 10 voltios o de 4 a 20 miliamperios. Permiten al PLC controlar y supervisar procesos más complejos que requieren una medición o un ajuste preciso.</p>
+                
+                <h3 class="font-semibold text-xl text-stone-800 mt-6 mb-2">Entradas Analógicas:</h3>
+                <p class="text-stone-600 mb-2">Miden valores variables de sensores, como temperatura, presión, flujo, o nivel.</p>
+                <ul class="list-disc list-inside text-stone-600 space-y-1">
+                    <li>**Ejemplos de sensores:** Termopares, RTD (detectores de temperatura por resistencia), transductores de presión, medidores de flujo.</li>
+                </ul>
+
+                <h3 class="font-semibold text-xl text-stone-800 mt-6 mb-2">Salidas Analógicas:</h3>
+                <p class="text-stone-600 mb-2">Envían una señal variable para controlar la operación de un dispositivo de campo.</p>
+                <ul class="list-disc list-inside text-stone-600 space-y-1">
+                    <li>**Ejemplos de actuadores:** Válvulas de control proporcional, variadores de frecuencia (VFD) para el control de velocidad de motores, servomotores.</li>
+                </ul>
+            </div>
+            
+            <div id="specialty-info" class="info-content">
+                <h2 class="font-bold text-2xl text-blue-600 mb-2">Módulos de E/S Especiales</h2>
+                <p class="text-stone-600 mb-4">Estos módulos están diseñados para funciones avanzadas que van más allá del simple control digital o analógico. Son cruciales para aplicaciones que requieren alta velocidad, precisión extrema o capacidades de comunicación específicas.</p>
+                
+                <h3 class="font-semibold text-xl text-stone-800 mt-6 mb-2">Ejemplos de Módulos Especiales:</h3>
+                <ul class="list-disc list-inside text-stone-600 space-y-2">
+                    <li>**Módulos de Conteo de Alta Velocidad:** Usados para leer pulsos rápidos de encoders o sensores, ideales para aplicaciones de control de posición o de velocidad de alta precisión.</li>
+                    <li>**Módulos de Comunicación:** Permiten que el PLC se conecte a redes industriales (como Ethernet/IP, DeviceNet, Profibus) para comunicarse con otros PLC, sistemas de supervisión o HMI.</li>
+                    <li>**Módulos de Control de Movimiento:** Proporcionan control de lazo cerrado para servomotores y motores paso a paso, permitiendo el movimiento coordinado y preciso de ejes en aplicaciones robóticas o de maquinaria compleja.</li>
+                </ul>
+            </div>
+        </section>
+
+        <footer class="mt-12 flex flex-col md:flex-row gap-4 justify-between items-center">
+            <a href="2.3.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 font-semibold transition">Continuar con el siguiente tema</a>
+            <a href="/temario.html" class="bg-stone-100 text-blue-600 px-6 py-3 rounded-lg shadow hover:bg-blue-200 font-semibold transition">Regresar a la página principal</a>
+        </footer>
+
+        <div class="w-full text-center mt-6 text-stone-500 text-sm font-medium">Generado con apoyo de Google Gemini por Jesus Armando Tapia Gallegos MTDE</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const moduleCards = document.querySelectorAll('.module-card');
+            const infoContents = document.querySelectorAll('.info-content');
+            const initialInfo = document.getElementById('initial-info');
+
+            function updateDisplay(targetId) {
+                infoContents.forEach(info => info.classList.remove('active'));
+                const targetInfo = document.getElementById(targetId);
+                if (targetInfo) {
+                    targetInfo.classList.add('active');
+                } else {
+                    initialInfo.classList.add('active');
+                }
+            }
+
+            moduleCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    moduleCards.forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                    const targetId = card.dataset.target + '-info';
+                    updateDisplay(targetId);
+                });
+            });
+
+            // Set a default state if no card is clicked
+            updateDisplay('initial-info');
+        });
+    </script>
+
+</body>
+</html>

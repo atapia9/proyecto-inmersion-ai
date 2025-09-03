@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conceptos de Automatización Industrial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: Se ha diseñado una SPA de página única con un enfoque vertical para explicar los conceptos de automatización. La estructura se centra en un diagrama de flujo interactivo (Entrada -> Proceso -> Salida) que representa el lazo de control. El usuario puede hacer clic en cada componente del diagrama para mostrar su descripción detallada. Esta arquitectura se eligió para transformar el texto estático en una experiencia de aprendizaje visual y kinestésica, mejorando la retención del conocimiento al permitir la exploración activa de los componentes y su relación. -->
+    <!-- Visualization & Content Choices: 1. Componentes del Lazo de Control: Se utiliza un diagrama visual creado con HTML/CSS/Tailwind. Objetivo: Organizar y mostrar relaciones. Interacción: Clic en cada componente (Sensor, Controlador, Actuador) para resaltar el elemento y mostrar su descripción en un área de texto dedicada. Justificación: Representa visualmente el flujo del proceso y permite un aprendizaje enfocado en cada parte. 2. Objetivos de la Automatización: Se presentan como tarjetas informativas con iconos. Objetivo: Informar. Interacción: Estática. Justificación: Segmenta la información clave en bloques visualmente digeribles. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .component-box {
+            transition: all 0.3s ease-in-out;
+            border-width: 2px;
+        }
+        .component-box.active {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .description-content {
+            display: none;
+        }
+        .description-content.active {
+            display: block;
+        }
+        .arrow {
+            position: relative;
+            width: 100%;
+            height: 2px;
+            background-color: #9ca3af;
+        }
+        .arrow::after {
+            content: '';
+            position: absolute;
+            right: -1px;
+            top: -5px;
+            width: 0;
+            height: 0;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-left: 10px solid #9ca3af;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-stone-900">1.1. Conceptos Básicos de Automatización Industrial</h1>
+            <p class="mt-2 text-lg text-stone-600 max-w-3xl mx-auto">Una introducción interactiva a los pilares de la automatización y el control de procesos.</p>
+        </header>
+
+        <section id="intro" class="mb-12 bg-white p-8 rounded-lg shadow-md border border-stone-200">
+            <p class="text-center text-lg text-stone-700">La <strong>automatización industrial</strong> es la aplicación de tecnologías y sistemas para controlar, monitorear y gestionar procesos de producción y fabricación con mínima intervención humana. Su propósito principal es mejorar la eficiencia, la calidad y la seguridad en los entornos industriales.</p>
+        </section>
+
+        <section id="objectives" class="mb-12">
+            <h2 class="text-2xl font-bold text-blue-600 text-center mb-8">Objetivos Clave de la Automatización</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md border border-stone-200 text-center">
+                    <div class="text-4xl mb-3">🚀</div>
+                    <h3 class="font-semibold text-lg text-stone-800">Aumento de Productividad</h3>
+                    <p class="text-sm text-stone-600 mt-1">Operaciones más rápidas y continuas, 24/7.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border border-stone-200 text-center">
+                    <div class="text-4xl mb-3">✅</div>
+                    <h3 class="font-semibold text-lg text-stone-800">Mejora de la Calidad</h3>
+                    <p class="text-sm text-stone-600 mt-1">Reduce el error humano, asegurando uniformidad.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border border-stone-200 text-center">
+                    <div class="text-4xl mb-3">💰</div>
+                    <h3 class="font-semibold text-lg text-stone-800">Reducción de Costos</h3>
+                    <p class="text-sm text-stone-600 mt-1">Disminuye mano de obra y desperdicios.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border border-stone-200 text-center">
+                    <div class="text-4xl mb-3">🛡️</div>
+                    <h3 class="font-semibold text-lg text-stone-800">Aumento de la Seguridad</h3>
+                    <p class="text-sm text-stone-600 mt-1">Delega tareas peligrosas a las máquinas.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="components" class="mb-12">
+            <h2 class="text-2xl font-bold text-blue-600 text-center mb-4">Componentes Fundamentales del Lazo de Control</h2>
+            <p class="text-stone-600 text-center mb-8 max-w-2xl mx-auto">Haga clic en cada componente del siguiente diagrama para explorar su función dentro del sistema de control automatizado.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-center mb-8">
+                <div class="component-box border-stone-300 p-4 rounded-lg cursor-pointer text-center" data-target="sensors">
+                    <div class="text-3xl mb-2">📡</div>
+                    <h3 class="font-bold">1. Sensores</h3>
+                    <p class="text-sm text-blue-600 font-semibold">(Entradas)</p>
+                </div>
+                <div class="flex items-center justify-center">
+                    <div class="arrow hidden md:block"></div>
+                    <div class="text-2xl md:hidden">⬇️</div>
+                </div>
+                <div class="component-box border-stone-300 p-4 rounded-lg cursor-pointer text-center" data-target="controller">
+                    <div class="text-3xl mb-2">🧠</div>
+                    <h3 class="font-bold">2. Controlador</h3>
+                    <p class="text-sm text-blue-600 font-semibold">(Procesamiento)</p>
+                </div>
+                <div class="flex items-center justify-center">
+                    <div class="arrow hidden md:block"></div>
+                    <div class="text-2xl md:hidden">⬇️</div>
+                </div>
+                <div class="component-box border-stone-300 p-4 rounded-lg cursor-pointer text-center" data-target="actuators">
+                    <div class="text-3xl mb-2">⚙️</div>
+                    <h3 class="font-bold">3. Actuadores</h3>
+                    <p class="text-sm text-blue-600 font-semibold">(Salidas)</p>
+                </div>
+            </div>
+
+            <div id="description-area" class="bg-white p-8 rounded-lg shadow-inner border border-stone-200 min-h-[150px]">
+                <div id="sensors-desc" class="description-content">
+                    <h3 class="font-bold text-xl text-stone-800 mb-2">Sensores (Entradas)</h3>
+                    <p class="text-stone-600">Son dispositivos que detectan y miden una variable física del proceso. Por ejemplo, un sensor de proximidad detecta la presencia de un objeto, un termopar mide la temperatura o un interruptor de límite determina la posición de una pieza. Los sensores convierten la información del mundo real en una señal eléctrica que el controlador puede entender.</p>
+                </div>
+                <div id="controller-desc" class="description-content">
+                    <h3 class="font-bold text-xl text-stone-800 mb-2">Controlador (Procesamiento)</h3>
+                    <p class="text-stone-600">Es el "cerebro" del sistema. Los Controladores Lógicos Programables (PLC) son el tipo de controlador más común en la automatización industrial. El controlador recibe las señales de los sensores, las procesa según un programa lógico preestablecido y determina qué acciones se deben tomar.</p>
+                </div>
+                <div id="actuators-desc" class="description-content">
+                    <h3 class="font-bold text-xl text-stone-800 mb-2">Actuadores (Salidas)</h3>
+                    <p class="text-stone-600">Son los dispositivos que ejecutan una acción física basándose en las órdenes del controlador. Por ejemplo, un motor se enciende, una válvula se abre o una lámpara se enciende. Los actuadores toman la señal del controlador y la transforman en movimiento, calor o luz.</p>
+                </div>
+                <div id="default-desc" class="description-content active text-center text-stone-500">
+                    <p>Seleccione un componente para ver su descripción detallada aquí.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="example">
+             <h2 class="text-2xl font-bold text-blue-600 text-center mb-8">Ejemplo de un Proceso Simple</h2>
+             <div class="bg-white p-8 rounded-lg shadow-md border border-stone-200">
+                <h3 class="font-semibold text-xl text-center text-stone-800 mb-6">Cinta Transportadora Automatizada</h3>
+                <div class="flex flex-col md:flex-row justify-around gap-6 text-center">
+                    <div class="flex-1">
+                        <p class="bg-blue-100 text-blue-800 font-bold rounded-full w-10 h-10 flex items-center justify-center mx-auto mb-3">1</p>
+                        <p class="font-semibold">Entrada (Sensor)</p>
+                        <p class="text-sm text-stone-600">Un <strong>sensor de proximidad</strong> detecta cuando una caja llega al final de la línea.</p>
+                    </div>
+                     <div class="flex-1">
+                        <p class="bg-blue-100 text-blue-800 font-bold rounded-full w-10 h-10 flex items-center justify-center mx-auto mb-3">2</p>
+                        <p class="font-semibold">Procesamiento (PLC)</p>
+                        <p class="text-sm text-stone-600">El <strong>PLC</strong> recibe la señal y, siguiendo su lógica, envía una orden.</p>
+                    </div>
+                     <div class="flex-1">
+                        <p class="bg-blue-100 text-blue-800 font-bold rounded-full w-10 h-10 flex items-center justify-center mx-auto mb-3">3</p>
+                        <p class="font-semibold">Salida (Actuador)</p>
+                        <p class="text-sm text-stone-600">Un <strong>cilindro neumático</strong> se activa y empuja la caja a otra cinta.</p>
+                    </div>
+                </div>
+             </div>
+        </section>
+
+        <footer class="mt-12 flex flex-col md:flex-row gap-4 justify-between items-center">
+            <a href="1.3.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 font-semibold transition">Continuar con el siguiente tema</a>
+            <a href="/temario.html" class="bg-stone-100 text-blue-600 px-6 py-3 rounded-lg shadow hover:bg-blue-200 font-semibold transition">Regresar a la página principal</a>
+        </footer>
+
+        <div class="w-full text-center mt-6 text-stone-500 text-sm font-medium">Generado con apoyo de Google Gemini por Jesus Armando Tapia Gallegos MTDE</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const componentBoxes = document.querySelectorAll('.component-box');
+            const descriptionContents = document.querySelectorAll('.description-content');
+            const defaultDesc = document.getElementById('default-desc');
+
+            componentBoxes.forEach(box => {
+                box.addEventListener('click', () => {
+                    const targetId = box.dataset.target;
+
+                    // Reset all boxes and descriptions
+                    componentBoxes.forEach(b => b.classList.remove('active'));
+                    descriptionContents.forEach(d => d.classList.remove('active'));
+
+                    // Activate the clicked box and corresponding description
+                    box.classList.add('active');
+                    const targetDesc = document.getElementById(`${targetId}-desc`);
+                    if (targetDesc) {
+                        targetDesc.classList.add('active');
+                    } else {
+                        defaultDesc.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

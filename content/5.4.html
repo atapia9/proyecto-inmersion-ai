@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seguridad en Sistemas Automatizados</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Tierra y Mar (neutros cálidos con acentos de azul y rojo para las amenazas) -->
+    <!-- Application Structure Plan: Se ha diseñado una SPA (Single Page Application) que explica los conceptos de seguridad en sistemas automatizados a través de un sistema de navegación por pestañas o "cards" seleccionables. La interfaz se divide en dos secciones principales: una barra lateral de navegación para elegir el tema y un panel de contenido dinámico para mostrar la información detallada. Este diseño permite al usuario explorar de forma no lineal y enfocada, ideal para comparar conceptos técnicos de manera eficiente. -->
+    <!-- Visualization & Content Choices: 1. Tarjetas de Tema: Se utilizan contenedores HTML estilizados para cada tema. Objetivo: Organizar visualmente la información y servir como puntos de interacción. Interacción: Al hacer clic en una tarjeta, se activa un estado visual (color, sombra) y se actualiza el panel de contenido. Justificación: Un sistema de tarjetas es intuitivo y estéticamente agradable. 2. Panel de Contenido Dinámico: Un único contenedor que cambia su contenido en función de la selección del usuario. Objetivo: Proporcionar información detallada y estructurada sin sobrecargar la interfaz. Interacción: El contenido textual cambia dinámicamente con JavaScript. Justificación: Mantiene el diseño limpio, presentando solo la información relevante en un momento dado. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4;
+        }
+        .topic-card {
+            transition: all 0.3s ease-in-out;
+            border-width: 2px;
+            border-color: #e7e5e4;
+        }
+        .topic-card.active {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .content-panel {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .content-panel.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-stone-900">Seguridad en Sistemas Automatizados</h1>
+            <p class="mt-2 text-lg text-stone-600 max-w-3xl mx-auto">Comprende las amenazas, riesgos y medidas de seguridad esenciales para proteger los sistemas de control industrial.</p>
+        </header>
+
+        <main class="lg:flex lg:space-x-8">
+            <!-- Navigation Sidebar -->
+            <nav class="bg-white p-6 rounded-lg shadow-md border border-stone-200 mb-8 lg:mb-0 lg:w-1/3 h-fit">
+                <h2 class="font-bold text-xl text-stone-900 mb-4">Temas</h2>
+                <div class="space-y-4">
+                    <div class="topic-card bg-white p-6 rounded-lg shadow-sm cursor-pointer text-center" data-target="threats">
+                        <h3 class="font-bold text-3xl text-stone-800">Amenazas</h3>
+                        <p class="text-sm text-stone-600 mt-1">Tipos de ataques</p>
+                    </div>
+                    <div class="topic-card bg-white p-6 rounded-lg shadow-sm cursor-pointer text-center" data-target="risks">
+                        <h3 class="font-bold text-3xl text-stone-800">Riesgos</h3>
+                        <p class="text-sm text-stone-600 mt-1">Consecuencias</p>
+                    </div>
+                    <div class="topic-card bg-white p-6 rounded-lg shadow-sm cursor-pointer text-center" data-target="security-measures">
+                        <h3 class="font-bold text-3xl text-stone-800">Medidas</h3>
+                        <p class="text-sm text-stone-600 mt-1">Cómo protegerse</p>
+                    </div>
+                    <div class="topic-card bg-white p-6 rounded-lg shadow-sm cursor-pointer text-center" data-target="best-practices">
+                        <h3 class="font-bold text-3xl text-stone-800">Prácticas Clave</h3>
+                        <p class="text-sm text-stone-600 mt-1">Recomendaciones</p>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Content Panel -->
+            <section class="flex-1 bg-white p-8 rounded-lg shadow-md border border-stone-200">
+                <div id="initial-panel" class="content-panel active text-center text-stone-500 min-h-[400px] flex items-center justify-center">
+                    <p class="text-lg">Selecciona un tema para ver los detalles.</p>
+                </div>
+
+                <div id="threats-panel" class="content-panel">
+                    <h2 class="font-bold text-2xl text-blue-600 mb-2">Amenazas a la Seguridad</h2>
+                    <p class="text-stone-600 mb-4">Las amenazas a los sistemas de control industrial (ICS) han evolucionado y ahora incluyen ataques dirigidos que pueden causar un impacto físico en las operaciones. Estas amenazas pueden provenir tanto de actores externos como internos.</p>
+                    <div class="bg-stone-100 p-6 rounded-lg border border-stone-200 text-stone-700">
+                        <h3 class="font-bold text-lg text-stone-800 mb-2">Tipos de Amenazas:</h3>
+                        <ul class="list-disc list-inside space-y-2 text-stone-600">
+                            <li>**Malware:** Software malicioso como virus, gusanos o ransomware que puede afectar la operación del PLC.</li>
+                            <li>**Ataques de phishing:** Correos electrónicos o mensajes engañosos para obtener credenciales de acceso a la red de control.</li>
+                            <li>**Acceso no autorizado:** Personal no capacitado o malintencionado que manipula el sistema.</li>
+                            <li>**Vulnerabilidades de software:** Fallos de seguridad no parcheados en el firmware del PLC o el software de programación.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="risks-panel" class="content-panel">
+                    <h2 class="font-bold text-2xl text-blue-600 mb-2">Riesgos y Consecuencias</h2>
+                    <p class="text-stone-600 mb-4">Un ataque exitoso puede tener consecuencias graves que van más allá de la pérdida de datos o el tiempo de inactividad, afectando la seguridad física y la producción.</p>
+                    <div class="bg-stone-100 p-6 rounded-lg border border-stone-200 text-stone-700">
+                        <h3 class="font-bold text-lg text-stone-800 mb-2">Consecuencias Clave:</h3>
+                        <ul class="list-disc list-inside space-y-2 text-stone-600">
+                            <li>**Riesgos de seguridad para el personal:** La manipulación de los controles puede causar accidentes, lesiones graves o incluso la muerte.</li>
+                            <li>**Pérdidas de producción:** Un sistema de control comprometido puede detener la producción, resultando en pérdidas económicas significativas.</li>
+                            <li>**Daño a equipos:** Un programa alterado puede causar daños físicos a la maquinaria.</li>
+                            <li>**Robo de propiedad intelectual:** Los atacantes pueden robar la lógica de programación patentada o datos sensibles.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="security-measures-panel" class="content-panel">
+                    <h2 class="font-bold text-2xl text-blue-600 mb-2">Medidas de Seguridad Esenciales</h2>
+                    <p class="text-stone-600 mb-4">La seguridad industrial es un enfoque por capas que combina medidas físicas, de red y de software para proteger el sistema de control.</p>
+                    <div class="bg-stone-100 p-6 rounded-lg border border-stone-200 text-stone-700">
+                        <h3 class="font-bold text-lg text-stone-800 mb-2">Medidas de Protección:</h3>
+                        <ul class="list-disc list-inside space-y-2 text-stone-600">
+                            <li>**Seguridad Física:** Restringir el acceso a los gabinetes del PLC, paneles de control y servidores.</li>
+                            <li>**Segmentación de Red:** Aislar la red de control industrial (OT) de la red de TI de la empresa.</li>
+                            <li>**Control de Acceso:** Utilizar contraseñas robustas y autenticación de múltiples factores para el acceso al software de programación.</li>
+                            <li>**Monitoreo y Detección:** Implementar sistemas que detecten actividades anómalas o cambios no autorizados en el PLC.</li>
+                            <li>**Actualizaciones (Patches):** Mantener el firmware del PLC y el software de programación actualizados con los últimos parches de seguridad.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="best-practices-panel" class="content-panel">
+                    <h2 class="font-bold text-2xl text-blue-600 mb-2">Prácticas Recomendadas</h2>
+                    <p class="text-stone-600 mb-4">La seguridad no es un evento único, sino un proceso continuo. Aquí hay algunas prácticas clave:</p>
+                    <ul class="list-disc list-inside space-y-2 text-stone-600">
+                        <li>**Auditorías de seguridad regulares:** Evalúa periódicamente la postura de seguridad de tu sistema.</li>
+                        <li>**Capacitación del personal:** Entrena a los operadores y técnicos para reconocer y reportar posibles amenazas.</li>
+                        <li>**Copia de seguridad y recuperación:** Mantén un plan de respaldo para poder restaurar el sistema rápidamente en caso de un incidente.</li>
+                        <li>**Inventario de activos:** Conoce todos los dispositivos en tu red de control, incluyendo modelos, versiones de firmware y ubicación.</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+
+        <footer class="mt-12 flex flex-col md:flex-row gap-4 justify-between items-center">
+            <a href="6.1.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 font-semibold transition">Continuar con el siguiente tema</a>
+            <a href="/temario.html" class="bg-stone-100 text-blue-600 px-6 py-3 rounded-lg shadow hover:bg-blue-200 font-semibold transition">Regresar a la página principal</a>
+        </footer>
+
+        <div class="w-full text-center mt-6 text-stone-500 text-sm font-medium">Generado con apoyo de Google Gemini por Jesus Armando Tapia Gallegos MTDE</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const topicCards = document.querySelectorAll('.topic-card');
+            const contentPanels = document.querySelectorAll('.content-panel');
+            const initialPanel = document.getElementById('initial-panel');
+
+            function updateDisplay(targetId) {
+                contentPanels.forEach(panel => panel.classList.remove('active'));
+                const targetPanel = document.getElementById(targetId);
+                if (targetPanel) {
+                    targetPanel.classList.add('active');
+                } else {
+                    initialPanel.classList.add('active');
+                }
+            }
+
+            topicCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    topicCards.forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                    const targetId = card.dataset.target + '-panel';
+                    updateDisplay(targetId);
+                });
+            });
+
+            // Set a default state to the initial panel on page load
+            updateDisplay('initial-panel');
+        });
+    </script>
+
+</body>
+</html>

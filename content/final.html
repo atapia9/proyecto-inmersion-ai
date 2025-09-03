@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto Final: Curso de PLC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: Una aplicación de una sola página con una estructura de dos columnas: un menú de navegación jerárquico a la izquierda y un panel de contenido principal a la derecha. Esta estructura fue elegida para presentar el temario completo del curso de manera ordinal y organizada. Permite a los usuarios navegar rápidamente por los módulos y temas, facilitando la exploración y la presentación del contenido de forma lógica y accesible. -->
+    <!-- Visualization & Content Choices: Report Info -> Temario y contenido del curso. Goal -> Organizar, informar y presentar. Viz/Presentation -> Menú de navegación interactivo y bloques de contenido HTML/texto. Interaction -> Clics en los títulos para revelar el contenido. Justification -> Este diseño de SPA es ideal para la presentación de un proyecto, ya que integra toda la información en un solo lugar de manera navegable, eliminando la necesidad de múltiples páginas y proporcionando una visión general coherente del curso. Method -> HTML y Tailwind CSS para el diseño, Vanilla JS para la navegación dinámica. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4;
+            color: #44403c;
+        }
+        .nav-item {
+            @apply px-4 py-2 cursor-pointer transition-all duration-200;
+        }
+        .nav-item:hover {
+            @apply bg-stone-100;
+        }
+        .nav-item.active {
+            @apply bg-stone-200 font-semibold;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <header class="text-center mb-8">
+        <h1 class="text-3xl md:text-4xl font-bold text-stone-900 mb-2">Proyecto Final: Curso de PLC Allen Bradley</h1>
+        <p class="text-lg text-stone-600">Presentación del temario completo del curso y los recursos clave.</p>
+    </header>
+
+    <div class="flex flex-col md:flex-row gap-8 bg-white rounded-xl shadow-xl border border-stone-200 overflow-hidden">
+        <!-- Panel de Navegación -->
+        <nav class="md:w-1/3 lg:w-1/4 p-6 border-b md:border-b-0 md:border-r border-stone-200 bg-stone-50">
+            <h2 class="text-xl font-bold text-stone-800 mb-4">Temario</h2>
+            <ul id="nav-menu" class="space-y-1 text-sm">
+            </ul>
+        </nav>
+
+        <!-- Panel de Contenido -->
+        <main class="flex-grow p-6 md:p-8">
+            <div id="content-display">
+                <h2 class="text-xl md:text-2xl font-bold text-stone-700">Selecciona un tema para comenzar</h2>
+                <p class="mt-2 text-stone-500">Usa el menú de la izquierda para navegar por los diferentes módulos y temas del curso.</p>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const courseData = [
+                {
+                    id: 'mod1', title: '1. Introducción a los Controladores Lógicos Programables (PLC)',
+                    topics: [
+                        { id: '1.1', title: '1.1 Conceptos básicos de automatización industrial', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Conceptos básicos de automatización industrial</h3>
+                            <p class="mt-4">La automatización industrial es el uso de sistemas o elementos computarizados y electromecánicos para el control de máquinas industriales y procesos sin la necesidad de la intervención humana. Los PLC son el núcleo de esta transformación.</p>
+                            <p class="mt-2">Las ventajas clave de la automatización incluyen:</p>
+                            <ul class="list-disc pl-5 mt-2 space-y-1 text-stone-600">
+                                <li><strong>Mayor productividad y eficiencia:</strong> Minimiza el tiempo de ciclo y optimiza el uso de recursos.</li>
+                                <li><strong>Reducción de costos operativos:</strong> Disminuye los gastos en mano de obra y el consumo de energía.</li>
+                                <li><strong>Mejora de la calidad:</strong> Mantiene la consistencia y precisión en los procesos de producción.</li>
+                                <li><strong>Incremento de la seguridad:</strong> Los sistemas automatizados pueden operar en entornos peligrosos.</li>
+                            </ul>
+                        `},
+                        { id: '1.2', title: '1.2 Historia y evolución de los PLC', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Historia y evolución de los PLC</h3>
+                            <p class="mt-4">La historia del PLC se remonta a finales de la década de 1960. General Motors fue una de las primeras compañías en buscar una alternativa a los complejos y poco flexibles sistemas de control basados en relés.</p>
+                            <p class="mt-2">Hitos clave:</p>
+                            <ul class="list-disc pl-5 mt-2 space-y-1 text-stone-600">
+                                <li><strong>1968:</strong> Bedford Associates crea el primer PLC, el Modicon 084. Su objetivo principal era eliminar la necesidad de volver a cablear paneles de control cada vez que se cambiaba el modelo de un vehículo.</li>
+                                <li><strong>Década de 1970:</strong> Se populariza el lenguaje de programación Ladder Logic, que facilita que los electricistas e ingenieros programen los PLC.</li>
+                                <li><strong>Década de 1980:</strong> Se introducen microprocesadores que aumentan la capacidad, velocidad y funcionalidad de los PLC. Se desarrollan los primeros módulos de comunicación para conectar varios PLC.</li>
+                                <li><strong>Década de 1990:</strong> La miniaturización y la llegada de redes industriales como Ethernet/IP y Profibus convierten a los PLC en dispositivos aún más versátiles.</li>
+                                <li><strong>Actualidad:</strong> Los PLC son componentes esenciales en la industria, ofreciendo alta velocidad de procesamiento, capacidades de diagnóstico avanzadas y una perfecta integración con sistemas de software de nivel superior.</li>
+                            </ul>
+                        `},
+                        { id: '1.3', title: '1.3 Familia de PLC Allen Bradley', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Familia de PLC Allen Bradley</h3>
+                            <p class="mt-4">Allen-Bradley (Rockwell Automation) es uno de los líderes en la industria de la automatización. Sus familias de productos se adaptan a distintas necesidades de control. Aquí están las principales familias de productos:</p>
+                            <ul class="list-disc pl-5 mt-2 space-y-1 text-stone-600">
+                                <li><strong>MicroLogix™:</strong> Ideales para aplicaciones de control de máquinas pequeñas, con E/S integradas. Son compactos y rentables.</li>
+                                <li><strong>CompactLogix™:</strong> Solución modular y compacta que ofrece control de movimiento y redes industriales. Es el puente entre las aplicaciones pequeñas y las de alto rendimiento.</li>
+                                <li><strong>ControlLogix®:</strong> La plataforma de alto rendimiento para aplicaciones complejas. Permite control de procesos, movimiento y seguridad en un solo chasis.</li>
+                                <li><strong>Pico™:</strong> Son micro-PLC ultra-compactos para aplicaciones de control de máquinas muy sencillas.</li>
+                            </ul>
+                        `},
+                        { id: '1.4', title: '1.4 Aplicaciones en la industria', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Aplicaciones en la industria</h3>
+                            <p class="mt-4">Los PLC se utilizan en una vasta gama de industrias para automatizar procesos. Algunos ejemplos comunes incluyen:</p>
+                            <ul class="list-disc pl-5 mt-2 space-y-1 text-stone-600">
+                                <li><strong>Manufactura:</strong> Controlan líneas de ensamblaje, procesos de empaquetado y maquinaria de producción.</li>
+                                <li><strong>Automotriz:</strong> Utilizados en la soldadura de robots, el ensamblaje de carrocerías y la pintura.</li>
+                                <li><strong>Alimentación y bebidas:</strong> Controlan el llenado de botellas, el mezclado de ingredientes y los procesos de esterilización.</li>
+                                <li><strong>Farmacéutica:</strong> Garantizan la precisión y seguridad en la fabricación de medicamentos y el empaquetado de productos.</li>
+                                <li><strong>Tratamiento de aguas:</strong> Controlan bombas, válvulas y sistemas de filtrado.</li>
+                            </ul>
+                        `}
+                    ]
+                },
+                {
+                    id: 'mod2', title: '2. Arquitectura y Componentes del PLC Allen Bradley',
+                    topics: [
+                        { id: '2.1', title: '2.1 Estructura del hardware del PLC', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Estructura del hardware del PLC</h3>
+                            <p class="mt-4">Un PLC modular se compone de varios elementos clave que trabajan en conjunto.</p>
+                            <img src="https://i.imgur.com/k6lP3sQ.png" alt="Diagrama de la estructura del hardware de un PLC" class="w-full h-auto rounded-lg shadow-md my-4">
+                            <ul class="list-disc pl-5 mt-4 space-y-1 text-stone-600">
+                                <li><strong>CPU (Unidad Central de Procesamiento):</strong> El cerebro del sistema, ejecuta el programa y gestiona el flujo de datos.</li>
+                                <li><strong>Fuente de Alimentación:</strong> Suministra la energía necesaria para operar todos los componentes.</li>
+                                <li><strong>Chasis (Backplane):</strong> La estructura física que aloja todos los módulos y proporciona los caminos de comunicación.</li>
+                                <li><strong>Módulos de E/S:</strong> Permiten la conexión con los dispositivos de campo, como sensores (entradas) y actuadores (salidas).</li>
+                            </ul>
+                        `},
+                        { id: '2.2', title: '2.2 Tipos de módulos de entrada y salida (I/O)', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Tipos de módulos de entrada y salida (I/O)</h3>
+                            <p class="mt-4">Los módulos de E/S son el vínculo entre el PLC y el mundo físico. Existen dos tipos principales:</p>
+                            <ul class="list-disc pl-5 mt-4 space-y-1 text-stone-600">
+                                <li><strong>Módulos de E/S Digitales:</strong> Manejan señales ON/OFF (discretas). Por ejemplo, un pulsador o un interruptor de límite.</li>
+                                <li><strong>Módulos de E/S Analógicas:</strong> Manejan señales variables o continuas, como la presión, la temperatura o la velocidad.</li>
+                            </ul>
+                            <p class="mt-2">Además, se pueden clasificar como:</p>
+                            <ul class="list-disc pl-5 mt-2 space-y-1 text-stone-600">
+                                <li><strong>E/S integradas:</strong> Vienen con el PLC en una única unidad, comunes en modelos compactos.</li>
+                                <li><strong>E/S modulares:</strong> Se añaden por separado al chasis del PLC, permitiendo una mayor flexibilidad y escalabilidad.</li>
+                            </ul>
+                        `},
+                        { id: '2.3', title: '2.3 Comunicación y protocolos industriales', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Comunicación y protocolos industriales</h3>
+                            <p class="mt-4">Los PLC se comunican con otros dispositivos y sistemas a través de redes industriales. Cada red utiliza un protocolo específico.</p>
+                            <p class="mt-2">Protocolos comunes en los PLC de Allen-Bradley:</p>
+                            <ul class="list-disc pl-5 mt-2 space-y-1 text-stone-600">
+                                <li><strong>Ethernet/IP:</strong> El protocolo más común y moderno. Basado en Ethernet estándar, permite alta velocidad y comunicación en tiempo real entre PLC, HMI y otros dispositivos.</li>
+                                <li><strong>RS-232:</strong> Un protocolo serial punto a punto más antiguo y lento, comúnmente utilizado para la programación inicial o para conectar un dispositivo directamente.</li>
+                                <li><strong>DeviceNet y ControlNet:</strong> Redes de campo (fieldbus) que gestionan datos discretos y control de movimiento.</li>
+                            </ul>
+                        `},
+                        { id: '2.4', title: '2.4 Configuración de una estación de trabajo', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Configuración de una estación de trabajo</h3>
+                            <p class="mt-4">Configurar una estación de trabajo implica conectar el hardware y el software. Los pasos principales son:</p>
+                            <ol class="list-decimal pl-5 mt-2 space-y-1 text-stone-600">
+                                <li><strong>Instalación del software:</strong> Instalar Studio 5000 Logix Designer en la PC.</li>
+                                <li><strong>Conexión del hardware:</strong> Conectar el PLC a la fuente de alimentación y a la PC mediante un cable USB o Ethernet.</li>
+                                <li><strong>Configuración del driver de comunicación:</strong> Usar RSLinx Classic para establecer la conexión entre el software y el PLC.</li>
+                                <li><strong>Creación del proyecto:</strong> Abrir Studio 5000, crear un nuevo proyecto y seleccionar el modelo de PLC.</li>
+                                <li><strong>Descargar el programa:</strong> Transferir el programa del PLC a la PC para comenzar a trabajar.</li>
+                            </ol>
+                        `},
+                    ]
+                },
+                {
+                    id: 'mod3', title: '3. Programación en RSLogix 5000',
+                    topics: [
+                        { id: '3.1', title: '3.1 Introducción al software RSLogix 5000', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Introducción al software RSLogix 5000</h3>
+                            <p class="mt-4">Studio 5000 Logix Designer (anteriormente RSLogix 5000) es la plataforma de software de Rockwell Automation para programar los controladores de las familias ControlLogix y CompactLogix. Su interfaz es intuitiva y se organiza en paneles para facilitar la programación.</p>
+                            <img src="https://i.imgur.com/K3t5s5K.png" alt="Interfaz del software RSLogix 5000" class="w-full h-auto rounded-lg shadow-md my-4">
+                            <p class="mt-2 text-stone-600">Sus principales componentes son el árbol de proyecto, el área de edición del programa, y la ventana de salida.</p>
+                        `},
+                        { id: '3.2', title: '3.2 Lenguaje de programación Ladder (LD)', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Lenguaje de programación Ladder (LD)</h3>
+                            <p class="mt-4">Ladder Logic es un lenguaje de programación gráfico que simula los diagramas de circuitos de relés. Se lee de izquierda a derecha y de arriba a abajo. Se basa en peldaños (rung) que contienen instrucciones de entrada a la izquierda y bobinas de salida a la derecha.</p>
+                            <p class="mt-2 text-stone-600">Un peldaño típico contiene contactos (condiciones de entrada) y una bobina (salida).</p>
+                        `},
+                        { id: '3.3', title: '3.3 Creación de proyectos y configuración de tags', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Creación de proyectos y configuración de tags</h3>
+                            <p class="mt-4">Crear un proyecto implica definir el tipo de controlador y el chasis. Los tags (o etiquetas) son identificadores simbólicos para los datos y las variables del PLC. Permiten nombrar las entradas, salidas y variables internas en lugar de usar direcciones de memoria crípticas.</p>
+                            <p class="mt-2 text-stone-600">Existen diferentes tipos de tags:</p>
+                            <ul class="list-disc pl-5 mt-2 space-y-1 text-stone-600">
+                                <li><strong>Controller Tags:</strong> Accesibles desde cualquier rutina del proyecto.</li>
+                                <li><strong>Program Tags:</strong> Locales a una rutina, solo se pueden usar en esa rutina.</li>
+                            </ul>
+                        `},
+                        { id: '3.4', title: '3.4 Simulación y pruebas de programas', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Simulación y pruebas de programas</h3>
+                            <p class="mt-4">La simulación es crucial para probar la lógica de un programa antes de descargarlo en el hardware real. El software FactoryTalk Logix Echo es la herramienta de simulación de Rockwell Automation. Simula el comportamiento del PLC en la computadora, permitiendo probar la lógica y los tags en un entorno seguro.</p>
+                        `}
+                    ]
+                },
+                {
+                    id: 'mod4', title: '4. Instrucciones Básicas de Programación',
+                    topics: [
+                        { id: '4.1', title: '4.1 Instrucciones de bit (XIC, XIO, OTE, OTL, OTU)', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Instrucciones de bit</h3>
+                            <p class="mt-4">Estas son las instrucciones lógicas más fundamentales en Ladder Logic. Trabajan con bits (valores de 0 o 1).</p>
+                            <ul class="list-disc pl-5 mt-2 space-y-1 text-stone-600">
+                                <li><strong>XIC (Examine If Closed):</strong> Verdadero si el bit está ON (1).</li>
+                                <li><strong>XIO (Examine If Open):</strong> Verdadero si el bit está OFF (0).</li>
+                                <li><strong>OTE (Output Energize):</strong> Activa un bit (lo pone en 1).</li>
+                                <li><strong>OTL (Output Latch):</strong> Activa y mantiene un bit en 1.</li>
+                                <li><strong>OTU (Output Unlatch):</strong> Desactiva y mantiene un bit en 0.</li>
+                            </ul>
+                        `},
+                        { id: '4.2', title: '4.2 Instrucciones de temporización y conteo', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Instrucciones de temporización y conteo</h3>
+                            <p class="mt-4">Estas instrucciones se utilizan para controlar eventos basados en tiempo y cantidad.</p>
+                            <ul class="list-disc pl-5 mt-2 space-y-1 text-stone-600">
+                                <li><strong>TON (Timer On-Delay):</strong> Retrasa la activación de una salida. Empieza a contar cuando su entrada se vuelve verdadera y se activa después de un tiempo preestablecido.</li>
+                                <li><strong>TOF (Timer Off-Delay):</strong> Retrasa la desactivación de una salida. Permanece activo por un tiempo preestablecido después de que su entrada se vuelve falsa.</li>
+                                <li><strong>CTU (Count Up):</strong> Incrementa un contador cada vez que su entrada cambia de falsa a verdadera.</li>
+                                <li><strong>CTD (Count Down):</strong> Decrementa un contador cada vez que su entrada cambia de falsa a verdadera.</li>
+                            </ul>
+                        `},
+                        { id: '4.3', title: '4.3 Instrucciones de comparación y transición', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Instrucciones de comparación y transición</h3>
+                            <p class="mt-4">Se utilizan para tomar decisiones lógicas en el programa basadas en valores numéricos. Las más comunes son:</p>
+                            <ul class="list-disc pl-5 mt-2 space-y-1 text-stone-600">
+                                <li><strong>EQU (Equal To):</strong> Verdadero si dos valores son iguales.</li>
+                                <li><strong>GRT (Greater Than):</strong> Verdadero si el primer valor es mayor que el segundo.</li>
+                                <li><strong>LES (Less Than):</strong> Verdadero si el primer valor es menor que el segundo.</li>
+                                <li><strong>LIM (Limit):</strong> Verdadero si el valor de una variable está dentro de un rango específico.</li>
+                            </ul>
+                        `},
+                        { id: '4.4', title: '4.4 Control de flujo del programa', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Control de flujo del programa</h3>
+                            <p class="mt-4">Las instrucciones de control de flujo alteran la ejecución secuencial del programa. Las subrutinas (routines) son bloques de código reutilizables. La instrucción <strong>JSR (Jump to Subroutine)</strong> transfiere el control de ejecución a una subrutina. Cuando la subrutina termina, el control regresa al punto original del programa principal.</p>
+                        `}
+                    ]
+                },
+                {
+                    id: 'mod5', title: '5. Comunicación y Diagnóstico de Fallas',
+                    topics: [
+                        { id: '5.1', title: '5.1 Configuración de redes industriales (Ethernet/IP, RS232)', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Configuración de redes industriales</h3>
+                            <p class="mt-4">La conectividad de los PLC es fundamental en la automatización moderna. Los protocolos más utilizados son Ethernet/IP para redes de alta velocidad y RS232 para conexiones punto a punto. La configuración se realiza a través del software RSLinx Classic.</p>
+                            <ul class="list-disc pl-5 mt-2 space-y-1 text-stone-600">
+                                <li><strong>Ethernet/IP:</strong> Configura la dirección IP del PLC y sus módulos de red para permitir la comunicación.</li>
+                                <li><strong>RS232:</strong> Establece los parámetros de comunicación serial (baud rate, paridad, etc.) para conectar directamente la PC al PLC.</li>
+                            </ul>
+                        `},
+                        { id: '5.2', title: '5.2 Diagnóstico y solución de problemas en PLC', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Diagnóstico y solución de problemas</h3>
+                            <p class="mt-4">El diagnóstico es un proceso sistemático para identificar y resolver problemas en un sistema de PLC. La mayoría de los PLC tienen LEDs de estado que indican fallas de hardware (FAULT), estado de ejecución (RUN) y estado de E/S. El software Studio 5000 proporciona herramientas de diagnóstico detalladas para monitorear el estado de los tags y la lógica del programa en tiempo real.</p>
+                        `},
+                        { id: '5.3', title: '5.3 Métodos de respaldo y recuperación', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Métodos de respaldo y recuperación</h3>
+                            <p class="mt-4">La realización de copias de seguridad de los programas de PLC es vital para la seguridad del sistema. Se pueden crear respaldos en el software de programación. La recuperación implica cargar el programa de respaldo desde la PC al PLC para restaurar su funcionamiento después de una falla.</p>
+                        `},
+                        { id: '5.4', title: '5.4 Seguridad en sistemas automatizados', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Seguridad en sistemas automatizados</h3>
+                            <p class="mt-4">La seguridad es fundamental para proteger tanto al personal como al equipo. Los sistemas de seguridad incluyen pulsadores de paro de emergencia (E-stop), barreras de seguridad y cortinas de luz. El procedimiento de Bloqueo/Etiquetado (LOTO) es un método de seguridad crucial para garantizar que las máquinas no puedan ser operadas accidentalmente durante su mantenimiento.</p>
+                        `}
+                    ]
+                },
+                {
+                    id: 'mod6', title: '6. Laboratorio Práctico con PLC Allen Bradley',
+                    topics: [
+                        { id: '6.1', title: '6.1 Integración del PLC en procesos industriales', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Integración del PLC en procesos industriales</h3>
+                            <p class="mt-4">La integración implica conectar el PLC al hardware de campo y programar la lógica de control. En una aplicación de arranque y paro de motor, la lógica del PLC usa entradas para los pulsadores de arranque/paro y una salida para el contactor del motor. El programa debe garantizar que el motor se detenga cuando se presiona el botón de paro o el de emergencia.</p>
+                        `},
+                        { id: '6.2', title: '6.2 Control de motores y actuadores', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Control de motores y actuadores</h3>
+                            <p class="mt-4">El control de motores y actuadores es una de las tareas más comunes de los PLC. Por ejemplo, en un sistema de mezcla industrial, un PLC puede controlar el motor del agitador y la válvula de un tanque basándose en las lecturas de sensores de nivel. El programa Ladder se encarga de que la secuencia se ejecute correctamente.</p>
+                        `},
+                        { id: '6.3', title: '6.3 Conexión de PLC a redes industriales', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Conexión de PLC a redes industriales</h3>
+                            <p class="mt-4">Conectar un PLC a una red industrial permite la comunicación con otros PLCs, paneles HMI y sistemas SCADA. La configuración se realiza en el software de programación, asignando una dirección de red al PLC y configurando los módulos de comunicación. Un ejemplo es la comunicación entre el PLC y una pantalla HMI para monitorear y controlar el proceso de forma remota.</p>
+                        `}
+                    ]
+                },
+                {
+                    id: 'recursos', title: 'Recursos del Curso',
+                    topics: [
+                        { id: 'rec_eval_diag', title: 'Evaluación Diagnóstica', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Evaluación Diagnóstica</h3>
+                            <p class="mt-4">Este cuestionario de 10 preguntas evalúa el conocimiento general de los participantes antes de iniciar el curso. No tiene fines de calificación, sino que busca ser una herramienta para adaptar el contenido del curso a las necesidades de los estudiantes.</p>
+                            <div class="mt-4 p-4 bg-stone-100 rounded-lg border border-stone-300">
+                                <p class="text-sm font-bold">1. ¿Qué es un Controlador Lógico Programable (PLC)?</p>
+                                <p class="text-xs text-stone-600 mt-1">Un dispositivo electrónico para controlar procesos industriales.</p>
+                            </div>
+                        `},
+                        { id: 'rec_eval_final', title: 'Evaluación Final', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Evaluación Final</h3>
+                            <p class="mt-4">Este examen de 30 preguntas está diseñado para validar el conocimiento adquirido durante el curso. Se evalúa con fines de calificación. Para aprobar, se requiere un 80% o más de respuestas correctas.</p>
+                            <div class="mt-4 p-4 bg-stone-100 rounded-lg border border-stone-300">
+                                <p class="text-sm font-bold">1. ¿Qué tipo de PLC se recomienda para aplicaciones de alto rendimiento y control de movimiento?</p>
+                                <p class="text-xs text-stone-600 mt-1">ControlLogix</p>
+                            </div>
+                        `},
+                        { id: 'rec_glosario', title: 'Glosario del Curso', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Glosario del Curso</h3>
+                            <p class="mt-4">Un glosario amplio y exhaustivo de los términos clave que cubren la totalidad de los temas del curso. Es una herramienta de referencia rápida y completa.</p>
+                            <div class="mt-4 p-4 bg-stone-100 rounded-lg border border-stone-300">
+                                <p class="text-sm font-bold">PLC / Controlador Lógico Programable</p>
+                                <p class="text-xs text-stone-600 mt-1">Dispositivo electrónico robusto utilizado para automatizar procesos industriales. Reemplaza los complejos circuitos de relés electromecánicos.</p>
+                            </div>
+                        `},
+                        { id: 'rec_ladder_elements', title: 'Elementos del Lenguaje Ladder', content: `
+                            <h3 class="text-xl md:text-2xl font-bold text-stone-700">Elementos del Lenguaje Ladder</h3>
+                            <p class="mt-4">Una guía rápida que presenta los símbolos más comunes del Lenguaje de Escalera y su función, organizada en una infografía visual.</p>
+                            <div class="mt-4 p-4 bg-stone-100 rounded-lg border border-stone-300">
+                                <p class="text-sm font-bold">Contacto Normalmente Abierto (XIC)</p>
+                                <img src="https://i.imgur.com/gK1q3F3.png" alt="Símbolo de contacto normalmente abierto en Ladder" class="w-20 mt-2">
+                                <p class="text-xs text-stone-600 mt-1">Se activa o "cierra" cuando la condición es verdadera.</p>
+                            </div>
+                        `}
+                    ]
+                }
+            ];
+
+            const navMenu = document.getElementById('nav-menu');
+            const contentDisplay = document.getElementById('content-display');
+
+            const renderNavMenu = () => {
+                navMenu.innerHTML = '';
+                courseData.forEach(module => {
+                    const moduleItem = document.createElement('li');
+                    moduleItem.className = 'font-bold text-stone-800 cursor-pointer';
+                    moduleItem.textContent = module.title;
+                    navMenu.appendChild(moduleItem);
+
+                    const topicList = document.createElement('ul');
+                    topicList.className = 'pl-4 mt-1 mb-4 space-y-1 text-sm';
+                    module.topics.forEach(topic => {
+                        const topicItem = document.createElement('li');
+                        topicItem.className = 'nav-item rounded-md';
+                        topicItem.textContent = topic.title;
+                        topicItem.dataset.topicId = topic.id;
+                        topicList.appendChild(topicItem);
+                    });
+                    navMenu.appendChild(topicList);
+                });
+            };
+
+            const renderContent = (topicId) => {
+                let contentFound = false;
+                for (const module of courseData) {
+                    const topic = module.topics.find(t => t.id === topicId);
+                    if (topic) {
+                        contentDisplay.innerHTML = topic.content;
+                        contentFound = true;
+                        break;
+                    }
+                }
+                if (!contentFound) {
+                    contentDisplay.innerHTML = `<h2 class="text-xl md:text-2xl font-bold text-stone-700">Contenido no encontrado</h2><p class="mt-2 text-stone-500">Por favor, selecciona un tema válido del menú.</p>`;
+                }
+            };
+
+            navMenu.addEventListener('click', (event) => {
+                if (event.target.tagName === 'LI' && event.target.dataset.topicId) {
+                    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+                    event.target.classList.add('active');
+                    renderContent(event.target.dataset.topicId);
+                }
+            });
+
+            renderNavMenu();
+        });
+    </script>
+
+    <footer class="mt-12 flex flex-col md:flex-row gap-4 justify-between items-center">
+        <a href="temario.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 font-semibold transition">Regresar a la página principal</a>
+    </footer>
+    <div class="w-full text-center mt-6 text-stone-500 text-sm font-medium">Generado con apoyo de Google Gemini por Jesus Armando Tapia Gallegos MTDE</div>
+</body>
+</html>

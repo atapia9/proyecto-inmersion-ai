@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lenguaje de Programación Ladder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Tierra y Mar (neutros cálidos con acentos de azul y gris) -->
+    <!-- Application Structure Plan: Se ha creado una SPA que explica el lenguaje de programación Ladder a través de un diagrama visual. La interfaz se divide en un área de visualización del diagrama y un panel de información dinámico. Al hacer clic o pasar el cursor sobre los componentes del diagrama (rieles, peldaños, contactos, bobinas), el panel de información se actualiza para mostrar una descripción detallada de la función de cada elemento. Este enfoque es ideal para un tema tan visual como el Ladder, transformando la teoría en una experiencia práctica y clara. -->
+    <!-- Visualization & Content Choices: 1. Diagrama SVG de Ladder: Se utiliza un SVG para dibujar el diagrama de Ladder. Los elementos clave se agrupan y se les asignan IDs. Objetivo: Proporcionar una representación precisa y escalable del lenguaje de programación. Interacción: Eventos de 'click' o 'mouseenter' en los grupos SVG para actualizar el panel de información. Justificación: SVG es perfecto para gráficos vectoriales y permite una interacción precisa. 2. Panel de Información Dinámico: Un contenedor HTML que cambia su contenido. Objetivo: Ofrecer una explicación detallada de cada componente del Ladder sin sobrecargar el diagrama. Interacción: El contenido textual cambia con JavaScript en respuesta a las interacciones del usuario. Justificación: Mantiene la interfaz limpia y enfocada, permitiendo al usuario explorar el tema a su propio ritmo. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4;
+        }
+        .ladder-diagram {
+            @apply bg-white p-8 rounded-lg shadow-md border border-stone-200;
+        }
+        .info-panel {
+            min-height: 300px;
+            @apply bg-white p-6 rounded-lg shadow-md border border-stone-200;
+        }
+        .info-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .info-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .hover-highlight {
+            transition: all 0.2s ease-in-out;
+        }
+        .hover-highlight:hover {
+            fill: #60a5fa; /* Blue highlight */
+            cursor: pointer;
+            transform: scale(1.05);
+        }
+        .hover-highlight-text:hover {
+            fill: #2563eb;
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-stone-900">Lenguaje de Programación Ladder</h1>
+            <p class="mt-2 text-lg text-stone-600 max-w-3xl mx-auto">Explora la estructura y los componentes del lenguaje Ladder, la base de la programación de PLC.</p>
+        </header>
+
+        <main class="lg:flex lg:space-x-8">
+            <!-- Ladder Diagram Section -->
+            <section class="lg:w-2/3 mb-8 lg:mb-0">
+                <div class="ladder-diagram">
+                    <h2 class="font-bold text-xl mb-4 text-stone-900">Diagrama de Lógica de Escalera</h2>
+                    <div class="flex justify-center items-center h-[350px] md:h-[450px]">
+                        <svg width="100%" height="100%" viewBox="0 0 500 400" preserveAspectRatio="xMidYMid meet" class="select-none">
+                            <!-- Power and Ground Rails -->
+                            <g id="power-rail" data-component="power-rail" class="hover-highlight-text">
+                                <line x1="50" y1="50" x2="50" y2="350" stroke="#ef4444" stroke-width="4" stroke-linecap="round"></line>
+                                <text x="50" y="30" font-family="Inter, sans-serif" font-size="16" font-weight="bold" fill="#dc2626" text-anchor="middle">Carril de Potencia</text>
+                            </g>
+
+                            <g id="ground-rail" data-component="ground-rail" class="hover-highlight-text">
+                                <line x1="450" y1="50" x2="450" y2="350" stroke="#4b5563" stroke-width="4" stroke-linecap="round"></line>
+                                <text x="450" y="30" font-family="Inter, sans-serif" font-size="16" font-weight="bold" fill="#374151" text-anchor="middle">Carril de Tierra</text>
+                            </g>
+                            
+                            <!-- Rung 1 -->
+                            <g id="rung-1" data-component="rung" class="hover-highlight-text">
+                                <line x1="50" y1="100" x2="450" y2="100" stroke="#2563eb" stroke-width="2"></line>
+                                <text x="35" y="105" font-family="Inter, sans-serif" font-size="14" fill="#3b82f6" text-anchor="end">000</text>
+                            </g>
+
+                            <!-- Contacts and Coils -->
+                            <g id="contact-1" data-component="contact-no" class="hover-highlight">
+                                <line x1="150" y1="90" x2="150" y2="110" stroke="#3b82f6" stroke-width="2"></line>
+                                <line x1="160" y1="90" x2="160" y2="110" stroke="#3b82f6" stroke-width="2"></line>
+                                <text x="155" y="125" font-family="Inter, sans-serif" font-size="12" fill="#1e40af" text-anchor="middle">Start_Button</text>
+                            </g>
+
+                            <g id="coil-1" data-component="coil" class="hover-highlight">
+                                <path d="M 350 90 A 10 10 0 1 0 350 110 L 360 110 L 360 90 Z" fill="white" stroke="#3b82f6" stroke-width="2"></path>
+                                <circle cx="355" cy="100" r="10" fill="white" stroke="#3b82f6" stroke-width="2"></circle>
+                                <text x="355" y="125" font-family="Inter, sans-serif" font-size="12" fill="#1e40af" text-anchor="middle">Motor_On</text>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Information Panel -->
+            <section class="lg:w-1/3">
+                <div id="info-panel" class="info-panel">
+                    <h2 class="font-bold text-xl text-stone-900 mb-2">Detalles del Componente</h2>
+                    <div id="initial-info" class="info-content active text-center text-stone-500">
+                        <p class="text-lg">Haz clic en un componente del diagrama para ver su descripción detallada.</p>
+                        <div class="mt-4 text-left">
+                            <h3 class="font-bold text-sm text-stone-800">Componentes del Diagrama:</h3>
+                            <ul class="list-disc list-inside text-xs text-stone-600 space-y-1 mt-1">
+                                <li>**Carril de Potencia:** Línea vertical izquierda.</li>
+                                <li>**Carril de Tierra:** Línea vertical derecha.</li>
+                                <li>**Peldaño:** Línea horizontal que conecta los rieles.</li>
+                                <li>**Contactos:** Lógica de entrada (ej. Start_Button).</li>
+                                <li>**Bobinas:** Lógica de salida (ej. Motor_On).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div id="power-rail-info" class="info-content">
+                        <h3 class="font-bold text-lg text-stone-800 mb-2">Carril de Potencia</h3>
+                        <p class="text-stone-600">Representa la fuente de energía lógica del circuito de control. En una línea de lógica de escalera, el flujo de energía (o la "condición lógica verdadera") siempre comienza en este carril.</p>
+                    </div>
+
+                    <div id="ground-rail-info" class="info-content">
+                        <h3 class="font-bold text-lg text-stone-800 mb-2">Carril de Tierra</h3>
+                        <p class="text-stone-600">Representa el punto de retorno del circuito de control. El flujo de energía debe completar un camino desde el carril de potencia hasta el carril de tierra para que una bobina de salida se active.</p>
+                    </div>
+
+                    <div id="rung-info" class="info-content">
+                        <h3 class="font-bold text-lg text-stone-800 mb-2">Peldaño (Rung)</h3>
+                        <p class="text-stone-600">Una línea horizontal en el diagrama de escalera. Cada peldaño contiene un conjunto de condiciones lógicas (contactos) y, si estas condiciones son verdaderas, se activa una acción (bobina). Es el equivalente a una instrucción o una línea de código en otros lenguajes.</p>
+                    </div>
+
+                    <div id="contact-no-info" class="info-content">
+                        <h3 class="font-bold text-lg text-stone-800 mb-2">Contacto Normalmente Abierto (NO)</h3>
+                        <p class="text-stone-600">Este es un tipo de instrucción de entrada. Un contacto normalmente abierto está "abierto" (no permite el flujo de energía) por defecto. Se "cierra" (permite el flujo de energía) solo cuando su condición asociada (un sensor o botón) se activa.</p>
+                    </div>
+
+                    <div id="coil-info" class="info-content">
+                        <h3 class="font-bold text-lg text-stone-800 mb-2">Bobina (Coil)</h3>
+                        <p class="text-stone-600">Una bobina es una instrucción de salida. Se activa cuando hay un flujo de energía completo a través del peldaño. Cuando una bobina se "energiza", activa el dispositivo de salida correspondiente (ej. un motor, una luz, etc.).</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="mt-12 flex flex-col md:flex-row gap-4 justify-between items-center">
+            <a href="3.3.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 font-semibold transition">Continuar con el siguiente tema</a>
+            <a href="/temario.html" class="bg-stone-100 text-blue-600 px-6 py-3 rounded-lg shadow hover:bg-blue-200 font-semibold transition">Regresar a la página principal</a>
+        </footer>
+
+        <div class="w-full text-center mt-6 text-stone-500 text-sm font-medium">Generado con apoyo de Google Gemini por Jesus Armando Tapia Gallegos MTDE</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const interactiveElements = document.querySelectorAll('g[data-component]');
+            const infoContents = document.querySelectorAll('.info-content');
+            const initialInfo = document.getElementById('initial-info');
+
+            function updateDisplay(targetId) {
+                infoContents.forEach(info => info.classList.remove('active'));
+                const targetInfo = document.getElementById(targetId);
+                if (targetInfo) {
+                    targetInfo.classList.add('active');
+                } else {
+                    initialInfo.classList.add('active');
+                }
+            }
+
+            interactiveElements.forEach(element => {
+                element.addEventListener('click', () => {
+                    const targetId = element.dataset.component + '-info';
+                    updateDisplay(targetId);
+                });
+            });
+
+            // Set a default state on page load
+            updateDisplay('initial-info');
+        });
+    </script>
+
+</body>
+</html>

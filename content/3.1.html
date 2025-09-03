@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción a RSLogix 5000</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Tierra y Mar (neutros cálidos con acentos de azul y verde) -->
+    <!-- Application Structure Plan: Se ha diseñado una SPA que presenta una visión general de la interfaz de RSLogix 5000. El diseño se basa en una imagen de la interfaz de usuario con áreas interactivas (hotspots) que el usuario puede hacer clic. Al hacer clic en un área, un panel de información detallada se actualiza con una descripción del componente correspondiente de la interfaz. Este enfoque es ideal para familiarizar al usuario con un software complejo, permitiendo una exploración guiada de las diferentes partes del entorno de desarrollo. -->
+    <!-- Visualization & Content Choices: 1. Mapa de Imagen Interactivo: Se utiliza un contenedor div con una imagen de fondo que simula la interfaz del software. Se superponen elementos transparentes (hotspots) que reaccionan a los clics del usuario. Objetivo: Proporcionar un contexto visual y permitir la interacción directa con la interfaz del software. Interacción: Clic para activar un panel de información. Justificación: Convierte un concepto estático en una experiencia de aprendizaje interactiva y práctica. 2. Panel de Descripción: Un contenedor dinámicamente actualizado para mostrar los detalles del componente seleccionado. Objetivo: Ofrecer explicaciones claras de cada parte de la interfaz. Interacción: El contenido textual y el título cambian en respuesta a la selección del usuario. Justificación: Evita la sobrecarga de información y mantiene la interfaz limpia y enfocada. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4;
+        }
+        .ui-hotspot {
+            position: absolute;
+            background: rgba(59, 130, 246, 0.2); /* Color de resaltado */
+            border: 2px dashed #2563eb;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .ui-hotspot:hover {
+            background: rgba(59, 130, 246, 0.4);
+        }
+        .info-panel {
+            min-height: 250px;
+        }
+        .info-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .info-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-stone-900">Introducción a RSLogix 5000</h1>
+            <p class="mt-2 text-lg text-stone-600 max-w-3xl mx-auto">Explora la interfaz del software de programación y entiende los componentes clave del entorno de desarrollo.</p>
+        </header>
+
+        <main class="lg:flex lg:space-x-8">
+            <!-- UI Diagram Section -->
+            <section class="lg:w-2/3 mb-8 lg:mb-0">
+                <div class="bg-white p-8 rounded-lg shadow-md border border-stone-200">
+                    <h2 class="font-bold text-xl mb-4 text-stone-900">Haz clic en un área para explorar</h2>
+                    <div class="relative w-full h-[400px] md:h-[500px] overflow-hidden rounded-lg border-2 border-stone-300 bg-stone-100 flex items-center justify-center">
+                        <span class="text-stone-400 text-lg">Diagrama de la Interfaz del Software </span>
+
+                        <!-- Hotspots for interaction -->
+                        <div class="ui-hotspot" style="top: 2%; left: 1%; width: 98%; height: 5%;" data-target="menu-bar"></div>
+                        <div class="ui-hotspot" style="top: 7%; left: 1%; width: 98%; height: 5%;" data-target="toolbar"></div>
+                        <div class="ui-hotspot" style="top: 13%; left: 1%; width: 25%; height: 85%;" data-target="project-tree"></div>
+                        <div class="ui-hotspot" style="top: 13%; left: 27%; width: 72%; height: 60%;" data-target="editor-area"></div>
+                        <div class="ui-hotspot" style="top: 74%; left: 27%; width: 72%; height: 24%;" data-target="output-panel"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Information Panel -->
+            <section class="lg:w-1/3">
+                <div id="info-panel" class="info-panel bg-white p-6 rounded-lg shadow-md border border-stone-200">
+                    <h2 class="font-bold text-xl text-stone-900 mb-2">Detalles de la Interfaz</h2>
+                    <div id="initial-info" class="info-content active text-center text-stone-500 min-h-[150px] flex items-center justify-center">
+                        <p class="text-lg">Haz clic en una parte de la interfaz para aprender más sobre su función.</p>
+                    </div>
+
+                    <div id="menu-bar-info" class="info-content">
+                        <h3 class="font-bold text-lg text-stone-800 mb-2">Barra de Menú</h3>
+                        <p class="text-stone-600">Contiene las opciones de archivo, edición, visualización, herramientas, y ayuda. Es donde accedes a funciones como guardar el proyecto, ir en línea con el PLC o compilar el programa.</p>
+                    </div>
+
+                    <div id="toolbar-info" class="info-content">
+                        <h3 class="font-bold text-lg text-stone-800 mb-2">Barra de Herramientas</h3>
+                        <p class="text-stone-600">Proporciona accesos directos a las funciones más comunes, como abrir, guardar, descargar al PLC, ir en línea, y las instrucciones de programación más utilizadas (contactos, bobinas, temporizadores, etc.).</p>
+                    </div>
+
+                    <div id="project-tree-info" class="info-content">
+                        <h3 class="font-bold text-lg text-stone-800 mb-2">Árbol del Proyecto</h3>
+                        <p class="text-stone-600">Una vista jerárquica de todos los componentes del proyecto. Aquí puedes ver el controlador, los módulos de E/S, las tareas, los programas, las rutinas de Ladder y las etiquetas (tags). Es tu mapa de navegación dentro del proyecto.</p>
+                    </div>
+
+                    <div id="editor-area-info" class="info-content">
+                        <h3 class="font-bold text-lg text-stone-800 mb-2">Área del Editor</h3>
+                        <p class="text-stone-600">Esta es el área de trabajo principal donde se crea y se modifica el código de programación, como las rutinas en lenguaje Ladder. Aquí puedes ver la lógica del control, añadir instrucciones, y supervisar el estado de las variables en tiempo real.</p>
+                    </div>
+
+                    <div id="output-panel-info" class="info-content">
+                        <h3 class="font-bold text-lg text-stone-800 mb-2">Panel de Salida</h3>
+                        <p class="text-stone-600">Muestra mensajes de estado, errores, advertencias y resultados de la compilación. Es una herramienta vital para la depuración, ya que te informa sobre cualquier problema con la sintaxis del programa o la configuración del hardware.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="mt-12 flex flex-col md:flex-row gap-4 justify-between items-center">
+            <a href="3.2.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 font-semibold transition">Continuar con el siguiente tema</a>
+            <a href="/temario.html" class="bg-stone-100 text-blue-600 px-6 py-3 rounded-lg shadow hover:bg-blue-200 font-semibold transition">Regresar a la página principal</a>
+        </footer>
+
+        <div class="w-full text-center mt-6 text-stone-500 text-sm font-medium">Generado con apoyo de Google Gemini por Jesus Armando Tapia Gallegos MTDE</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hotspots = document.querySelectorAll('.ui-hotspot');
+            const infoContents = document.querySelectorAll('.info-content');
+            const initialInfo = document.getElementById('initial-info');
+
+            function updateDisplay(targetId) {
+                infoContents.forEach(info => info.classList.remove('active'));
+                const targetInfo = document.getElementById(targetId);
+                if (targetInfo) {
+                    targetInfo.classList.add('active');
+                } else {
+                    initialInfo.classList.add('active');
+                }
+            }
+
+            hotspots.forEach(hotspot => {
+                hotspot.addEventListener('click', () => {
+                    const targetId = hotspot.dataset.target + '-info';
+                    updateDisplay(targetId);
+                });
+            });
+
+            // Set initial state
+            updateDisplay('initial-info');
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historia y Evolución de los PLC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Tierra y Mar (neutros cálidos con acentos de azul y verde) -->
+    <!-- Application Structure Plan: Se ha optado por una estructura de desplazamiento vertical con una línea de tiempo visual que guía al usuario a través de cada hito histórico. La arquitectura se basa en tarjetas de contenido que se revelan dinámicamente a medida que el usuario se desplaza por la página. Cada tarjeta está anclada a un punto específico de la línea de tiempo, creando una experiencia narrativa y fluida. Este diseño se eligió para proporcionar una experiencia de "descubrimiento" más atractiva y menos lineal que un documento estático, permitiendo al usuario controlar su ritmo de aprendizaje. -->
+    <!-- Visualization & Content Choices: 1. Línea de Tiempo Vertical: Se utiliza un diseño de rejilla (CSS Grid) y flexbox para crear la estructura de la línea de tiempo y los nodos de hito. Objetivo: Narrar la evolución de forma visual y cronológica. Interacción: Los nodos cambian de color y el contenido asociado se muestra al hacer clic o al hacer scroll, gracias a IntersectionObserver. Justificación: Ofrece una experiencia más inmersiva y responde de manera más intuitiva a la navegación móvil y de escritorio. 2. Tarjetas de Hito: Se usan contenedores HTML enriquecidos con iconos de Unicode. Objetivo: Desglosar la información detallada para cada era. Interacción: Se activan y desactivan dinámicamente con clases de CSS controladas por JavaScript. Justificación: Presenta grandes bloques de texto de una manera limpia y evita la sobrecarga de información. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4;
+        }
+        .timeline-container {
+            display: grid;
+            grid-template-columns: 1fr 2px 1fr;
+            gap: 2rem;
+        }
+        .timeline-line {
+            background-color: #d6d3d1;
+            position: relative;
+            margin: 0 auto;
+            width: 2px;
+        }
+        .timeline-point-wrapper {
+            position: relative;
+            z-index: 10;
+        }
+        .timeline-point {
+            @apply flex flex-col items-center justify-center w-8 h-8 rounded-full border-4 border-white transition-all duration-500 transform scale-75 cursor-pointer;
+            box-shadow: 0 0 0 2px #d6d3d1;
+        }
+        .timeline-point.active {
+            @apply bg-blue-600 scale-125;
+            box-shadow: 0 0 0 4px #bfdbfe;
+        }
+        .timeline-content {
+            @apply bg-white p-6 rounded-lg shadow-lg border border-stone-200 transition-all duration-700 transform translate-y-8 opacity-0;
+        }
+        .timeline-content.active {
+            @apply opacity-100 translate-y-0;
+        }
+        .timeline-title {
+            @apply font-bold text-xl mb-2 text-stone-900;
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-stone-900">Historia y Evolución de los PLC</h1>
+            <p class="mt-2 text-lg text-stone-600 max-w-3xl mx-auto">Explora la línea de tiempo que transformó el control industrial, desde los complejos paneles de relés hasta los PLC modernos y conectados.</p>
+        </header>
+        
+        <div class="timeline-container max-w-4xl mx-auto">
+            
+            <!-- HITO 1: Pre-PLC -->
+            <div class="timeline-content" id="pre-plc-content">
+                <div class="timeline-title">La Era de los Relés Electromecánicos</div>
+                <div class="text-3xl mb-3">🛠️</div>
+                <p class="text-stone-600">Antes del PLC, el control se basaba en enormes paneles de relés. Cada función lógica requería un relé físico y un cableado meticuloso. Esto generaba un mantenimiento extremadamente complejo y un alto costo de modificación. Cualquier cambio en la lógica de control significaba un recableado manual que podía durar semanas, lo que hacía que las plantas industriales fueran rígidas y lentas para adaptarse a nuevas demandas de producción.</p>
+            </div>
+            <div class="timeline-point-wrapper flex justify-center items-center">
+                <div class="timeline-point bg-red-400" data-target="pre-plc"></div>
+            </div>
+            <div></div>
+
+            <!-- HITO 2: 1968 -->
+            <div></div>
+            <div class="timeline-point-wrapper flex justify-center items-center">
+                <div class="timeline-point bg-amber-400" data-target="invention"></div>
+            </div>
+            <div class="timeline-content" id="invention-content">
+                <div class="timeline-title">El Nacimiento del PLC (1968)</div>
+                <div class="text-3xl mb-3">🚀</div>
+                <p class="text-stone-600">En 1968, General Motors emitió un requerimiento para reemplazar los sistemas de relés. La propuesta ganadora fue de Richard "Dick" Morley y su empresa Bedford Associates, que crearon el primer PLC comercial, el Modicon 084. Este dispositivo de estado sólido fue revolucionario porque almacenaba la lógica de control en una memoria de procesador, permitiendo su reprogramación sin necesidad de recablear. La programación se realizaba a través de un panel sencillo, abriendo el camino hacia la flexibilidad y la eficiencia.</p>
+            </div>
+            
+            <!-- HITO 3: 1970s-1980s -->
+            <div class="timeline-content" id="early-evolution-content">
+                <div class="timeline-title">Consolidación y Expansión</div>
+                <div class="text-3xl mb-3">📈</div>
+                <p class="text-stone-600">Durante estas décadas, los PLC se popularizaron rápidamente. Los avances tecnológicos permitieron aumentar la capacidad de memoria, reduciendo el tamaño de los dispositivos. Se introdujeron funciones avanzadas como temporizadores, contadores y operaciones matemáticas. El lenguaje de programación **Ladder Diagram** se estandarizó, imitando visualmente los diagramas de relés para facilitar la transición de los ingenieros. Empresas como Allen-Bradley y Siemens se unieron al mercado, impulsando la competencia y la innovación.</p>
+            </div>
+            <div class="timeline-point-wrapper flex justify-center items-center">
+                <div class="timeline-point bg-lime-400" data-target="early-evolution"></div>
+            </div>
+            <div></div>
+
+            <!-- HITO 4: 1990s-Hoy -->
+            <div></div>
+            <div class="timeline-point-wrapper flex justify-center items-center">
+                <div class="timeline-point bg-emerald-400" data-target="modern-era"></div>
+            </div>
+            <div class="timeline-content" id="modern-era-content">
+                <div class="timeline-title">Integración y la Industria 4.0</div>
+                <div class="text-3xl mb-3">🌐</div>
+                <p class="text-stone-600">La era moderna de los PLC se define por la conectividad. La estandarización de protocolos de comunicación industrial como **EtherNet/IP** y **PROFINET** permitió que los PLC se integraran con sistemas de supervisión y gestión de datos (SCADA y MES). Se introdujo la capacidad de control de movimiento y robótica en un solo dispositivo, lo que simplificó la arquitectura de control. Hoy en día, los PLC son la columna vertebral de la **Industria 4.0**, sirviendo como puntos de conexión para el **Internet de las Cosas Industrial (IIoT)** y el análisis de datos en tiempo real. La evolución continúa hacia una mayor inteligencia, seguridad y flexibilidad.</p>
+            </div>
+        </div>
+
+        <footer class="mt-12 flex flex-col md:flex-row gap-4 justify-between items-center">
+            <a href="2.3.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 font-semibold transition">Continuar con el siguiente tema</a>
+            <a href="/temario.html" class="bg-stone-100 text-blue-600 px-6 py-3 rounded-lg shadow hover:bg-blue-200 font-semibold transition">Regresar a la página principal</a>
+        </footer>
+        <div class="w-full text-center mt-6 text-stone-500 text-sm font-medium">Generado con apoyo de Google Gemini por Jesus Armando Tapia Gallegos MTDE</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const timelinePoints = document.querySelectorAll('.timeline-point');
+            const contentBlocks = document.querySelectorAll('.timeline-content');
+            
+            function updateContent(target) {
+                contentBlocks.forEach(block => block.classList.remove('active'));
+                const targetContent = document.getElementById(`${target}-content`);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
+            }
+
+            timelinePoints.forEach(point => {
+                point.addEventListener('click', () => {
+                    timelinePoints.forEach(p => p.classList.remove('active'));
+                    point.classList.add('active');
+                    updateContent(point.dataset.target);
+                });
+            });
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px 0px -50% 0px',
+                threshold: 0
+            };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = entry.target.querySelector('.timeline-point').dataset.target;
+                        timelinePoints.forEach(p => p.classList.remove('active'));
+                        entry.target.querySelector('.timeline-point').classList.add('active');
+                        updateContent(target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.timeline-point-wrapper').forEach(wrapper => {
+                observer.observe(wrapper);
+            });
+
+            if (timelinePoints.length > 0) {
+                timelinePoints[0].click();
+            }
+        });
+    </script>
+</body>
+</html>

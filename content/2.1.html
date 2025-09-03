@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estructura del Hardware del PLC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Tierra y Mar (neutros cálidos con acentos de azul) -->
+    <!-- Application Structure Plan: Se ha creado una SPA de página única con un diagrama visual interactivo de los componentes de un PLC. La arquitectura se basa en un SVG que representa el diagrama, con elementos clave (tarjetas de E/S, CPU, fuente de alimentación) que son interactivos. Al pasar el cursor sobre un componente, un panel de información detallada se muestra, proporcionando una descripción y su función. Este diseño se eligió para convertir un concepto técnico en una experiencia de aprendizaje visual y atractiva, donde el usuario puede explorar cada parte del sistema por sí mismo. -->
+    <!-- Visualization & Content Choices: 1. Diagrama SVG Interactivo: Un gráfico SVG que simula la estructura de un PLC. Objetivo: Representar de forma visual la arquitectura modular. Interacción: La visualización de un tooltip y un panel de información al pasar el mouse (hover). Justificación: Es la mejor manera de explicar la relación física entre los componentes. 2. Tooltips y Paneles de Información: Contenedores HTML que se activan con eventos de JavaScript. Objetivo: Proporcionar descripciones detalladas sin sobrecargar el diagrama. Interacción: El contenido textual cambia dinámicamente según el componente sobre el que se pasa el mouse. Justificación: Mantiene el diseño limpio y enfocado, ofreciendo información bajo demanda. -->
+    <!-- CONFIRMATION: NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4;
+        }
+        .component-card {
+            @apply bg-white p-6 rounded-lg shadow-md border border-stone-200;
+        }
+        .info-panel {
+            min-height: 250px;
+            @apply transition-all duration-300 transform translate-y-4 opacity-0;
+        }
+        .info-panel.active {
+            @apply opacity-100 translate-y-0;
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-stone-900">Estructura del Hardware del PLC</h1>
+            <p class="mt-2 text-lg text-stone-600 max-w-3xl mx-auto">Explora los componentes clave que conforman un Controlador Lógico Programable (PLC) y entiende su función en la automatización.</p>
+        </header>
+
+        <main class="lg:flex lg:space-x-8">
+            <!-- PLC Diagram Section -->
+            <section class="lg:w-2/3 mb-8 lg:mb-0">
+                <div class="bg-white p-8 rounded-lg shadow-md border border-stone-200">
+                    <h2 class="font-bold text-xl mb-4 text-stone-900">Diagrama de la Estructura Modular</h2>
+                    <div class="flex justify-center items-center h-[300px] md:h-[400px]">
+                        <svg width="100%" height="100%" viewBox="0 0 700 350" class="select-none">
+                            <!-- Diagram elements with hovers -->
+                            <rect id="backplane" x="50" y="50" width="600" height="250" rx="15" ry="15" stroke="#d4d4d8" fill="#e7e5e4" stroke-width="2"></rect>
+
+                            <!-- Power Supply -->
+                            <g id="ps-group" class="cursor-pointer hover:scale-105 transition-transform duration-200" data-component="power-supply">
+                                <rect x="65" y="65" width="100" height="220" rx="8" ry="8" fill="#a1a1aa" stroke="#52525b" stroke-width="2"></rect>
+                                <text x="115" y="180" font-family="Inter, sans-serif" font-size="14" font-weight="bold" fill="#fff" text-anchor="middle">Power</text>
+                                <text x="115" y="200" font-family="Inter, sans-serif" font-size="14" font-weight="bold" fill="#fff" text-anchor="middle">Supply</text>
+                            </g>
+
+                            <!-- CPU -->
+                            <g id="cpu-group" class="cursor-pointer hover:scale-105 transition-transform duration-200" data-component="cpu">
+                                <rect x="180" y="65" width="160" height="220" rx="8" ry="8" fill="#3b82f6" stroke="#2563eb" stroke-width="2"></rect>
+                                <text x="260" y="150" font-family="Inter, sans-serif" font-size="18" font-weight="bold" fill="#fff" text-anchor="middle">CPU</text>
+                                <text x="260" y="170" font-family="Inter, sans-serif" font-size="12" fill="#fff" text-anchor="middle">(Procesador)</text>
+                                <text x="260" y="200" font-family="Inter, sans-serif" font-size="12" fill="#fff" text-anchor="middle">▶ RUN</text>
+                                <text x="260" y="215" font-family="Inter, sans-serif" font-size="12" fill="#fff" text-anchor="middle">■ STOP</text>
+                            </g>
+
+                            <!-- I/O Modules -->
+                            <g id="io-group-1" class="cursor-pointer hover:scale-105 transition-transform duration-200" data-component="digital-io">
+                                <rect x="355" y="65" width="120" height="220" rx="8" ry="8" fill="#4ade80" stroke="#16a34a" stroke-width="2"></rect>
+                                <text x="415" y="150" font-family="Inter, sans-serif" font-size="18" font-weight="bold" fill="#fff" text-anchor="middle">E/S</text>
+                                <text x="415" y="170" font-family="Inter, sans-serif" font-size="12" fill="#fff" text-anchor="middle">Digital</text>
+                                <circle cx="415" cy="200" r="5" fill="#fef08a"></circle>
+                                <circle cx="415" cy="220" r="5" fill="#fef08a"></circle>
+                                <circle cx="415" cy="240" r="5" fill="#fef08a"></circle>
+                            </g>
+                            <g id="io-group-2" class="cursor-pointer hover:scale-105 transition-transform duration-200" data-component="analog-io">
+                                <rect x="490" y="65" width="120" height="220" rx="8" ry="8" fill="#22d3ee" stroke="#06b6d4" stroke-width="2"></rect>
+                                <text x="550" y="150" font-family="Inter, sans-serif" font-size="18" font-weight="bold" fill="#fff" text-anchor="middle">E/S</text>
+                                <text x="550" y="170" font-family="Inter, sans-serif" font-size="12" fill="#fff" text-anchor="middle">Analógica</text>
+                                <circle cx="550" cy="200" r="5" fill="#fef08a"></circle>
+                                <circle cx="550" cy="220" r="5" fill="#fef08a"></circle>
+                                <circle cx="550" cy="240" r="5" fill="#fef08a"></circle>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Information Panel -->
+            <section class="lg:w-1/3">
+                <div id="info-panel" class="info-panel bg-white p-6 rounded-lg shadow-md border border-stone-200 active">
+                    <h2 class="font-bold text-xl text-stone-900 mb-2">Descripción del Componente</h2>
+                    <div id="initial-info" class="text-center text-stone-500 min-h-[150px] flex items-center justify-center">
+                        <p class="text-lg">Pasa el cursor sobre un componente del diagrama para ver su descripción detallada.</p>
+                    </div>
+
+                    <div id="power-supply-info" class="hidden">
+                        <h3 class="font-bold text-lg text-stone-800 mb-2">Fuente de Alimentación</h3>
+                        <p class="text-stone-600">Este módulo es el corazón de energía del PLC. Convierte la energía de la línea de voltaje (como 120V CA o 24V CC) en la energía de bajo voltaje regulada (típicamente 5V CC o 24V CC) necesaria para el funcionamiento de los otros módulos del chasis, como la CPU y las tarjetas de E/S. Sin una fuente de alimentación funcional, el PLC no puede operar.</p>
+                    </div>
+
+                    <div id="cpu-info" class="hidden">
+                        <h3 class="font-bold text-lg text-stone-800 mb-2">CPU (Unidad Central de Procesamiento)</h3>
+                        <p class="text-stone-600">La CPU es el "cerebro" del PLC. Contiene el procesador, la memoria y el sistema operativo que ejecutan el programa del usuario. Realiza un ciclo de escaneo continuo que incluye la lectura de las entradas, la ejecución del programa de control, la actualización de las salidas y la gestión de las comunicaciones. Es el módulo más crítico del sistema.</p>
+                    </div>
+
+                    <div id="digital-io-info" class="hidden">
+                        <h3 class="font-bold text-lg text-stone-800 mb-2">Módulos de E/S Digitales</h3>
+                        <p class="text-stone-600">Estos módulos actúan como la interfaz del PLC con el mundo exterior. Los módulos de entrada digital detectan señales discretas de encendido/apagado (como un botón pulsador o un interruptor de límite). Los módulos de salida digital envían señales de encendido/apagado a dispositivos externos (como una luz indicadora, un contactor o una válvula solenoide). Son la conexión binaria del PLC con la planta.</p>
+                    </div>
+
+                    <div id="analog-io-info" class="hidden">
+                        <h3 class="font-bold text-lg text-stone-800 mb-2">Módulos de E/S Analógicas</h3>
+                        <p class="text-stone-600">A diferencia de las E/S digitales, estos módulos manejan señales variables o continuas. Los módulos de entrada analógica miden valores como temperatura, presión, flujo o nivel (por ejemplo, una señal de 4-20mA). Los módulos de salida analógica envían una señal variable para controlar la velocidad de un variador de frecuencia o la posición de una válvula de control. Son esenciales para el control de procesos continuos.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="mt-12 flex flex-col md:flex-row gap-4 justify-between items-center">
+            <a href="2.2.b.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 font-semibold transition">Continuar con el siguiente tema</a>
+            <a href="/temario.html" class="bg-stone-100 text-blue-600 px-6 py-3 rounded-lg shadow hover:bg-blue-200 font-semibold transition">Regresar a la página principal</a>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const svgComponents = document.querySelectorAll('g[data-component]');
+            const infoPanel = document.getElementById('info-panel');
+            const initialInfo = document.getElementById('initial-info');
+
+            svgComponents.forEach(component => {
+                component.addEventListener('mouseenter', () => {
+                    const target = component.dataset.component;
+                    // Hide all info sections first
+                    document.querySelectorAll('#info-panel > div').forEach(div => {
+                        div.classList.add('hidden');
+                    });
+                    // Show the specific info section
+                    const infoDiv = document.getElementById(target + '-info');
+                    if (infoDiv) {
+                        infoDiv.classList.remove('hidden');
+                    }
+                    infoPanel.classList.add('active');
+                });
+                component.addEventListener('mouseleave', () => {
+                    // This is to keep the last hovered info visible until another one is selected
+                    // If you want it to hide on mouseleave, uncomment the following line
+                    // document.querySelectorAll('#info-panel > div').forEach(div => div.classList.add('hidden'));
+                    // initialInfo.classList.remove('hidden');
+                });
+            });
+
+            // Set initial state
+            document.querySelectorAll('#info-panel > div').forEach(div => div.classList.add('hidden'));
+            initialInfo.classList.remove('hidden');
+            infoPanel.classList.add('active');
+        });
+    </script>
+
+</body>
+</html>

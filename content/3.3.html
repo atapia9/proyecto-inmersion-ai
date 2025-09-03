@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creación de Proyectos y Tags</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Tierra y Mar (neutros cálidos con acentos de azul y verde) -->
+    <!-- Application Structure Plan: Se ha diseñado una SPA (Single Page Application) que guía al usuario a través de los conceptos de creación de proyectos y tags. La interfaz se basa en un sistema de navegación por pestañas (tabs) que representan los pasos clave. Cada tab activa un panel de contenido dinámico que explica el paso correspondiente en detalle. Este diseño es ideal para desglosar un proceso técnico en partes manejables, facilitando la comprensión de un flujo de trabajo de software. -->
+    <!-- Visualization & Content Choices: 1. Navegación por Pasos: Se utilizan botones estilizados como pestañas para la navegación. Objetivo: Presentar un flujo de trabajo secuencial de forma clara. Interacción: Clic en el botón para cambiar el contenido del panel principal. Justificación: Este patrón de UI es muy intuitivo y familiar para los usuarios. 2. Paneles de Contenido Dinámico: Un único contenedor que cambia su contenido. Objetivo: Proporcionar explicaciones detalladas para cada paso (Creación del Proyecto, Configuración, Tags). Interacción: El contenido textual cambia con JavaScript en respuesta a la selección del usuario. Justificación: Evita la sobrecarga visual y mantiene el foco en el paso actual del proceso. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4;
+        }
+        .step-tab {
+            @apply p-4 flex-1 text-center font-semibold text-stone-600 border-b-2 border-transparent transition-all duration-300 cursor-pointer;
+        }
+        .step-tab.active {
+            @apply text-blue-600 border-blue-600;
+        }
+        .step-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .step-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-stone-900">Creación de Proyectos y Configuración de Tags</h1>
+            <p class="mt-2 text-lg text-stone-600 max-w-3xl mx-auto">Aprende a iniciar un nuevo proyecto en RSLogix 5000 y a definir las etiquetas que usarás en tu programa de PLC.</p>
+        </header>
+
+        <main class="bg-white p-8 rounded-lg shadow-md border border-stone-200">
+            <!-- Step Tabs Navigation -->
+            <div class="flex border-b border-stone-200 mb-6 space-x-2 overflow-x-auto">
+                <div class="step-tab active" data-step="1">Paso 1: Nuevo Proyecto 📝</div>
+                <div class="step-tab" data-step="2">Paso 2: Configuración del Hardware ⚙️</div>
+                <div class="step-tab" data-step="3">Paso 3: Definición de Tags 🏷️</div>
+            </div>
+
+            <!-- Step Content Panels -->
+            <div id="step-1" class="step-content active">
+                <h2 class="font-bold text-2xl text-blue-600 mb-2">Paso 1: Creación de un Nuevo Proyecto</h2>
+                <p class="text-stone-600 mb-4">El primer paso es crear un archivo de proyecto que contenga toda la configuración y el código del PLC.</p>
+                <div class="bg-stone-100 p-6 rounded-lg border border-stone-200 text-stone-700">
+                    <p class="mb-2"><span class="font-bold">1. Abre Studio 5000:</span> Inicia el software RSLogix 5000 (o Studio 5000 Logix Designer).</p>
+                    <p class="mb-2"><span class="font-bold">2. Crear un nuevo proyecto:</span> Ve a <code class="bg-stone-200 px-1 rounded">File > New Project</code>.</p>
+                    <p class="mb-2"><span class="font-bold">3. Seleccionar el controlador:</span> Elige el modelo de tu PLC (por ejemplo, CompactLogix 5370). Es crucial que este modelo coincida con tu hardware físico.</p>
+                    <p><span class="font-bold">4. Nombrar y guardar:</span> Asigna un nombre a tu proyecto y guárdalo en una ubicación de fácil acceso. ¡Elige un nombre descriptivo!</p>
+                </div>
+                <p class="text-stone-600 mt-4">Al crear el proyecto, el software genera automáticamente una estructura de árbol con carpetas para el controlador, las tareas, los programas y las tags, que son los elementos principales para la programación.</p>
+            </div>
+            
+            <div id="step-2" class="step-content">
+                <h2 class="font-bold text-2xl text-blue-600 mb-2">Paso 2: Configuración del Hardware</h2>
+                <p class="text-stone-600 mb-4">Una vez creado el proyecto, debes decirle al software qué módulos de hardware tienes instalados. Esto se hace en la vista de árbol del proyecto.</p>
+                <div class="bg-stone-100 p-6 rounded-lg border border-stone-200 text-stone-700">
+                    <p class="mb-2"><span class="font-bold">1. Navega a la configuración de E/S:</span> En el árbol del proyecto, expande la carpeta de E/S. Verás tu controlador principal en el chasis virtual.</p>
+                    <p class="mb-2"><span class="font-bold">2. Añadir nuevos módulos:</span> Haz clic derecho en el chasis y selecciona <code class="bg-stone-200 px-1 rounded">New Module</code>. Se abrirá una ventana para elegir el módulo correcto.</p>
+                    <p class="mb-2"><span class="font-bold">3. Elegir el módulo:</span> Busca y selecciona el modelo de tus módulos de E/S. Es importante que coincida con el hardware real. Asigna un nombre y configura sus parámetros si es necesario.</p>
+                    <p><span class="font-bold">4. Repetir para cada módulo:</span> Añade todos los módulos que tengas, asegurándote de que estén en el slot correcto dentro del chasis virtual.</p>
+                </div>
+                <p class="text-stone-600 mt-4">El software utilizará esta información para asignar automáticamente las direcciones de E/S a las tags del programa.</p>
+            </div>
+
+            <div id="step-3" class="step-content">
+                <h2 class="font-bold text-2xl text-blue-600 mb-2">Paso 3: Definición de Tags (Etiquetas)</h2>
+                <p class="text-stone-600 mb-4">Las etiquetas (tags) son variables nombradas que se utilizan en el programa. Hacen que el código sea legible y fácil de entender, a diferencia de las direcciones crudas (como I:0/0).</p>
+                <div class="bg-stone-100 p-6 rounded-lg border border-stone-200 text-stone-700">
+                    <p class="mb-2"><span class="font-bold">1. Crea nuevas tags:</span> En el árbol del proyecto, haz clic derecho en <code class="bg-stone-200 px-1 rounded">Controller Tags</code> y selecciona <code class="bg-stone-200 px-1 rounded">New Tag</code>.</p>
+                    <p class="mb-2"><span class="font-bold">2. Asigna un nombre:</span> Dale un nombre descriptivo a tu tag, como <code class="bg-stone-200 px-1 rounded">Start_Button</code> o <code class="bg-stone-200 px-1 rounded">Motor_On</code>.</p>
+                    <p class="mb-2"><span class="font-bold">3. Selecciona el tipo de dato:</span> Elige el tipo de dato correcto (por ejemplo, <code class="bg-stone-200 px-1 rounded">BOOL</code> para un estado de ON/OFF, <code class="bg-stone-200 px-1 rounded">INT</code> para un número entero).</p>
+                    <p><span class="font-bold">4. Asocia la tag a la E/S:</span> Si la tag se relaciona con una entrada o salida física, asóciala a la dirección del módulo de E/S que configuraste en el paso anterior. Por ejemplo, <code class="bg-stone-200 px-1 rounded">Local:1:I.Data.0</code> para el primer bit de entrada de un módulo en el slot 1.</p>
+                </div>
+                <p class="text-stone-600 mt-4">Las tags son la clave para un código de programación limpio y organizado. Facilitan el mantenimiento, la depuración y la colaboración en proyectos de automatización.</p>
+            </div>
+
+            <footer class="mt-12 flex flex-col md:flex-row gap-4 justify-between items-center">
+                <a href="3.4.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 font-semibold transition">Continuar con el siguiente tema</a>
+                <a href="/temario.html" class="bg-stone-100 text-blue-600 px-6 py-3 rounded-lg shadow hover:bg-blue-200 font-semibold transition">Regresar a la página principal</a>
+            </footer>
+
+            <div class="w-full text-center mt-6 text-stone-500 text-sm font-medium">Generado con apoyo de Google Gemini por Jesus Armando Tapia Gallegos MTDE</div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const stepTabs = document.querySelectorAll('.step-tab');
+            const stepContents = document.querySelectorAll('.step-content');
+
+            function updateDisplay(stepNumber) {
+                stepTabs.forEach(tab => tab.classList.remove('active'));
+                document.querySelector(`.step-tab[data-step="${stepNumber}"]`).classList.add('active');
+                
+                stepContents.forEach(content => content.classList.remove('active'));
+                document.getElementById(`step-${stepNumber}`).classList.add('active');
+            }
+
+            stepTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const step = tab.dataset.step;
+                    updateDisplay(step);
+                });
+            });
+
+            // Set a default state on page load
+            updateDisplay(1);
+        });
+    </script>
+
+</body>
+</html>

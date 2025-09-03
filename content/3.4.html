@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulación y Pruebas de Programas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Tierra y Mar (neutros cálidos con acentos de azul y verde) -->
+    <!-- Application Structure Plan: Se ha diseñado una SPA para explicar el proceso de simulación y prueba de programas en PLC. La interfaz se basa en un sistema de navegación por pestañas (tabs) que representan los pasos clave. Cada tab activa un panel de contenido dinámico que explica el paso correspondiente en detalle. Este diseño es ideal para desglosar un proceso técnico en partes manejables, facilitando la comprensión de un flujo de trabajo de software. -->
+    <!-- Visualization & Content Choices: 1. Navegación por Pasos: Se utilizan botones estilizados como pestañas para la navegación. Objetivo: Presentar un flujo de trabajo secuencial de forma clara. Interacción: Clic en el botón para cambiar el contenido del panel principal. Justificación: Este patrón de UI es muy intuitivo y familiar para los usuarios. 2. Paneles de Contenido Dinámico: Un único contenedor que cambia su contenido. Objetivo: Proporcionar explicaciones detalladas para cada paso. Interacción: El contenido textual cambia con JavaScript en respuesta a la selección del usuario. Justificación: Evita la sobrecarga visual y mantiene el foco en el paso actual del proceso. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4;
+        }
+        .step-tab {
+            @apply p-4 flex-1 text-center font-semibold text-stone-600 border-b-2 border-transparent transition-all duration-300 cursor-pointer;
+        }
+        .step-tab.active {
+            @apply text-blue-600 border-blue-600;
+        }
+        .step-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .step-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-stone-900">Simulación y Pruebas de Programas</h1>
+            <p class="mt-2 text-lg text-stone-600 max-w-3xl mx-auto">Aprende a usar la simulación para verificar la lógica de tu programa antes de implementarlo en un PLC físico.</p>
+        </header>
+
+        <main class="bg-white p-8 rounded-lg shadow-md border border-stone-200">
+            <!-- Step Tabs Navigation -->
+            <div class="flex border-b border-stone-200 mb-6 space-x-2 overflow-x-auto">
+                <div class="step-tab active" data-step="1">Paso 1: ¿Qué es la Simulación? 💡</div>
+                <div class="step-tab" data-step="2">Paso 2: Herramientas de Simulación 🔧</div>
+                <div class="step-tab" data-step="3">Paso 3: Proceso de Simulación 🔄</div>
+            </div>
+
+            <!-- Step Content Panels -->
+            <div id="step-1" class="step-content active">
+                <h2 class="font-bold text-2xl text-blue-600 mb-2">Paso 1: ¿Qué es la Simulación?</h2>
+                <p class="text-stone-600 mb-4">La simulación es un paso crucial en el desarrollo de programas de PLC. Permite a los programadores probar su código en un entorno virtual, sin la necesidad de tener el hardware físico conectado.</p>
+                <div class="bg-stone-100 p-6 rounded-lg border border-stone-200 text-stone-700">
+                    <h3 class="font-bold text-lg mb-2">Beneficios Clave:</h3>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>**Reducción de riesgos:** Permite identificar y corregir errores de lógica antes de que puedan causar daños en el equipo físico o pongan en riesgo la seguridad.</li>
+                        <li>**Ahorro de tiempo y costos:** Reduce la necesidad de pruebas en el sitio, minimizando el tiempo de inactividad de la máquina.</li>
+                        <li>**Entorno seguro:** Permite a los principiantes practicar sin el miedo a dañar el equipo.</li>
+                        <li>**Desarrollo offline:** Permite a los programadores trabajar en su código desde cualquier lugar, sin estar físicamente conectados al PLC.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div id="step-2" class="step-content">
+                <h2 class="font-bold text-2xl text-blue-600 mb-2">Paso 2: Herramientas de Simulación</h2>
+                <p class="text-stone-600 mb-4">Para los controladores Logix, Rockwell Automation proporciona un emulador de PLC que replica el funcionamiento de un PLC real.</p>
+                <div class="bg-stone-100 p-6 rounded-lg border border-stone-200 text-stone-700">
+                    <h3 class="font-bold text-lg mb-2">FactoryTalk Logix Echo:</h3>
+                    <p class="mb-2">Es el emulador de PLC de última generación para los controladores Logix. Permite simular los siguientes aspectos:</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>**Comportamiento de la CPU:** Replica la ejecución del programa del controlador.</li>
+                        <li>**Módulos de E/S:** Simula los módulos de entrada y salida, permitiendo forzar los estados de los bits para probar la lógica.</li>
+                        <li>**Comunicación:** Permite la comunicación a través de EtherNet/IP, replicando el entorno de red de un PLC físico.</li>
+                    </ul>
+                </div>
+                <p class="text-stone-600 mt-4">Para los controladores más antiguos, la herramienta de simulación era RSLogix Emulate 5000, pero FactoryTalk Logix Echo es la herramienta recomendada para los sistemas modernos.</p>
+            </div>
+
+            <div id="step-3" class="step-content">
+                <h2 class="font-bold text-2xl text-blue-600 mb-2">Paso 3: El Proceso de Simulación</h2>
+                <p class="text-stone-600 mb-4">La simulación generalmente sigue estos pasos:</p>
+                <div class="bg-stone-100 p-6 rounded-lg border border-stone-200 text-stone-700">
+                    <p class="mb-2"><span class="font-bold">1. Instalar y configurar el emulador:</span> Asegúrate de que el software de simulación esté instalado y que se haya configurado el driver de comunicación virtual.</p>
+                    <p class="mb-2"><span class="font-bold">2. Descargar el programa:</span> En Studio 5000, "descarga" tu programa al emulador. En lugar de ir a un PLC físico, el código se carga en la memoria del emulador.</p>
+                    <p class="mb-2"><span class="font-bold">3. Poner el emulador en "Run":</span> Cambia el estado del emulador de "Program" a "Run" para que comience a ejecutar tu lógica.</p>
+                    <p><span class="font-bold">4. Probar la lógica:</span> Utiliza las herramientas de Studio 5000 para forzar los estados de entrada (ON/OFF) y observar cómo reaccionan las salidas. Esto te permite verificar que tu lógica de Ladder se comporta como esperas.</p>
+                </div>
+            </div>
+
+            <footer class="mt-12 flex flex-col md:flex-row gap-4 justify-between items-center">
+                <a href="4.1.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 font-semibold transition">Continuar con el siguiente tema</a>
+                <a href="/temario.html" class="bg-stone-100 text-blue-600 px-6 py-3 rounded-lg shadow hover:bg-blue-200 font-semibold transition">Regresar a la página principal</a>
+            </footer>
+
+            <div class="w-full text-center mt-6 text-stone-500 text-sm font-medium">Generado con apoyo de Google Gemini por Jesus Armando Tapia Gallegos MTDE</div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const stepTabs = document.querySelectorAll('.step-tab');
+            const stepContents = document.querySelectorAll('.step-content');
+
+            function updateDisplay(stepNumber) {
+                stepTabs.forEach(tab => tab.classList.remove('active'));
+                document.querySelector(`.step-tab[data-step="${stepNumber}"]`).classList.add('active');
+                
+                stepContents.forEach(content => content.classList.remove('active'));
+                document.getElementById(`step-${stepNumber}`).classList.add('active');
+            }
+
+            stepTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const step = tab.dataset.step;
+                    updateDisplay(step);
+                });
+            });
+
+            // Set a default state on page load
+            updateDisplay(1);
+        });
+    </script>
+
+</body>
+</html>

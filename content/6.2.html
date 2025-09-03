@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Motores y Actuadores</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Neutros cálidos con acentos de azul y verde. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4;
+        }
+        .status-light {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #a8a29e;
+            transition: background-color 0.3s ease;
+        }
+        .light-off { background-color: #e7e5e4; }
+        .light-on { background-color: #22c55e; } /* green */
+        .valve-on { background-color: #3b82f6; } /* blue */
+        .motor-off { color: #e7e5e4; }
+        .motor-on { color: #2563eb; } /* blue */
+        .btn {
+            transition: all 0.1s ease-in-out;
+        }
+        .btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12 max-w-5xl">
+
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-stone-900">Control de Motores y Actuadores</h1>
+            <p class="mt-2 text-lg text-stone-600 max-w-3xl mx-auto">Simula el control de un motor y una válvula utilizando lógica de un PLC. Ideal para comprender el manejo de actuadores.</p>
+        </header>
+
+        <main class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Sección de Controles (Entradas) -->
+            <section class="bg-white p-6 rounded-lg shadow-md border border-stone-200 flex flex-col items-center">
+                <h2 class="font-bold text-xl text-stone-900 mb-4">1. Entradas</h2>
+                <div class="flex flex-col space-y-4 w-full items-center">
+                    <button id="start-btn" class="btn px-8 py-4 bg-green-500 hover:bg-green-600 active:bg-green-700 text-white font-bold rounded-lg shadow-lg w-full">
+                        ARRANQUE
+                    </button>
+                    <button id="stop-btn" class="btn px-8 py-4 bg-red-500 hover:bg-red-600 active:bg-red-700 text-white font-bold rounded-lg shadow-lg w-full">
+                        PARO
+                    </button>
+                    <button id="full-level-sensor-btn" class="btn px-8 py-4 bg-yellow-400 hover:bg-yellow-500 active:bg-yellow-600 text-white font-bold rounded-lg shadow-lg w-full">
+                        SENSOR DE NIVEL
+                    </button>
+                </div>
+            </section>
+
+            <!-- Sección de Lógica del Programa -->
+            <section class="bg-white p-6 rounded-lg shadow-md border border-stone-200 md:col-span-2">
+                <h2 class="font-bold text-xl text-stone-900 mb-4">2. Lógica del Programa (Ladder)</h2>
+                <div class="bg-stone-100 p-4 rounded-lg">
+                    <pre class="font-mono text-xs text-stone-800">
+                    // Lógica para Abrir la Válvula de Llenado
+                    |----------------------------------------------------|
+                    |                                                    |
+                    |--[XIC Start_Button]--[XIO Stop_Button]--[XIO Tank_Full]--+--[OTE Fill_Valve]--|
+                    |                                                    |
+                    |----------------------------------------------------|
+
+                    // Lógica para Encender el Motor Mezclador
+                    |----------------------------------------------------|
+                    |                                                    |
+                    |--[XIC Start_Button]--[XIO Stop_Button]--[XIC Tank_Full]--+--[OTE Mixer_Motor]--|
+                    |                                                    |
+                    |----------------------------------------------------|
+                    </pre>
+                </div>
+            </section>
+
+            <!-- Sección de Salidas y Proceso -->
+            <section class="bg-white p-6 rounded-lg shadow-md border border-stone-200 flex flex-col items-center md:col-span-3">
+                <h2 class="font-bold text-xl text-stone-900 mb-4">3. Proceso y Salidas</h2>
+                <div class="flex space-x-12 items-center justify-center">
+                    <div class="flex flex-col items-center">
+                        <div id="valve-light" class="status-light light-off"></div>
+                        <p class="mt-2 text-sm text-stone-600">Válvula</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <svg id="motor-svg" class="w-16 h-16 motor-off" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-14h2v6h-2zm0 8h2v2h-2z"/>
+                        </svg>
+                        <p id="motor-status" class="mt-2 text-sm text-stone-600">Motor: Parado</p>
+                    </div>
+                </div>
+                <div class="mt-6 w-full p-4 bg-blue-50 rounded-lg border border-blue-200">
+                    <h3 class="font-semibold text-blue-800 mb-2">Estado de las Variables (Tags)</h3>
+                    <p id="tag-status" class="font-mono text-xs text-blue-700"></p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="mt-12 flex flex-col md:flex-row gap-4 justify-between items-center">
+            <a href="6.3.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 font-semibold transition">Continuar con el siguiente tema</a>
+            <a href="/temario.html" class="bg-stone-100 text-blue-600 px-6 py-3 rounded-lg shadow hover:bg-blue-200 font-semibold transition">Regresar a la página principal</a>
+        </footer>
+
+        <div class="w-full text-center mt-6 text-stone-500 text-sm font-medium">Generado con apoyo de Google Gemini por Jesus Armando Tapia Gallegos MTDE</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Variables de estado (simulan los tags del PLC)
+            let Start_Button = false;
+            let Stop_Button = true; // Botón de paro normalmente cerrado
+            let Tank_Full = false;
+            let Fill_Valve = false;
+            let Mixer_Motor = false;
+
+            // Elementos del DOM
+            const startBtn = document.getElementById('start-btn');
+            const stopBtn = document.getElementById('stop-btn');
+            const fullLevelSensorBtn = document.getElementById('full-level-sensor-btn');
+            const valveLight = document.getElementById('valve-light');
+            const motorSvg = document.getElementById('motor-svg');
+            const motorStatus = document.getElementById('motor-status');
+            const tagStatusEl = document.getElementById('tag-status');
+
+            // Actualiza la lógica del PLC
+            function updateLogic() {
+                // Lógica de la Válvula de Llenado
+                // Se activa si se presiona arranque, no se presiona paro Y el tanque no está lleno.
+                Fill_Valve = Start_Button && Stop_Button && !Tank_Full;
+
+                // Lógica del Motor Mezclador
+                // Se activa si se presiona arranque, no se presiona paro Y el tanque YA está lleno.
+                Mixer_Motor = Start_Button && Stop_Button && Tank_Full;
+
+                // Actualizar la interfaz de usuario
+                updateUI();
+            }
+
+            // Actualiza los elementos visuales
+            function updateUI() {
+                // Actualiza el estado de la válvula
+                if (Fill_Valve) {
+                    valveLight.classList.remove('light-off');
+                    valveLight.classList.add('valve-on');
+                } else {
+                    valveLight.classList.remove('valve-on');
+                    valveLight.classList.add('light-off');
+                }
+
+                // Actualiza el estado del motor
+                if (Mixer_Motor) {
+                    motorSvg.classList.remove('motor-off');
+                    motorSvg.classList.add('motor-on');
+                    motorStatus.textContent = 'Motor: Corriendo';
+                } else {
+                    motorSvg.classList.remove('motor-on');
+                    motorSvg.classList.add('motor-off');
+                    motorStatus.textContent = 'Motor: Parado';
+                }
+
+                // Actualiza el estado de las variables (tags)
+                tagStatusEl.innerHTML = `
+                    **Start_Button:** ${Start_Button ? 'VERDADERO' : 'FALSO'} <br>
+                    **Stop_Button:** ${Stop_Button ? 'VERDADERO' : 'FALSO'} <br>
+                    **Tank_Full:** ${Tank_Full ? 'VERDADERO' : 'FALSO'} <br>
+                    **Fill_Valve:** ${Fill_Valve ? 'VERDADERO' : 'FALSO'} <br>
+                    **Mixer_Motor:** ${Mixer_Motor ? 'VERDADERO' : 'FALSO'}
+                `;
+            }
+
+            // Eventos de los botones
+            startBtn.addEventListener('mousedown', () => {
+                Start_Button = true;
+                updateLogic();
+            });
+            startBtn.addEventListener('mouseup', () => {
+                Start_Button = false;
+                updateLogic();
+            });
+            startBtn.addEventListener('mouseleave', () => {
+                Start_Button = false;
+                updateLogic();
+            });
+
+            stopBtn.addEventListener('mousedown', () => {
+                Stop_Button = false;
+                updateLogic();
+            });
+            stopBtn.addEventListener('mouseup', () => {
+                Stop_Button = true;
+                updateLogic();
+            });
+            stopBtn.addEventListener('mouseleave', () => {
+                Stop_Button = true;
+                updateLogic();
+            });
+
+            fullLevelSensorBtn.addEventListener('click', () => {
+                Tank_Full = !Tank_Full; // Cambia el estado del sensor
+                updateLogic();
+            });
+
+            // Inicializar la interfaz de usuario
+            updateUI();
+        });
+    </script>
+</body>
+</html>

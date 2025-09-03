@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casos de Estudio y Proyectos Aplicados - PLC Módulo 1</title>
+    <!-- Incluye el CDN de Tailwind CSS para un diseño moderno y responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto bg-white p-6 md:p-10 rounded-xl shadow-lg border border-gray-200">
+
+        <!-- Encabezado del tema -->
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Tema 6.4: Casos de Estudio y Proyectos Aplicados</h1>
+            <p class="text-xl text-gray-600">Curso: PLC Módulo 1</p>
+        </header>
+
+        <!-- Sección de introducción -->
+        <section class="mb-8">
+            <p class="text-gray-700 text-lg leading-relaxed">
+                Después de comprender la teoría del monitoreo y la adquisición de datos, es crucial ver cómo estos conceptos se aplican en la práctica. Esta sección te presentará ejemplos reales y te dará ideas para proyectos que te permitirán solidificar tus conocimientos.
+            </p>
+        </section>
+
+        <!-- Sección 1: Casos de Estudio -->
+        <section class="mb-8">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4">Casos de Estudio en la Industria</h3>
+            <p class="text-gray-700 leading-relaxed mb-4">
+                Los sistemas de monitoreo y adquisición de datos son el corazón de la eficiencia y la seguridad en diversas industrias. Aquí hay algunos ejemplos de su uso.
+            </p>
+
+            <!-- Caso de Estudio 1: Planta de Tratamiento de Aguas -->
+            <div class="bg-gray-100 rounded-lg p-6 mb-6">
+                <h4 class="text-xl font-bold text-gray-800 mb-2">Caso 1: Monitoreo en una Planta de Tratamiento de Aguas</h4>
+                <p class="text-gray-700 leading-relaxed">
+                    Un PLC controla el flujo de agua, la adición de productos químicos y el estado de las bombas. A través de un sistema SCADA, los operadores monitorean en tiempo real:
+                </p>
+                <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4 mt-2">
+                    <li><span class="font-medium text-gray-800">Sensores de pH y Turbidez:</span> Para asegurar la calidad del agua.</li>
+                    <li><span class="font-medium text-gray-800">Caudalímetros:</span> Para medir el volumen de agua procesada.</li>
+                    <li><span class="font-medium text-gray-800">Estado de las Bombas:</span> Para verificar que están funcionando correctamente y detectar fallas.</li>
+                </ul>
+                <p class="text-gray-700 mt-2">
+                    Si el pH excede un umbral preestablecido, el sistema SCADA genera una alarma y puede enviar una notificación al operador, permitiendo una acción correctiva inmediata.
+                </p>
+            </div>
+
+            <!-- Caso de Estudio 2: Línea de Envasado de Bebidas -->
+            <div class="bg-gray-100 rounded-lg p-6">
+                <h4 class="text-xl font-bold text-gray-800 mb-2">Caso 2: Detección de Fallas en una Línea de Envasado</h4>
+                <p class="text-gray-700 leading-relaxed">
+                    En una línea de producción, múltiples PLCs controlan el llenado, tapado y etiquetado de botellas. Un sistema de monitoreo recopila datos de:
+                </p>
+                <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4 mt-2">
+                    <li><span class="font-medium text-gray-800">Sensores fotoeléctricos:</span> Para contar las botellas que pasan y detectar las mal ubicadas.</li>
+                    <li><span class="font-medium text-gray-800">Censores de nivel:</span> Para asegurar que cada botella se llene correctamente.</li>
+                    <li><span class="font-medium text-gray-800">Monitores de temperatura:</span> Para el proceso de pasteurización.</li>
+                </ul>
+                <p class="text-gray-700 mt-2">
+                    Si el conteo de botellas tapadas no coincide con las llenadas, el sistema registra el evento y alerta al operador sobre un posible problema en la máquina de tapado, lo que reduce el desperdicio de producto.
+                </p>
+            </div>
+        </section>
+
+        <!-- Sección 2: Proyectos Aplicados -->
+        <section class="mb-8">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4">Proyectos Prácticos Sugeridos</h3>
+            <p class="text-gray-700 leading-relaxed mb-4">
+                Estos proyectos conceptuales te ayudarán a aplicar lo aprendido.
+            </p>
+
+            <!-- Proyecto 1: Simulador de Control de Temperatura -->
+            <div class="bg-gray-100 rounded-lg p-6 mb-6">
+                <h4 class="text-xl font-bold text-gray-800 mb-2">Proyecto 1: Simulador de Control de Temperatura en un Horno</h4>
+                <p class="text-gray-700 leading-relaxed">
+                    <span class="font-medium text-gray-800">Objetivo:</span> Desarrollar un programa en un simulador de PLC para adquirir datos de temperatura de un horno y visualizarlos en una HMI.
+                </p>
+                <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4 mt-2">
+                    <li><span class="font-medium text-gray-800">Entrada:</span> Un valor de temperatura simulado ($0-1000^\circ C$).</li>
+                    <li><span class="font-medium text-gray-800">Salida:</span> Un indicador de encendido/apagado del calentador.</li>
+                    <li><span class="font-medium text-gray-800">Visualización:</span> Un gráfico en la HMI que muestra la temperatura a lo largo del tiempo.</li>
+                    <li><span class="font-medium text-gray-800">Función:</span> Si la temperatura sube de $75^\circ C$, el calentador se apaga. Si baja de $70^\circ C$, se enciende.</li>
+                </ul>
+            </div>
+
+            <!-- Proyecto 2: Contador de Productos en una Banda Transportadora -->
+            <div class="bg-gray-100 rounded-lg p-6">
+                <h4 class="text-xl font-bold text-gray-800 mb-2">Proyecto 2: Contador de Productos en una Banda Transportadora</h4>
+                <p class="text-gray-700 leading-relaxed">
+                    <span class="font-medium text-gray-800">Objetivo:</span> Crear un sistema que cuente productos que pasan por un sensor y registre los datos de producción.
+                </p>
+                <ul class="list-disc list-inside space-y-1 text-gray-700 pl-4 mt-2">
+                    <li><span class="font-medium text-gray-800">Entrada:</span> Un sensor simulado de tipo "ON/OFF" que detecta un producto.</li>
+                    <li><span class="font-medium text-gray-800">Salida:</span> Un contador digital que aumenta con cada detección.</li>
+                    <li><span class="font-medium text-gray-800">Visualización:</span> Un display en la HMI que muestra el número total de productos.</li>
+                    <li><span class="font-medium text-gray-800">Función:</span> Cada vez que el sensor se activa, el contador en el PLC se incrementa y el valor se muestra en la HMI.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Pie de página -->
+        <footer class="mt-12 flex flex-col md:flex-row gap-4 justify-between items-center">
+            <a href="glosario.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 font-semibold transition">Continuar con el siguiente tema</a>
+            <a href="/temario.html" class="bg-stone-100 text-blue-600 px-6 py-3 rounded-lg shadow hover:bg-blue-200 font-semibold transition">Regresar a la página principal</a>
+        </footer>
+
+        <footer class="text-center text-gray-500 text-sm mt-12 pt-6 border-t border-gray-200">
+            <p>&copy; Curso de PLC Módulo 1. Todos los derechos reservados.</p>
+        </footer>
+
+        <div class="w-full text-center mt-6 text-stone-500 text-sm font-medium">Generado con apoyo de Google Gemini por Jesus Armando Tapia Gallegos MTDE</div>
+
+    </div>
+</body>
+</html>

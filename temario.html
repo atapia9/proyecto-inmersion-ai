@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso: Controlador Lógico Programable - Allen Bradley</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: Se ha diseñado una SPA de desplazamiento vertical con una barra de navegación lateral fija. Esta estructura permite a los usuarios tener una visión general constante del contenido del curso y saltar a cualquier sección de interés con un solo clic. Las secciones principales son: Visión General, Temario (con un sistema de tarjetas expandibles para evitar la sobrecarga de información), Criterios de Evaluación (visualizados con un gráfico interactivo para una comprensión rápida) y Bibliografía. Esta arquitectura fue elegida para facilitar una exploración no lineal y centrada en el usuario, mejorando la usabilidad en comparación con un documento estático. -->
+    <!-- Visualization & Content Choices: 1. Criterios de Evaluación: Se usa un gráfico de dona (Chart.js) para mostrar la ponderación (40%, 40%, 20%). Objetivo: Comparar proporciones. Interacción: Hover para ver detalles. Justificación: Es más intuitivo y visualmente atractivo que una tabla. 2. Temario: Se presenta con tarjetas de contenido expandibles (HTML/CSS/JS). Objetivo: Organizar la información jerárquicamente. Interacción: Clic para expandir/colapsar los detalles de cada módulo. Justificación: Evita abrumar al usuario y permite un enfoque selectivo en los temas de interés. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .content-card-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .content-card.active .content-card-body {
+            max-height: 500px;
+        }
+        .nav-link.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 80vw;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800">
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <nav class="w-full md:w-64 bg-stone-100 border-b md:border-b-0 md:border-r border-stone-200 md:fixed md:h-full">
+            <div class="p-5">
+                <h2 class="text-lg font-bold text-blue-600">Menú del Curso</h2>
+                <p class="text-sm text-stone-500">Navegación Rápida</p>
+            </div>
+            <ul class="px-2 py-2" id="nav-menu">
+                <li><a href="#overview" class="nav-link text-stone-700 font-medium flex items-center p-3 my-1 rounded-lg hover:bg-stone-200 transition-colors duration-200">Visión General</a></li>
+                <li><a href="#syllabus" class="nav-link text-stone-700 font-medium flex items-center p-3 my-1 rounded-lg hover:bg-stone-200 transition-colors duration-200">Temario</a></li>
+                <li><a href="#evaluation" class="nav-link text-stone-700 font-medium flex items-center p-3 my-1 rounded-lg hover:bg-stone-200 transition-colors duration-200">Evaluación</a></li>
+                <li><a href="#bibliography" class="nav-link text-stone-700 font-medium flex items-center p-3 my-1 rounded-lg hover:bg-stone-200 transition-colors duration-200">Bibliografía</a></li>
+                <li><a href="/content/glosario.html" class="nav-link text-stone-700 font-medium flex items-center p-3 my-1 rounded-lg hover:bg-stone-200 transition-colors duration-200">Glosario</a></li>
+            </ul>
+        </nav>
+
+        <main class="flex-1 md:ml-64">
+            <header class="bg-white shadow-sm p-8 border-b border-stone-200">
+                <h1 class="text-3xl md:text-4xl font-bold text-stone-900">Controlador Lógico Programable - Allen Bradley Módulo I</h1>
+                <p class="mt-2 text-lg text-stone-600">Una guía interactiva del contenido y estructura del curso.</p>
+            </header>
+
+            <div class="p-4 md:p-8 space-y-12">
+                <section id="overview" class="scroll-mt-20">
+                    <h2 class="text-2xl font-bold text-blue-600 border-b pb-2 mb-4">Visión General del Curso</h2>
+                    <p class="text-stone-600 mb-6">
+                        Esta sección proporciona los detalles fundamentales del curso, incluyendo su propósito principal y las condiciones en las que se imparte. Es el punto de partida para entender el alcance de la capacitación.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-white p-6 rounded-lg shadow-md border border-stone-200">
+                            <h3 class="font-bold text-lg text-stone-800 mb-2">🎯 Objetivo Principal</h3>
+                            <p class="text-stone-600">Al finalizar, los participantes aprenderán el uso y programación de los PLC Allen Bradley, adquiriendo conocimientos fundamentales sobre su estructura, funcionamiento y aplicaciones en la automatización industrial.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md border border-stone-200">
+                            <h3 class="font-bold text-lg text-stone-800 mb-2">🕒 Duración</h3>
+                            <p class="text-stone-600">El curso tiene una duración total de <span class="font-bold text-blue-600">20 horas</span> de instrucción intensiva.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md border border-stone-200">
+                            <h3 class="font-bold text-lg text-stone-800 mb-2">🏫 Modalidad</h3>
+                            <p class="text-stone-600">La modalidad de impartición es <span class="font-bold text-blue-600">Presencial</span>, fomentando la interacción directa y la práctica en equipo.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="syllabus" class="scroll-mt-20">
+                    <h2 class="text-2xl font-bold text-blue-600 border-b pb-2 mb-4">Temario Detallado</h2>
+                     <p class="text-stone-600 mb-6">
+                        Explore el contenido del curso módulo por módulo. Haga clic en el título de cada sección para expandir y ver los temas específicos que se cubrirán. Esta estructura le permite enfocarse en las áreas de mayor interés.
+                    </p>
+                    <div id="syllabus-content" class="space-y-4">
+                    </div>
+                    <div class="w-full text-center mt-6 text-stone-500 text-sm font-medium">Generado con apoyo de Google Gemini por Jesus Armando Tapia Gallegos MTDE</div>
+                </section>
+
+                <section id="evaluation" class="scroll-mt-20">
+                    <h2 class="text-2xl font-bold text-blue-600 border-b pb-2 mb-4">Criterios de Evaluación</h2>
+                    <p class="text-stone-600 mb-6">
+                        La evaluación del curso se compone de varios elementos clave, cada uno con un peso específico en la calificación final. El siguiente gráfico interactivo desglosa estas ponderaciones para una fácil comprensión. Pase el cursor sobre cada segmento para ver los detalles.
+                    </p>
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-stone-200">
+                        <div class="flex flex-col lg:flex-row items-center gap-8">
+                            <div class="w-full lg:w-1/2">
+                                <div class="chart-container">
+                                    <canvas id="evaluationChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="w-full lg:w-1/2">
+                                <h3 class="font-bold text-xl text-stone-800 mb-4">Desglose de Calificación</h3>
+                                <ul class="space-y-3 text-stone-600">
+                                    <li class="flex items-center"><span class="h-4 w-4 rounded-full bg-blue-500 mr-3"></span>Asistencia: <span class="font-bold ml-auto">40%</span></li>
+                                    <li class="flex items-center"><span class="h-4 w-4 rounded-full bg-teal-500 mr-3"></span>Actividades de Aprendizaje: <span class="font-bold ml-auto">40%</span></li>
+                                    <li class="flex items-center"><span class="h-4 w-4 rounded-full bg-amber-500 mr-3"></span>Evaluación Final: <span class="font-bold ml-auto">20%</span></li>
+                                </ul>
+                                <div class="mt-6 pt-4 border-t border-stone-200">
+                                    <p class="text-sm text-stone-500">Para acreditar la capacitación, la calificación mínima aprobatoria es de <span class="font-bold text-stone-800">8.00</span> en una escala de 0 a 10.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="bibliography" class="scroll-mt-20">
+                    <h2 class="text-2xl font-bold text-blue-600 border-b pb-2 mb-4">Bibliografía Sugerida</h2>
+                    <p class="text-stone-600 mb-6">
+                        A continuación se presenta una lista de recursos bibliográficos recomendados para complementar el aprendizaje y profundizar en los temas vistos durante el curso. Estos textos son referencias clave en el campo de la automatización y los PLC.
+                    </p>
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-stone-200">
+                        <ul id="bibliography-list" class="space-y-3 text-stone-700">
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const syllabusData = [
+                {
+                    title: "1. Introducción a los Controladores Lógicos Programables (PLC)",
+                    topics: [
+                        "Conceptos básicos de automatización industrial",
+                        "Historia y evolución de los PLC",
+                        "Familia de PLC Allen Bradley y sus características",
+                        "Aplicaciones en la industria"
+                    ]
+                },
+                {
+                    title: "2. Arquitectura y Componentes del PLC Allen Bradley",
+                    topics: [
+                        "Estructura del hardware del PLC",
+                        "Tipos de módulos de entrada y salida (I/O)",
+                        "Comunicación y protocolos industriales",
+                        "Configuración de una estación de trabajo"
+                    ]
+                },
+                {
+                    title: "3. Programación en RSLogix 5000",
+                    topics: [
+                        "Introducción al software RSLogix 5000",
+                        "Lenguaje de programación Ladder (LD)",
+                        "Creación de proyectos y configuración de tags",
+                        "Simulación y pruebas de programas"
+                    ]
+                },
+                {
+                    title: "4. Instrucciones Básicas de Programación",
+                    topics: [
+                        "Instrucciones de bit (XIC, XIO, OTE, OTL, OTU)",
+                        "Instrucciones de temporización y conteo",
+                        "Instrucciones de comparación y transición",
+                        "Control de flujo del programa"
+                    ]
+                },
+                {
+                    title: "5. Comunicación y Diagnóstico de Fallas",
+                    topics: [
+                        "Configuración de redes industriales (Ethernet/IP, RS232)",
+                        "Diagnóstico y solución de problemas en PLC",
+                        "Métodos de respaldo y recuperación de programas",
+                        "Seguridad en sistemas automatizados"
+                    ]
+                },
+                {
+                    title: "6. Aplicaciones Prácticas en la Industria",
+                    topics: [
+                        "Integración del PLC en procesos industriales",
+                        "Control de motores y actuadores",
+                        "Monitoreo y adquisición de datos",
+                        "Casos de estudio y proyectos aplicados"
+                    ]
+                }
+            ];
+
+            const bibliographyData = [
+                "Rehg, J.A. & Sartori, G.J. – Programmable Logic Controllers – Pearson – 2014.",
+                "Kelvin T. Erickson – Programmable Logic Controllers: Hardware and Programming – ISA – 2016.",
+                "Frank D. Petruzella – Programmable Logic Controllers – McGraw-Hill – 2017.",
+                "Hugh Jack – Automating Manufacturing Systems with PLCs – Lulu Press – 2010.",
+                "Gary A. Dunning – Introduction to Programmable Logic Controllers – Cengage Learning – 2013.",
+                "Jon Stenerson – Industrial Automation and Process Control – Prentice Hall – 2004."
+            ];
+
+            const syllabusContainer = document.getElementById('syllabus-content');
+            const topicLinks = [
+                [
+                    { text: "Conceptos básicos de automatización industrial", href: "1.1.html" },
+                    { text: "Historia y evolución de los PLC", href: "2.2.html" },
+                    { text: "Familia de PLC Allen Bradley y sus características", href: "1.3.html" },
+                    { text: "Aplicaciones en la industria", href: "1.4.html" }
+                ],
+                [
+                    { text: "Estructura del hardware del PLC", href: "2.1.html" },
+                    { text: "Tipos de módulos de entrada y salida (I/O)", href: "2.2.b.html" },
+                    { text: "Comunicación y protocolos industriales", href: "2.3.html" },
+                    { text: "Configuración de una estación de trabajo", href: "2.4.html" }
+                ],
+                [
+                    { text: "Introducción al software RSLogix 5000", href: "3.1.html" },
+                    { text: "Lenguaje de programación Ladder (LD)", href: "3.2.html" },
+                    { text: "Creación de proyectos y configuración de tags", href: "3.3.html" },
+                    { text: "Simulación y pruebas de programas", href: "3.4.html" }
+                ],
+                [
+                    { text: "Instrucciones de bit (XIC, XIO, OTE, OTL, OTU)", href: "4.1.html" },
+                    { text: "Instrucciones de temporización y conteo", href: "4.2.html" },
+                    { text: "Instrucciones de comparación y transición", href: "4.3.html" },
+                    { text: "Control de flujo del programa", href: "4.4.html" }
+                ],
+                [
+                    { text: "Configuración de redes industriales (Ethernet/IP, RS232)", href: "5.1.html" },
+                    { text: "Diagnóstico y solución de problemas en PLC", href: "5.2.html" },
+                    { text: "Métodos de respaldo y recuperación de programas", href: "5.3.html" },
+                    { text: "Seguridad en sistemas automatizados", href: "5.4.html" }
+                ],
+                [
+                    { text: "Integración del PLC en procesos industriales", href: "6.1.html" },
+                    { text: "Control de motores y actuadores", href: "6.2.html" },
+                    { text: "Monitoreo y adquisición de datos", href: "6.3.html" },
+                    { text: "Casos de estudio y proyectos aplicados", href: "6.4.html" },
+                    { text: "Glosario Interactivo", href: "glosario.html" }
+                ]
+            ];
+
+            syllabusData.forEach((module, i) => {
+                const card = document.createElement('div');
+                card.className = 'content-card bg-white rounded-lg shadow-md border border-stone-200 overflow-hidden';
+                
+                let topicsHtml = topicLinks[i].map(topic => `<li class="py-2 px-4 border-b border-stone-100"><a href='content/${topic.href.replace(/^content\//,"").replace(/^content\//,"")}' class='text-blue-600 hover:underline font-medium'>${topic.text}</a></li>`).join('');
+
+                card.innerHTML = `
+                    <div class="content-card-header p-4 cursor-pointer flex justify-between items-center hover:bg-stone-50">
+                        <h3 class="font-semibold text-lg text-stone-800">${module.title}</h3>
+                        <span class="transform transition-transform duration-300 text-blue-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </span>
+                    </div>
+                    <div class="content-card-body bg-stone-50">
+                        <ul class="text-stone-600 text-sm list-disc list-inside p-4">${topicsHtml}</ul>
+                    </div>
+                `;
+                syllabusContainer.appendChild(card);
+            });
+
+            const bibliographyList = document.getElementById('bibliography-list');
+            bibliographyData.forEach(item => {
+                const li = document.createElement('li');
+                li.className = "flex items-start py-2";
+                li.innerHTML = `<span class="text-blue-500 mr-3 mt-1">📚</span> <span>${item}</span>`;
+                bibliographyList.appendChild(li);
+            });
+
+            document.querySelectorAll('.content-card-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const card = header.parentElement;
+                    card.classList.toggle('active');
+                    const icon = header.querySelector('span');
+                    icon.classList.toggle('rotate-180');
+                });
+            });
+
+            const ctx = document.getElementById('evaluationChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Asistencia', 'Actividades de Aprendizaje', 'Evaluación Final'],
+                    datasets: [{
+                        label: 'Ponderación',
+                        data: [40, 40, 20],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.8)',
+                            'rgba(20, 184, 166, 0.8)',
+                            'rgba(245, 158, 11, 0.8)'
+                        ],
+                        borderColor: [
+                            '#ffffff'
+                        ],
+                        borderWidth: 4,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '60%',
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + '%';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px", threshold: 0 });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glosario Interactivo del Curso de PLC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: Una aplicación de página única que presenta un glosario de términos de manera dinámica, con capacidades de búsqueda y filtrado. Las interacciones principales son el filtrado por categorías y la búsqueda en tiempo real. Esta estructura se eligió para ofrecer tanto una exploración guiada (por categoría) como una recuperación de información específica, lo que la hace más eficiente y fácil de usar que un documento estático. -->
+    <!-- Visualization & Content Choices: Report Info -> Términos del Glosario. Goal -> Organizar e Informar. Viz/Presentation -> Tarjetas Interactivas. Interaction -> Filtrado por categorías y búsqueda en vivo. Justification -> Este diseño basado en tarjetas y filtros es la forma más intuitiva y efectiva de presentar un glosario, permitiendo a los usuarios encontrar rápidamente la información que necesitan sin tener que desplazarse por una larga lista estática. Method -> HTML/Tailwind para la estructura, Vanilla JS para todas las interacciones. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f4;
+        }
+        .filter-btn {
+            @apply px-4 py-2 text-sm font-semibold text-stone-600 bg-white border border-stone-300 rounded-md shadow-sm hover:bg-stone-50 transition-all duration-200;
+        }
+        .filter-btn.active {
+            @apply bg-blue-600 text-white border-blue-600;
+        }
+        .term-card {
+            @apply bg-white p-6 rounded-lg shadow-md border border-stone-200 transition-opacity duration-300;
+        }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-stone-900">Glosario Interactivo del Curso de PLC</h1>
+            <p class="mt-2 text-lg text-stone-600 max-w-3xl mx-auto">Utiliza los filtros y la barra de búsqueda para encontrar rápidamente los términos clave del curso.</p>
+        </header>
+
+        <!-- Filters and Search -->
+        <div class="mb-8 p-4 bg-white rounded-lg shadow-sm border border-stone-200">
+            <div class="flex flex-col md:flex-row gap-4 items-center">
+                <div class="w-full md:w-1/2">
+                    <input type="text" id="search-input" placeholder="Buscar término..." class="w-full px-4 py-2 border border-stone-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                </div>
+                <div id="filter-container" class="w-full md:w-auto flex flex-wrap gap-2 justify-center">
+                    <!-- Filter buttons will be injected here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Glossary Grid -->
+        <div id="glossary-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Term cards will be injected here -->
+        </div>
+        <div id="no-results" class="hidden text-center text-stone-500 mt-8">
+            <p class="text-xl font-semibold">No se encontraron resultados</p>
+            <p>Intenta ajustar tu búsqueda o filtro.</p>
+        </div>
+
+        <div class="w-full text-center mt-6">
+            <a href="/temario.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 font-semibold transition">Regresar a la página principal</a>
+        </div>
+
+        <div class="w-full text-center mt-6 text-stone-500 text-sm font-medium">Generado con apoyo de Google Gemini por Jesus Armando Tapia Gallegos MTDE</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const glossaryData = [
+                { term: "PLC / Controlador Lógico Programable", definition: "Dispositivo electrónico robusto utilizado para automatizar procesos industriales. Reemplaza los complejos circuitos de relés electromecánicos.", category: "Fundamentos y Conceptos" },
+                { term: "Automatización Industrial", definition: "Uso de sistemas y tecnología para controlar y monitorear procesos y máquinas, minimizando la intervención humana.", category: "Fundamentos y Conceptos" },
+                { term: "Ladder Logic (LD) / Lógica de Escalera", definition: "Lenguaje de programación gráfico para PLC que simula diagramas de circuitos de relés. Es intuitivo para electricistas e ingenieros.", category: "Fundamentos y Conceptos" },
+                { term: "HMI / Human-Machine Interface", definition: "Dispositivo o software que permite a un operador interactuar y supervisar un PLC y los procesos que controla, como una pantalla táctil.", category: "Fundamentos y Conceptos" },
+                { term: "CPU / Central Processing Unit", definition: "El cerebro del PLC que ejecuta el programa de usuario y administra las operaciones.", category: "Hardware y Arquitectura" },
+                { term: "Módulo de Entrada / Input Module", definition: "Componente que recibe señales de dispositivos de campo (sensores, pulsadores) y las convierte en datos digitales para la CPU.", category: "Hardware y Arquitectura" },
+                { term: "Módulo de Salida / Output Module", definition: "Componente que recibe datos de la CPU y envía señales a los actuadores (motores, luces, válvulas) para controlar el proceso.", category: "Hardware y Arquitectura" },
+                { term: "Fuente de Alimentación / Power Supply", definition: "Convierte la energía de la red eléctrica (AC) en energía de bajo voltaje (DC) estable para alimentar el PLC y sus módulos.", category: "Hardware y Arquitectura" },
+                { term: "E/S (I/O) / Entradas y Salidas", definition: "Término que se refiere a los módulos de entrada y salida de un PLC.", category: "Hardware y Arquitectura" },
+                { term: "Backplane", definition: "La \"columna vertebral\" de un chasis de PLC que proporciona un camino de comunicación y alimentación para los módulos instalados.", category: "Hardware y Arquitectura" },
+                { term: "Chasis / Rack", definition: "Estructura física que sostiene la CPU, la fuente de alimentación y los módulos de E/S.", category: "Hardware y Arquitectura" },
+                { term: "RSLogix 5000 / Studio 5000", definition: "Software de desarrollo de Rockwell Automation para programar las familias de PLC Logix (ControlLogix, CompactLogix).", category: "Programación y Software" },
+                { term: "Tag / Etiqueta", definition: "Nombre o identificador simbólico para una variable de memoria en un PLC, facilitando la lectura y comprensión del código.", category: "Programación y Software" },
+                { term: "Routine / Rutina", definition: "Un bloque de código de programación en un proyecto. Un proyecto puede contener múltiples rutinas para organizar la lógica.", category: "Programación y Software" },
+                { term: "Task / Tarea", definition: "Contenedor de rutinas. En Studio 5000, las tareas pueden ser continuas (siempre ejecutándose) o periódicas (ejecutándose en intervalos).", category: "Programación y Software" },
+                { term: "Descargar / Download", definition: "Proceso de transferir un programa desde la computadora al PLC.", category: "Programación y Software" },
+                { term: "Cargar / Upload", definition: "Proceso de transferir un programa desde el PLC a la computadora.", category: "Programación y Software" },
+                { term: "En Línea / Online", definition: "Estado en el que el software de programación está conectado y monitoreando la ejecución del PLC en tiempo real.", category: "Programación y Software" },
+                { term: "XIC / Examine If Closed", definition: "Instrucción que representa un contacto normalmente abierto. Se activa cuando la condición es verdadera.", category: "Instrucciones de Programación" },
+                { term: "XIO / Examine If Open", definition: "Instrucción que representa un contacto normalmente cerrado. Se activa cuando la condición es falsa.", category: "Instrucciones de Programación" },
+                { term: "OTE / Output Energize", definition: "Instrucción que representa una bobina de salida. Se activa cuando las condiciones de la línea (rung) son verdaderas.", category: "Instrucciones de Programación" },
+                { term: "TON / Timer On-Delay", definition: "Temporizador que cuenta el tiempo mientras su condición de entrada es verdadera. La salida se activa después de un tiempo preestablecido.", category: "Instrucciones de Programación" },
+                { term: "TOF / Timer Off-Delay", definition: "Temporizador que mantiene su salida activa durante un tiempo preestablecido después de que su condición de entrada se vuelve falsa.", category: "Instrucciones de Programación" },
+                { term: "CTU / Count Up", definition: "Contador que incrementa su valor cada vez que su condición de entrada pasa de falsa a verdadera.", category: "Instrucciones de Programación" },
+                { term: "CTD / Count Down", definition: "Contador que decrementa su valor cada vez que su condición de entrada pasa de falsa a verdadera.", category: "Instrucciones de Programación" },
+                { term: "MOV / Move", definition: "Instrucción que transfiere el valor de un tag de origen a un tag de destino.", category: "Instrucciones de Programación" },
+                { term: "JSR / Jump to Subroutine", definition: "Instrucción que desvía el flujo del programa para ejecutar una rutina o subrutina específica.", category: "Instrucciones de Programación" },
+                { term: "RST / Reset", definition: "Instrucción utilizada para reiniciar el valor de un temporizador o un contador a cero.", category: "Instrucciones de Programación" },
+                { term: "Ethernet/IP", definition: "Un protocolo de comunicación industrial de alta velocidad, popular en los PLC Allen-Bradley, que utiliza la red Ethernet estándar para la comunicación.", category: "Comunicación y Diagnóstico" },
+                { term: "RS-232", definition: "Un protocolo de comunicación serial, más antiguo, utilizado para la comunicación punto a punto, comúnmente para conectar una computadora directamente al PLC.", category: "Comunicación y Diagnóstico" },
+                { term: "Diagnóstico / Diagnostics", definition: "Proceso de revisión y análisis de los indicadores de estado (LEDs) y mensajes de error para identificar la causa de una falla en el PLC.", category: "Comunicación y Diagnóstico" },
+                { term: "FAULTS", definition: "Indicador de falla que se activa cuando hay un problema en el hardware o en el programa que impide la correcta operación del PLC.", category: "Comunicación y Diagnóstico" },
+                { term: "Respaldos / Backups", definition: "Copias de seguridad del programa del PLC y la configuración del hardware. Cruciales para la recuperación del sistema.", category: "Comunicación y Diagnóstico" },
+                { term: "Actuador", definition: "Dispositivo de salida que controla o ejecuta una acción física, como un motor, un pistón o una válvula.", category: "Aplicaciones y Seguridad" },
+                { term: "Sensor", definition: "Dispositivo de entrada que detecta un cambio en el entorno físico (presencia, temperatura, presión) y lo convierte en una señal eléctrica.", category: "Aplicaciones y Seguridad" },
+                { term: "E-Stop / Emergency Stop", definition: "Pulsador que, al ser activado, detiene inmediatamente una máquina o proceso por razones de seguridad.", category: "Aplicaciones y Seguridad" },
+                { term: "Bloqueo/Etiquetado (LOTO) / Lockout/Tagout", definition: "Procedimiento de seguridad para asegurar que las máquinas están apagadas y no pueden ser encendidas durante su mantenimiento.", category: "Aplicaciones y Seguridad" }
+            ];
+
+            const glossaryGrid = document.getElementById('glossary-grid');
+            const filterContainer = document.getElementById('filter-container');
+            const searchInput = document.getElementById('search-input');
+            const noResults = document.getElementById('no-results');
+
+            let currentFilter = 'Todos';
+
+            // Get unique categories
+            const categories = ['Todos', ...new Set(glossaryData.map(item => item.category))];
+
+            // Render filter buttons
+            categories.forEach(category => {
+                const button = document.createElement('button');
+                button.className = 'filter-btn';
+                button.textContent = category;
+                button.dataset.category = category;
+                if (category === currentFilter) {
+                    button.classList.add('active');
+                }
+                button.addEventListener('click', () => {
+                    // Update active filter button
+                    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    currentFilter = category;
+
+                    // Filter and render glossary terms
+                    renderGlossaryTerms();
+                });
+                filterContainer.appendChild(button);
+            });
+
+            const renderGlossaryTerms = () => {
+                // Clear existing terms
+                glossaryGrid.innerHTML = '';
+                noResults.classList.add('hidden');
+
+                // Get filtered terms
+                let filteredTerms = glossaryData;
+                const searchTerm = searchInput.value.toLowerCase();
+                if (currentFilter !== 'Todos') {
+                    filteredTerms = filteredTerms.filter(item => item.category === currentFilter);
+                }
+                if (searchTerm) {
+                    filteredTerms = filteredTerms.filter(item => item.term.toLowerCase().includes(searchTerm));
+                }
+
+                // Render terms
+                filteredTerms.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'term-card';
+                    card.innerHTML = `
+                        <h3 class="text-xl font-semibold text-stone-900">${item.term}</h3>
+                        <p class="mt-2 text-stone-700">${item.definition}</p>
+                    `;
+                    glossaryGrid.appendChild(card);
+                });
+
+                // Show no results message if no terms found
+                if (filteredTerms.length === 0) {
+                    noResults.classList.remove('hidden');
+                }
+            };
+
+            // Initial render
+            renderGlossaryTerms();
+
+            // Search functionality
+            searchInput.addEventListener('input', renderGlossaryTerms);
+        });
+    </script>
+</body>
+</html>
